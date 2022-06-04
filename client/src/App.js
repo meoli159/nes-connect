@@ -1,23 +1,16 @@
-
 import './App.css';
-import VideoPlayer from './components/VideoPlayer';
+import React from "react";
+
+
 
 function App() {
+
   return (
     <div className="App">
       <header className="App-header">
-              
-        <form action= "../../post" method='post'
-        className='form' >
-          <button type='submit'>Connected? test</button>
-        </form>
-        <div>
-          <VideoPlayer></VideoPlayer>
-        </div>
+       
+       
       </header>
-      <body>
-        
-      </body>
     </div>
   );
 }
