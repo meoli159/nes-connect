@@ -1,25 +1,28 @@
 const express = require ('express')
 const cors = require ('cors')
 
-
-const http = require('http')
-const {Server} = require('socket.io')
 const mongoose = require ('mongoose')
 
 const bodyparser =require ('body-parser')
-const server = http.createServer(app)
 const helmet = require('helmet')
 const dotenv = require('dotenv')
 const app = express()
 
 dotenv.config()
 
-const io = new Server(server,{
-    cors:{
-        origin: "http://localhost:3333",
-        methods:["GET","POST"]
+const connectDB = async ()=>{
+    try{
+        await mongoose.connect('mongodb+srv://tien2501:9855157a@cluster0.etmsu.mongodb.net/?retryWrites=true&w=majority')
+
+        console.log('Connected to MongoDB')
     }
-}) 
+    catch (error) {
+        console.log(error.message)
+        process.exit(1)
+    }
+}
+connectDB()
+
 
 app.use(helmet())
 app.use(cors())
@@ -30,20 +33,12 @@ app.get("/",(req,res)=>{
 })
 
 //API
-const user = require('/api/users');
-app.use('/api/users', users)
+// const user = require('/api/users');
+// app.use('/api/users', users)
 
-
-/////////////////////
-io.on('connection', (socket) => {
-    console.log('User connected',socket.id);
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
-  });
 
 ////////////////////////////////////
 const port = process.env.port ||3333
-server.listen(port, ()=> {
+app.listen(port, ()=> {
     console.log('Server is listen to port:', port)
 })
