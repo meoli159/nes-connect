@@ -25,7 +25,7 @@ require("./database/DBconnect")
 
 
 ////////////////////////////////////
-const port = process.env.port ||3333
+const port = process.env.port||3333
 app.listen(port, ()=> {
     console.log('Server is listen to port:', port)
 })
