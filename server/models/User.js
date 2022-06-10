@@ -15,10 +15,10 @@ const UserSchema = new mongoose.Schema({
         type: 'string',
         require: true,
     },
-    passwordConfirm: {
-        type: 'string',
-        require: true,
-    }
+    // passwordConfirm: {
+    //     type: 'string',
+    //     require: true,
+    // }
 });
 
 const User = mongoose.model('User',UserSchema);

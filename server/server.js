@@ -8,9 +8,11 @@ const app = express()
 
 dotenv.config()
 
+//middleware
+app.use(express.json())
 app.use(helmet())
 app.use(cors())
-app.use(express.json())
+
 
 app.get("/",(req,res)=>{
     res.send("Hello")
@@ -20,11 +22,9 @@ app.get("/",(req,res)=>{
 require("./database/DBconnect")
 
 //API
-// const user = require('/api/users');
-// app.use('/api/users', users)
 
 
-////////////////////////////////////
+//Port
 const port = process.env.port||3333
 app.listen(port, ()=> {
     console.log('Server is listen to port:', port)
