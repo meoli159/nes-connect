@@ -1,9 +1,9 @@
-const router = require('express').Router()
+const route = require('express').Router()
 const User = require('../models/User')
 
-router.get('/users',(req,res) => res.send("User Router"))
+route.get('/',(req,res) => res.send("User Route"))
 
-router.post('/users', async (req,res)=>{
+route.post('/register',async (req,res)=>{
     //Create new user
     try{
         const user = new User (req.body)
@@ -15,4 +15,4 @@ router.post('/users', async (req,res)=>{
         res.status(400).send(error)
     }
 }) 
- module.exports = router
+ module.exports = route

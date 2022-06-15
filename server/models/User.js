@@ -31,17 +31,13 @@ const UserSchema = mongoose.Schema({
             require: true,
         }
     }],
-    // passwordConfirm: {
-    //     type: 'string',
-    //     require: true,
-    // }
 });
 
 UserSchema.pre('save', async function (next){
     //Hash pw before saving user
     const user = this 
     if (user.isModified('password')){
-        user.password = await bcrypt.hash(user.password , 8)
+        user.password = await bcrypt.hash(user.password , 10)
     }
     next()
 })
