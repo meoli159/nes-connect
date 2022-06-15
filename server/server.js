@@ -1,25 +1,29 @@
 const express = require ('express')
 const cors = require ('cors')
-
-//const bodyparser =require ('body-parser')
+const bodyParser =require ('body-parser')
 const helmet = require('helmet')
 const dotenv = require('dotenv')
 const app = express()
+
 
 //Env file & connect require
 dotenv.config()
 require("./database/DBconnect")
 
+
 //Routes
-const user = require('./routes/User')
+const api = require('./routes/api')
 
 
 //Middleware
 app.use(express.json())
 app.use(helmet())
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.use('/user',user)
+
+app.use('/api',api)
 
 
 
