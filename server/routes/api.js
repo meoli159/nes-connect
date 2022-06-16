@@ -1,8 +1,9 @@
 const routes = require('express').Router()
-const config = require('../database/DBconnect')
 
-const userController = require('../controllers/User')
+const userController = require('../controllers/userController')
 
-routes.get('/users',(req,res,next)=>userController.getUser(req,res,next))
+
+routes.post('/register',userController.registerUser)
+
 
 module.exports = routes

@@ -6,11 +6,10 @@ const connectDB = async ()=>{
     try{
         mongoose.connect(process.env.MONGO_URI) // change process.env.MONGO_URI to yours 
 
-        console.log('Connected to MongoDB')
+        console.log('MongoDB Connected')
     }
     catch (error) {
         console.log(error)
-        console.log('Could not connect to MongoDB')
         process.exit(1)
     }
 }
