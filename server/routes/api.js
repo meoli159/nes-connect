@@ -1,9 +1,10 @@
 const routes = require('express').Router()
 
-const userController = require('../controllers/userController')
+const authController = require('../controllers/authController')
 
-
-routes.post('/register',userController.registerUser)
+routes.get('/',authController.getUsers)
+routes.post('/login',authController.login)
+routes.post('/register',authController.register)
 
 
 module.exports = routes
