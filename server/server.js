@@ -4,6 +4,8 @@ const bodyParser =require ('body-parser')
 const helmet = require('helmet')
 const dotenv = require('dotenv')
 const app = express()
+const cookieParser = require('cookie-parser');
+const { checkUser, requireToken } = require('./middlewares/authJwt');
 
 
 //Env file & connect require
@@ -13,6 +15,8 @@ require("./database/DBconnect")
 
 //Routes
 const api = require('./routes/api')
+const routers = require("./routes/index");
+app.use('/api', routers)
 
 
 //Middleware
