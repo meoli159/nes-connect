@@ -1,18 +1,25 @@
 const express = require ('express')
 const cors = require ('cors')
 const bodyParser =require ('body-parser')
+const cookieParser = require('cookie-parser');
 const helmet = require('helmet')
 const dotenv = require('dotenv')
+const http = require('http')
+const {Server} = require('socket.io')
+
+const { checkUser, requireToken } = require('./middlewares/authJwt');
+const api = require('./routes/index')
+
 const app = express()
+const port = process.env.port || 3333
 
-
-//Env file & connect require
+//Env file & DB connect
 dotenv.config()
 require("./database/DBconnect")
 
 
-//Routes
-const api = require('./routes/api')
+
+
 
 
 //Middleware
@@ -21,13 +28,35 @@ app.use(helmet())
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser())
+
+//Routes
+app.use(api)
+app.get("*", checkUser);
 
 
-app.use('/api',api)
+const server = http.createServer(app);
+const io = new Server(server,{
+    cors:{
+        origin:"*",
+        methods:['GET,POST']
+    }
+})
 
 
+//Real Time connection
+io.on("connection",(socket)=>{
+    console.log("user connected")
+    socket.on("join-room",()=>{
+        console.log("user join a room")
+    })
+
+    socket.on("disconnect",()=>{
+        console.log("user disconnected")
+    })
+})
 
 //Port
-app.listen(process.env.PORT, ()=> {
-    console.log('Server is listen to port:', process.env.PORT)
+server.listen(port, ()=> {
+    console.log('Server is listen to port:', port)
 })
