@@ -1,8 +1,14 @@
 const { authJwt } = require("../middlewares");
 const controller = require("../controllers/user.controller");
+<<<<<<< HEAD
 const router = require('express').Router();
 
 
+=======
+const express = require('express');
+
+const router = express.Router();
+>>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
 
 //Chưa test
 
@@ -33,4 +39,8 @@ router.get(
     controller.adminBoard
 );
 
+<<<<<<< HEAD
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac

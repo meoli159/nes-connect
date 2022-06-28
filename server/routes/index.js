@@ -1,11 +1,22 @@
 const { verifySignUp } = require("../middlewares");
 const controller = require("../controllers/auth.controller");
+<<<<<<< HEAD
 const router = require('express').Router();
 const path = require('path');// For html view( not for react)
 
 
 
 
+=======
+const express = require('express');
+const path = require('path');
+
+const router = express.Router();
+
+// chuyển user.body sang json bằng body parser
+router.use(express.json());
+router.use(express.urlencoded());
+>>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
 
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -46,4 +57,8 @@ router.get('/auth/logout', function(req, res, next) {
     res.redirect('/');
 });
 
+<<<<<<< HEAD
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
