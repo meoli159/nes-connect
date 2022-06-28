@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-const config = require("../configs/auth.config");
->>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
@@ -24,12 +20,9 @@ exports.signup = (req, res) =>{
             res.status(500).send({ message: err });
             return;
         }
-<<<<<<< HEAD
         else{
             console.log(user)
         }
-=======
->>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
         // check user có role chưa
         if (req.body.roles) {
             Role.find(
@@ -63,11 +56,7 @@ exports.signup = (req, res) =>{
                         return;
                     }
                     // Cho role của user là user
-<<<<<<< HEAD
                     user.roles = [role._id]; //No role found
-=======
-                    user.roles = [role._id];
->>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
                     user.save(err => {
                         if (err) {
                             res.status(500).send({ message: err });
@@ -84,13 +73,9 @@ exports.signup = (req, res) =>{
 
 // Đăng nhập
 exports.login = (req, res) => {
-    //check username
+    //check email
     User.findOne({
-<<<<<<< HEAD
       email: req.body.email
-=======
-      username: req.body.username
->>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
     })
       .populate("roles", "-__v")
       .exec((err, user) => {
@@ -117,11 +102,7 @@ exports.login = (req, res) => {
         }
         
         // tạo token
-<<<<<<< HEAD
         var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-=======
-        var token = jwt.sign({ id: user.id }, config.secret, {
->>>>>>> 75f626329b0862781b67d00b055aeaf7fe522bac
             expiresIn: 86400 // 24 hours
         });
         

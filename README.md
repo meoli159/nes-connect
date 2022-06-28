@@ -3,9 +3,10 @@
 - 0.1
 ## Technology
 - Node.js
-## Install Packages
 ## Executing program
-- How to run the program
+- Npm i yarn
+- Yarn install ( to install all dependency in package.json)
+- 
 ## License
 - This project is licensed under the MIT License - see the LICENSE.md file for details
 ## Authors
