@@ -14,7 +14,7 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     request
-      .post("/auth/signup", {
+      .post("/auth/register", {
         username,
         email,
         password,
