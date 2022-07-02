@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 
 //Routes
-app.use(api)
+app.use("/api", api)
 app.get("*", checkUser);
 
 

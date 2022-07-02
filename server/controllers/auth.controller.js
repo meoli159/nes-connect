@@ -8,7 +8,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 
 //Đăng ký
-exports.signup = asyncHandler(async(req, res) =>{
+exports.register = asyncHandler(async(req, res) =>{
     const {username,email,password} = req.body;
 
     
