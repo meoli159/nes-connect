@@ -9,6 +9,7 @@ const {Server} = require('socket.io')
 
 const { checkUser, requireToken } = require('./middlewares/authJwt');
 const api = require('./routes/index')
+const controller = require("./controllers/auth.controller");
 
 const app = express()
 const port = process.env.port || 3333
@@ -59,4 +60,5 @@ io.on("connection",(socket)=>{
 //Port
 server.listen(port, ()=> {
     console.log('Server is listen to port:', port)
+    controller.initial();
 })
