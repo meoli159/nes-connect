@@ -16,25 +16,25 @@ router.use(function(req, res, next) {
     next();
 });
 
-//đăng ký
-router.get("/auth/signup",(req,res)=>{
-    res.sendFile(path.join(__dirname, '../views', 'signup.html'));
-    //res.render("signup");
+//register
+router.get("/auth/register",(req,res)=>{
+    //res.sendFile(path.join(__dirname, '../views', 'register.html'));
+    res.render("register");
 })
 
 router.post(
-    "/auth/signup",
+    "/auth/register",
     [
         verifySignUp.checkDuplicateUsernameOrEmail,
         //verifySignUp.checkRolesExisted
     ],
-    controller.signup
+    controller.register
 );
 
 // đăng nhập
 router.get("/auth/login",(req,res)=>{
-    res.sendFile(path.join(__dirname, '../views', 'login.html'));
-    //res.render("signin");
+    //res.sendFile(path.join(__dirname, '../views', 'login.html'));
+    res.render("login");
 })
 
 router.post("/auth/login", controller.login);

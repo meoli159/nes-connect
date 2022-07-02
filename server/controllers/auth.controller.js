@@ -128,3 +128,37 @@ exports.login = (req, res) => {
         });
     });
 };
+
+exports.initial = (req, res) => {
+    // connect success create collection in database
+    Role.estimatedDocumentCount((err, count) => {
+        if (!err && count === 0) {
+            new Role({
+                title: "user",
+            }).save((err) => {
+                if (err) {
+                    console.log("error", err);
+                }
+                console.log("added 'user' to roles collection");
+            });
+
+            new Role({
+                title: "moderator",
+            }).save((err) => {
+                if (err) {
+                    console.log("error", err);
+                }
+                console.log("added 'moderator' to roles collection");
+            });
+
+            new Role({
+                title: "admin",
+            }).save((err) => {
+                if (err) {
+                    console.log("error", err);
+                }
+                console.log("added 'admin' to roles collection");
+            });
+        }
+    });
+}

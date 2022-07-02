@@ -24,11 +24,11 @@ requireToken = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (!token) {
-    res.redirect('/api/auth/signin');
+    res.redirect('/api/auth/login');
   } else {
     jwt.verify(token, JWT_SECRET, async (err, decoded) => {
       if (err) {
-        res.redirect('/api/auth/signin');
+        res.redirect('/api/auth/login');
       } else {
         next();
       }
