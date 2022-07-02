@@ -1,20 +1,24 @@
+const asyncHandler = require('express-async-handler')
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
 
 // Xác thực với Jtw và bảo mật với bcrypt
 var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+var bcrypt = require("bcrypt");
 
 //Đăng ký
-exports.signup = (req, res) =>{
+exports.signup = asyncHandler(async(req, res) =>{
+    const {username,email,password} = req.body;
+
+    
     // Add new user
     const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        username,
+        email,
+        password: bcrypt.hashSync( password, 10),
     });
-
+    
     user.save((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
@@ -69,7 +73,7 @@ exports.signup = (req, res) =>{
     });
     //chuyển link về home
     //res.redirect("/")
-};
+});
 
 // Đăng nhập
 exports.login = (req, res) => {

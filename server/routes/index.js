@@ -1,7 +1,7 @@
 const { verifySignUp } = require("../middlewares");
 const controller = require("../controllers/auth.controller");
 const router = require('express').Router();
-const path = require('path');// For html view( not for react)
+const path = require('path');// For html view ( not for react)
 
 
 
