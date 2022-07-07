@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import socketIO from 'socket.io-client'
 
@@ -9,8 +9,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // pages
 import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
 
 // const WS ="http://localhost:3333";
 
@@ -18,14 +18,14 @@ function App() {
   // useEffect(()=>{
   //   socketIO(WS);
   // },[])
-  const[token,setToken] = useState();
+ 
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login setToken={setToken}/>} />
+          <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>

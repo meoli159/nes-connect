@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Register.css";
+import "./Auth.css";
 import request from "../../utils/request";
 
 export default function Register() {
@@ -14,7 +14,7 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     request
-      .post("/auth/signup", {
+      .post("api/register", {
         username,
         email,
         password,
@@ -27,37 +27,42 @@ export default function Register() {
   };
 
   return (
-    <div id='Register' className="Register">
-      <form className="formRegister" onSubmit={handleSubmit}>
+    <div id="Auth" className="Auth">
+      <form className="authForm" onSubmit={handleSubmit}>
         <h1>Register</h1>
-        <div className="formInput">
+        <div className="authFormInput">
           <label>User Name</label>
           <input
+            className="authInput"
             placeholder="user name"
             type="text"
             onChange={(e) => setUserName(e.target.value)}
             value={username}
           />
         </div>
-        <div className="formInput">
+        <div className="authFormInput">
           <label>Email</label>
           <input
+            className="authInput"
             placeholder="email"
             type="text"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
         </div>
-        <div className="formInput">
+        <div className="authFormInput">
           <label>Password</label>
           <input
+            className="authInput"
             placeholder="password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
         </div>
-        <button type="submit">Register</button>
+        <button className="authBtn" type="submit">
+          Register
+        </button>
       </form>
     </div>
   );

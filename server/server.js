@@ -12,7 +12,7 @@ const api = require('./routes/index')
 const controller = require("./controllers/auth.controller");
 
 const app = express()
-const port = process.env.port || 3333
+
 
 //Env file & DB connect
 dotenv.config()
@@ -58,7 +58,9 @@ io.on("connection",(socket)=>{
 })
 
 //Port
+const port = process.env.PORT|| 3333;
+
 server.listen(port, ()=> {
-    console.log('Server is listen to port:', port)
+    console.log('Server is listen to port:', port);
     controller.initial();
 })

@@ -1,0 +1,77 @@
+.Auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url("../../assets/images/vscodebackground1.jpg");
+  background-size: cover;
+  background-repeat:no-repeat;
+  background-position: top center; 
+}
+
+
+/* Media Query for Mobile Devices */
+@media (max-width: 739px) {
+  /* Coming Soon */
+}
+
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 740px) and (max-width: 1023px){
+  /* Coming Soon */
+}
+
+/* Media Query for Laptops and Desktops */
+@media (min-width: 1024px) {
+  .authFormInput {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    
+  }
+  
+  .authInput {
+    border: none;
+    padding: 15px;
+    margin: 10px 0px;
+    border-radius: 10px;
+    background-color: rgba(24, 22, 22, 0.9);
+    color: white;
+  }
+  
+  .authForm {
+    display: flex;
+    background-color: rgba(31, 29, 29, 0.5);
+    padding: 30px 40px;
+    border-radius: 5px;
+    flex-direction: column;
+  }
+  
+  h1 {
+    text-align: center;
+    color: aliceblue;
+    font-weight: bold;
+  }
+  
+  label {
+    color: aliceblue;
+    margin-bottom: -5px;
+    font-size:small;
+    
+  }
+  
+  .authBtn {
+    background: #0c4ae6;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    font-size: large;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.9;
+  }
+  .authBtn:hover {
+      opacity:1;
+    }
+  
+}
