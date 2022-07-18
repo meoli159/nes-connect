@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import request from "../../utils/request";
 import "./Auth.css";
 
@@ -28,7 +29,7 @@ export default function Login() {
   return (
     <div id="Auth" className="Auth">
       <form className="authForm" onSubmit={handleSubmit}>
-        <h1>Login</h1>
+        <h1>Oh!! Hi there, Welcome back </h1>
         <div className="authFormInput">
           <label>Email</label>
           <input
@@ -52,6 +53,9 @@ export default function Login() {
         <button className="authBtn" type="submit">
           Login
         </button>
+        <div className="navRegister">
+          Don't have account? <Link to="/register"> Register here !!</Link>
+        </div>
         <div>{loginStatus}</div>
       </form>
     </div>
