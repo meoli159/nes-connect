@@ -3,6 +3,7 @@
 - 0.1
 ## Technology
 - Node.js
+- Remember to Install Yarn
 ## Executing program
 - Npm i yarn
 - Yarn install ( to install all dependency in package.json)
