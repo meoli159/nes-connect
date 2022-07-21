@@ -4,6 +4,7 @@ const db = require("../models");
 const User = db.user;
 const Role = db.role;
 
+//xác thực refesh token và tái tạo access token, dùng access token để xác nhận user
 verifyToken = (req, res, next) => {
   //let token = req.headers["x-auth-token"];
   let token = req.cookies.jwt;

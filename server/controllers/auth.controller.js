@@ -106,6 +106,7 @@ exports.login = (req, res) => {
         }
         
         // tạo token
+        // đăng nhập sẽ tạo refresh token và access token
         const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
             expiresIn: "10s"
         });
