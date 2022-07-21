@@ -1,0 +1,82 @@
+.Auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url("../../assets/images/vscodebackground1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+.authForm {
+  display: flex;
+  background-color: rgba(31, 29, 29, 0.5);
+  padding: 30px 40px;
+  border-radius: 5px;
+  flex-direction: column;
+  width: 20rem;
+}
+
+  .authFormInput {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .authInput {
+    border: none;
+    width: auto;
+    padding: 15px;
+    margin: 10px 0px;
+    border-radius: 10px;
+    background-color: rgba(24, 22, 22, 0.9);
+    color: white;
+    font-weight: bold;
+  }
+
+
+  .authForm h1 {
+    text-align: center;
+    color: aliceblue;
+    font-weight: bold;
+  }
+
+  label {
+    color: aliceblue;
+    margin-bottom: -5px;
+    font-size: small;
+    text-align: left;
+  }
+
+  .authBtn {
+    background: #0c4ae6;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    font-size: large;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.9;
+  }
+  .authBtn:hover {
+    opacity: 1;
+  }
+
+  .navRegister {
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+  }
+
+  .navRegister a {
+    color: rgba(0, 0, 255);
+    text-decoration: none;
+  }
+  .navRegister a:hover {
+    color: blue;
+    text-decoration: underline;
+    box-shadow: 0 12px 16px 0 rgba(254, 254, 254, 0.15),
+      0 17px 50px 0 rgba(253, 253, 254, 0.15);
+  }
+

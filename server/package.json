@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client": "yarn --cwd ../client/ start",
-    "dev": "concurrently \"yarn run server\" \"yarn run client "
+    "client": "yarn --cwd ../client start",
+    "dev": "concurrently \"yarn server\" \"yarn client \" "
   },
   "repository": "https://github.com/meoli159/nes-connect.git",
   "author": "Nero Tiến <kur0dk0@gmail.com>",

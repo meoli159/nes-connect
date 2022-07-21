@@ -1,0 +1,57 @@
+body{
+    height: 100%;
+}
+
+.Home{
+    display: flex;
+    color: black;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url("../../assets/images/vscodebackground1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+    height: 820px;
+}
+
+.Content h1 p{
+    color: white;
+}
+.roomFunction{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.community button{
+    font-size: 16px;
+    padding: 10px 16px;
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.roomBtn button{
+    font-size: 16px;
+    padding: 10px 16px;
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.roomBtn input{
+    font-weight: bold;
+    padding: 10px 16px;
+    margin: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+}
