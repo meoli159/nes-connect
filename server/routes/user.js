@@ -5,6 +5,7 @@ const router = require('express').Router();
 
 
 //Chưa test
+router.post("/token", authJwt.verifyToken)
 
 router.use(function(req, res, next) {
     res.header(

@@ -22,12 +22,10 @@ const UserSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "Role",
         },
-      ],
-    date: {
-        type: Date,
-        default: Date.now
-    }
-},);
+      ]
+},{
+    timestamps: true
+});
 
 const User = mongoose.model('User', UserSchema);
 

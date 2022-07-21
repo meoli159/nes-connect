@@ -5,30 +5,33 @@ const User = db.user;
 const Role = db.role;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  //let token = req.headers["x-auth-token"];
+  let token = req.cookies.jwt;
 
   if (!token) {
     return res.status(403).send({ message: "No token provided!" });
   }
 
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({ message: "Unauthorized!" });
-    }
-    req.userId = decoded.id;
-    next();
-  });
+  try {
+    const userId = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
+    const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+      expiresIn: "10s"
+    });
+    res.json({ accessToken})
+  } catch (error) {
+    return res.status(403).send({ errors: "Invalid token" });
+  }
 };
 
 requireToken = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (!token) {
-    res.redirect('/api/auth/login');
+    res.redirect('/api/login');
   } else {
     jwt.verify(token, JWT_SECRET, async (err, decoded) => {
       if (err) {
-        res.redirect('/api/auth/login');
+        res.redirect('/api/login');
       } else {
         next();
       }

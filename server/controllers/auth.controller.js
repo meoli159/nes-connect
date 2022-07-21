@@ -106,11 +106,15 @@ exports.login = (req, res) => {
         }
         
         // tạo token
-        var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-            expiresIn: 86400 // 24 hours
+        const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+            expiresIn: "10s"
+        });
+
+        const refreshToken = jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET, {
+            expiresIn: "1m"
         });
         
-        res.cookie('jwt', token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true}) // httpOnly ko cho truy cập từ front end
+        res.cookie('jwt', refreshToken, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true}) // httpOnly ko cho truy cập từ front end
 
         //check role
         var authorities = [];
@@ -124,7 +128,8 @@ exports.login = (req, res) => {
             username: user.username,
             email: user.email,
             roles: authorities,
-            accessToken: token
+            accessToken: accessToken,
+            refreshToken: refreshToken
         });
     });
 };

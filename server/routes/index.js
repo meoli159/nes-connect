@@ -1,4 +1,4 @@
-const { verifySignUp } = require("../middlewares");
+const { verifyLogin } = require("../middlewares");
 const controller = require("../controllers/auth.controller");
 const router = require('express').Router();
 const path = require('path');// For html view ( not for react)
@@ -25,7 +25,7 @@ router.get("/register",(req,res)=>{
 router.post(
     "/register",
     [
-        verifySignUp.checkDuplicateUsernameOrEmail,
+        verifyLogin.checkDuplicateUsernameOrEmail,
         //verifySignUp.checkRolesExisted
     ],
     controller.register

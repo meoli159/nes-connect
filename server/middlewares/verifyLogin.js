@@ -52,9 +52,9 @@ checkRolesExisted = (req, res, next) => {
     next();
 };
 */
-const verifySignUp = {
+const verifyLogin = {
     checkDuplicateUsernameOrEmail//,
     //checkRolesExisted
 };
 
-module.exports = verifySignUp;
+module.exports = verifyLogin;

@@ -9,6 +9,7 @@ const {Server} = require('socket.io')
 
 const { checkUser, requireToken } = require('./middlewares/authJwt');
 const api = require('./routes/index')
+const auth = require('./routes/user')
 const controller = require("./controllers/auth.controller");
 
 const app = express()
@@ -33,6 +34,7 @@ app.use(cookieParser())
 
 //Routes
 app.use("/api", api)
+app.use("/auth", auth)
 app.get("*", checkUser);
 
 
