@@ -6,24 +6,36 @@ const Role = db.role;
 
 //xác thực refesh token và tái tạo access token, dùng access token để xác nhận user
 verifyToken = (req, res, next) => {
-  //let token = req.headers["x-auth-token"];
-  let token = req.cookies.jwt;
+  let token = req.headers["x-access-token"];
+  let cookie = req.cookies.jwt;
 
   if (!token) {
-    return res.status(403).send({ message: "No token provided!" });
-  }
+    if (!cookie) {
+      return res.status(403).send({ errors: "No cookie provided!" });
+    }
 
-  try {
-    const userId = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
+    try {
+    const userId = jwt.verify(cookie, process.env.REFRESH_TOKEN_SECRET)
     const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
       expiresIn: "10s"
     });
     res.json({ accessToken})
-  } catch (error) {
-    return res.status(403).send({ errors: "Invalid token" });
+    } catch (error) {
+      return res.status(403).send({ errors: "Invalid cookie" });
+    }
+
+  } else {
+    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        //res.redirect('/');
+        return res.status(403).send({ errors: "Token verified" });
+      } else {
+        next();
+      }
+    });
   }
 };
-
+// bên dưới chưa sửa
 requireToken = (req, res, next) => {
   const token = req.cookies.jwt;
 
