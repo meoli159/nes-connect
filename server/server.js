@@ -27,10 +27,10 @@ require("./database/DBconnect")
 //Middleware
 app.use(express.json())
 app.use(helmet())
-app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser())
+app.use(cors())
 
 //Routes
 app.use("/api", api)
@@ -41,6 +41,7 @@ app.get("*", checkUser);
 const server = http.createServer(app);
 const io = new Server(server,{
     cors:{
+        credentials: true,
         origin:"*",
         methods:['GET,POST']
     }

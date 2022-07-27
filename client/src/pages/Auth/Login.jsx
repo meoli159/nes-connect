@@ -1,31 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import request from "../../utils/request";
+import { Link , useNavigate } from "react-router-dom";
+import authService from "../../utils/auth.service";
 import "./Auth.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [loginStatus, setLoginStatus] = useState("false");
-
-  const handleSubmit = (e) => {
+  
+  const navigate = useNavigate();
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    request
-      .post("/api/login", {
-        email,
-        password,
-      })
+     await authService.login(email,password)
       .then((res) => {
-        if (!res.data) {
-          setLoginStatus("false");
-        } else {
-          console.log(res.data);
-          setLoginStatus("true")
-          
-        }
+        navigate("/");
       });
+
+     
   };
+  
   return (
     <div id="Auth" className="Auth">
       <form className="authForm" onSubmit={handleSubmit}>
@@ -56,7 +49,7 @@ export default function Login() {
         <div className="navRegister">
           Don't have account? <Link to="/register"> Register here !!</Link>
         </div>
-        <div>{loginStatus}</div>
+       
       </form>
     </div>
   );

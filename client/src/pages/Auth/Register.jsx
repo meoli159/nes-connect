@@ -1,29 +1,21 @@
 import React, { useState } from "react";
 import "./Auth.css";
-import request from "../../utils/request";
+import authService from "../../utils/auth.service";
 
 export default function Register() {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const handleChange =(e)=>{
-
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    request
-      .post("api/register", {
-        username,
-        email,
-        password,
-      })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-      });
-    console.log({ username, email, password });
+    authService.register(username,email,password)
+    .then((res) => {
+      console.log(res);
+      console.log(res.data);
+    });
+    
   };
 
   return (

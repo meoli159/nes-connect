@@ -5,7 +5,7 @@ const User = db.user;
 const Role = db.role;
 
 //xác thực refesh token và tái tạo access token, dùng access token để xác nhận user
-verifyToken = (req, res, next) => {
+verifyToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
   let cookie = req.cookies.jwt;
 
@@ -15,11 +15,19 @@ verifyToken = (req, res, next) => {
     }
 
     try {
-    const userId = jwt.verify(cookie, process.env.REFRESH_TOKEN_SECRET)
-    const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-      expiresIn: "10s"
-    });
-    res.json({ accessToken})
+    const claims = jwt.verify(cookie, process.env.REFRESH_TOKEN_SECRET)
+    
+    if (!claims) {
+      return res.status(401).send({
+          message: 'unauthenticated'
+      })
+      
+  }
+  const user = await User.findOne({id: claims.id})
+
+  const {password, ...data} = await user.toJSON()
+
+  res.send(data)
     } catch (error) {
       return res.status(403).send({ errors: "Invalid cookie" });
     }
