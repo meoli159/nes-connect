@@ -1,9 +1,42 @@
-.App{
-    text-align: center;
-
-} 
-body{
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    height: 100%;
-}
+    font-family: 'PT Sans', sans-serif;
+  }
+  
+  .community,
+  .about,
+  .download, 
+  .login {
+    display: flex;
+    height: 90vh;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+  
+  .about {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+    font-size: 100px;
+  }
+
+  .download {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+    font-size: 100px;
+  }
+
+  .login {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+    font-size: 100px;
+  }
+  

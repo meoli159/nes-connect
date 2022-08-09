@@ -1,10 +1,15 @@
 import React from "react";
 import './Footer.css';
+import { Button } from "../../components/Button/Button";
 
-export default function Footer() {
+function Footer() {
   return (
-    <footer>
-      <div>Made by .....</div>
-    </footer>
+    <div className='footer-container'>
+          <form>
+            <Button buttonStyle='btn--outline'>Join us now</Button>
+          </form>
+        </div>   
   );
 }
+
+export default Footer;

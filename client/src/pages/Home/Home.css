@@ -1,55 +1,66 @@
-
-
-.Home{
+  .home-container {
     display: flex;
     color: black;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-image: url("../../assets/images/vscodebackground1.jpg");
+    background-image: url("../../assets/images/video1.mp4"); 
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
     height: 820px;
-}
-
-.Content h1 p{
-    color: white;
-}
-.roomFunction{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.community button{
-    font-size: 16px;
-    padding: 10px 16px;
-    border: none;
-    margin: 5px;
-    cursor: pointer;
-    background-color: blue;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.roomBtn button{
-    font-size: 16px;
-    padding: 10px 16px;
-    border: none;
-    margin: 5px;
-    cursor: pointer;
-    background-color: blue;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.roomBtn input{
-    font-weight: bold;
-    padding: 10px 16px;
-    margin: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-}
+  }
+  
+  .home-container > h1 {
+    color: whitesmoke;
+    font-size: 70px;
+    margin-top: -100px;
+  }
+  
+  .home-container > h2 {
+    margin-top: 8px;
+    color: whitesmoke;
+    font-size: 35px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+      'Lucida Sans', Arial, sans-serif;
+  }
+  
+  .home-btn {
+    margin-top: 32px;
+  }
+  
+  .home-btn .btn {
+    margin: 6px;
+  }
+  
+  .fa-play-circle {
+    margin-left: 4px;
+  }
+  
+  @media screen and (max-width: 960px) {
+    .home-container > h1 {
+      font-size: 70px;
+      margin-top: -150px;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .home-container > h1 {
+      font-size: 50px;
+      margin-top: -100px;
+    }
+  
+    .home-container > p {
+      font-size: 30px;
+    }
+  
+    .btn-mobile {
+      display: block;
+      text-decoration: none;
+    }
+  
+    .btn {
+      width: 100%;
+    }
+  }
+  

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import authService from "../../utils/auth.service";
 
@@ -8,13 +7,13 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     authService.register(username,email,password)
     .then((res) => {
-      navigate("/login");
+      console.log(res);
+      console.log(res.data);
     });
     
   };
@@ -38,7 +37,7 @@ export default function Register() {
           <input
             className="authInput"
             placeholder="email"
-            type="email"
+            type="text"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
           />

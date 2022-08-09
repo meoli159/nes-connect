@@ -1,28 +1,33 @@
 import React from "react";
-
+import { Button } from "../../components/Button/Button";
 import "./Home.css";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 export default function Home() {
   return (
-    <div className="Home">
-      <title>Home page</title>
-      <div className="Content">
-        <h1>
-          <p>Video meeting, available for all</p>
+    <div className='home-container'>
+      <h1>Connect to the universe</h1>
+      <h2>Let's get started!</h2>
+      <div className='home-btn'>
+        <Button
+          className='btn'
+          buttonStyle='btn--outline'
+          buttonSize='btn--large'>
+          New meeting
+        </Button>
 
-          <p>home, work, school and gaming</p>
-        </h1>
-      </div>
-      <div className="roomFunction">
-        <div className="community">
-          <button>Join community</button>
-        </div>
-        <div className="roomBtn">
-          <button> Create new meeting</button>
-          <input placeholder="Enter meeting Id" type="text" />
-          <button> Join</button>
-        </div>
-      </div>
+        <Button
+          className='btn'
+          buttonStyle='btn--primary'
+          buttonSize='btn--large'
+          onClick={console.log('hey')}>
+          Join Community
+        </Button>
+      </div>   
+      <div className="IdInputForm">
+        <SearchBar placeholder="Enter meeting ID..." />
+
+      </div> 
     </div>
   );
 }
