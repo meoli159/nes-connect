@@ -6,19 +6,17 @@ import "./Navigation.css";
 export default function Navigation() {
   const [currentUser, setCurrentUser] = useState(null);
   
-  const [name, setName] = useState(null);
+  // const [name, setName] = useState(null);
   useEffect(  ()=>{
     
-    const user =  authService.getCurrentUser()
-    
+    authService.getCurrentUser()
     .then( (res) => {
-      setCurrentUser(user);
-      setName(res.data);
-      console.log(res);
-      console.log(res.data);
+      setCurrentUser(res.data);
+      
     });
     
   }, []);
+  
   const logOut = () => {
     authService.logout();
   };
@@ -51,7 +49,7 @@ export default function Navigation() {
         </div>
         {currentUser ?  (
        <div className="navbar-right">
-        <h1 >hi {name.username}</h1>
+        <h1 >hi {currentUser.username}</h1>
        <a onClick={logOut} href="/" >
          <button className="btn">LogOut</button>
        </a>

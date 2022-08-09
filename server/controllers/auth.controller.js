@@ -1,64 +1,61 @@
-const asyncHandler = require("express-async-handler");
-const db = require("../models");
-const User = db.user;
-const Role = db.role;
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-// Xác thực với Jtw và bảo mật với bcrypt
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcrypt");
+const User = require("../models/user");
+const Role = require("../models/role");
 
-//Đăng ký
-exports.register = asyncHandler(async (req, res) => {
+
+
+exports.register = async (req, res) => {
   const { username, email, password } = req.body;
+  let existingUser = await User.findOne({ email: email });
+  
+  if (existingUser) {
+    return res
+      .status(400)
+      .json({ message: "User already exists! Login Instead" });
+  }
 
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
   // Add new user
   const user = new User({
     username,
     email,
-    password: bcrypt.hashSync(password, 10),
+    password: hashedPassword,
   });
 
-  user.save((err, user) => {
+   user.save((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     } else {
       console.log(user);
     }
-    // check user có role chưa
+    // check user role
     if (req.body.roles) {
-      Role.find(
-        {
-          title: { $in: req.body.roles },
-        },
-        (err, roles) => {
+      Role.find({ title: { $in: req.body.roles } }, (err, roles) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+        user.roles = roles.map((role) => role._id);
+        user.save((err) => {
           if (err) {
             res.status(500).send({ message: err });
             return;
           }
-          //Chuyển role sang role id
-          user.roles = roles.map((role) => role._id);
-          user.save((err) => {
-            if (err) {
-              res.status(500).send({ message: err });
-              return;
-            }
-
-            res.send(user);
-          });
-        }
-      );
-    }
-    // nếu user chưa có role
-    else {
-      // check có role user trong collection roles hay ko
-      Role.findOne({ name: "user" }, (err, role) => {
+          res.status(200).send(user);
+        });
+      });
+    } else {
+      Role.findOne({ title: "user" }, (err, role) => {
         if (err) {
           res.status(500).send({ message: err });
           return;
         }
         // Cho role của user là user
-        user.roles = [role._id]; //No role found
+        user.roles = [role._id];
         user.save((err) => {
           if (err) {
             res.status(500).send({ message: err });
@@ -69,75 +66,62 @@ exports.register = asyncHandler(async (req, res) => {
       });
     }
   });
-  //chuyển link về home
-  //res.redirect("/")
-});
-
-// Đăng nhập
-exports.login = (req, res) => {
-  //check email
-  User.findOne({email: req.body.email})
-    .populate("roles", "-__v")
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
-      }
-
-      if (!user) {
-        return res.status(404).send({ message: "User Not found." });
-      }
-
-      //check password
-      var passwordIsValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
-
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
-          message: "Invalid Password!",
-        });
-      }
-
-      // tạo token
-      // đăng nhập sẽ tạo refresh token và access token
-      const accessToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET,
-        {
-        expiresIn: "10s",
-        });
-
-      const refreshToken = jwt.sign({ id: user.id, username: user.username  }, process.env.REFRESH_TOKEN_SECRET,
-        {
-          expiresIn: "1m",
-        });
-
-      res.cookie("jwt", refreshToken, {
-        maxAge: 1000 * 60 * 60 * 24,
-        httpOnly: true,
-      }); // httpOnly ko cho truy cập từ front end
-
-      //check role
-      var authorities = [];
-
-      for (let i = 0; i < user.roles.length; i++) {
-        authorities.push("ROLE_" + user.roles[i].title.toUpperCase());
-      }
-
-      res.status(200).send({
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        roles: authorities,
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      });
-    });
 };
 
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email: email })
+  .populate("roles", "-__v")
+
+  if (!user) {
+    return res.status(404).send({ message: "User Not found." });
+  }
+
+  //check password
+  const passwordIsValid = bcrypt.compareSync(password, user.password);
+  if (!passwordIsValid) {
+    return res.status(401).send({
+      message: "Invalid Password!",
+    });
+  }
+
+  //Token generate
+  const accessToken = jwt.sign(
+    { id: user._id,username:user.username},
+    process.env.JWT_SECRET,
+    { expiresIn: "10s" }
+  );
+  const refreshToken = jwt.sign(
+    { id: user._id,username:user.username},
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "365d" }
+  );
+  
+  res.cookie("jwt", refreshToken, {
+    maxAge: 1000 * 60 * 60 * 24,
+    httpOnly: true,
+    secure:false, //set true when deploy
+  })
+
+  //check role
+  var authorities = [];
+  for (let i = 0; i < user.roles.length; i++) {
+    authorities.push("ROLE_" + user.roles[i].title.toUpperCase());
+  }
+  res.status(200).send({
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    roles: authorities,
+    accessToken: accessToken,
+    status: true,
+  });
+};
+
+
+//Add role to DB
 exports.initial = (req, res) => {
-  // connect success create collection in database
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Role({

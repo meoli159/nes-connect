@@ -1,8 +1,6 @@
 const express = require ('express')
 const cors = require ('cors')
-const bodyParser =require ('body-parser')
 const cookieParser = require('cookie-parser');
-const helmet = require('helmet')
 const dotenv = require('dotenv')
 const http = require('http')
 const {Server} = require('socket.io')
@@ -25,12 +23,13 @@ require("./database/DBconnect")
 
 
 //Middleware
-app.use(express.json())
-app.use(helmet())
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cookieParser())
-app.use(cors())
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({   
+    origin:"*",
+    methods:['GET,POST'],
+    credentials: true,
+}));
 
 //Routes
 app.use("/api", api)
@@ -39,13 +38,7 @@ app.get("*", checkUser);
 
 
 const server = http.createServer(app);
-const io = new Server(server,{
-    cors:{
-        credentials: true,
-        origin:"*",
-        methods:['GET,POST']
-    }
-})
+const io = new Server(server,cors)
 
 
 //Real Time connection

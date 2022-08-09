@@ -3,8 +3,8 @@ import axios from "axios";
 const API_URL = "/api";
 
 
-const register = (username, email, password) =>{
-return axios
+const register = async (username, email, password) =>{
+return await axios
     .post(API_URL + "/register", {
         username,
         email,
@@ -22,17 +22,18 @@ return await axios
     )
     
 }
-const logout =  () => {
-    return  axios 
-    .post(API_URL + "/logout")
 
+
+const getCurrentUser =  async () => {
+    return  await axios 
+    .get(API_URL + "/user",{
+        withCredentials: true,
+    })
 }
 
-
-const getCurrentUser =  () => {
-    return  axios 
-    .get(API_URL + "/user",{withCredentials: true})
-    
+const logout = async () => {
+    return  await axios 
+    .post(API_URL + "/logout")
 }
 
 const authService = {
