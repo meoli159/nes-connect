@@ -8,6 +8,7 @@ const {Server} = require('socket.io')
 const { checkUser, requireToken } = require('./middlewares/authJwt');
 const api = require('./routes/index')
 const auth = require('./routes/user')
+const group = require('./routes/group')
 const controller = require("./controllers/auth.controller");
 
 const app = express()
@@ -34,6 +35,7 @@ app.use(cors({
 //Routes
 app.use("/api", api)
 app.use("/auth", auth)
+app.use("/group", group)
 app.get("*", checkUser);
 
 

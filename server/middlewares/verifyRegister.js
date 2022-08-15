@@ -1,9 +1,45 @@
-const ROLES = ["user", "admin", "moderator"];
+const db = require("../models");
+const ROLES = db.role;
+const User = db.user;
 
-// code bị lỗi chưa fix
+checkDuplicateUsernameOrEmail = (req, res, next) => {
+    // check username
+    User.findOne({
+        username: req.body.username,
+    }).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+
+    if (user) {
+      res.status(400).send({ message: "Failed! Username is already in use!" });
+      return;
+    }
+
+    // check email
+    User.findOne({
+      email: req.body.email,
+    }).exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+
+      if (user) {
+        res.status(400).send({ message: "Failed! Email is already in use!" });
+        return;
+      }
+
+      next();
+    });
+  });
+};
+/* code bị lỗi chưa fix
 checkRolesExisted = (req, res, next) => {
     if (req.body.roles) {
         for (let i = 0; i < req.body.roles.length; i++) {
+            console.log(typeof req.body.roles[i])
             if (!ROLES.includes(req.body.roles[i])) {
                 res.status(400).send({
                 message: `Failed! Role ${req.body.roles[i]} does not exist!`,
@@ -15,9 +51,10 @@ checkRolesExisted = (req, res, next) => {
   
     next();
 };
-
-const verifyRegister = {
-    checkRolesExisted
+*/
+const verifySignUp = {
+    checkDuplicateUsernameOrEmail//,
+    //checkRolesExisted
 };
 
-module.exports = verifyRegister;
+module.exports = verifySignUp;
