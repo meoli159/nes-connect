@@ -1,17 +1,31 @@
+const User = require("../models/user");
 
+const getAllUser = async(req,res)=>{
+    try {
+        const user = await User.find()
+        res.status(200).json(user)
+        return;
+    } catch (error) {
+        res.status(500).json(error)
+        return;
+    }
+}
 
-exports.allAccess = (req, res) => {
-    res.status(200).send("Public Content.");
-};
-  
-exports.userBoard = (req, res) => {
-    res.status(200).send("User Content.");
-};
-  
-exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin Content.");
-};
-  
-exports.moderatorBoard = (req, res) => {
-    res.status(200).send("Moderator Content.");
-};
+const deleteUser = async(req,res)=>{
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+       return res.status(200).json("Delete Successfully")
+        
+    } catch (error) {
+      return  res.status(500).json(error)
+      
+    }
+}
+const test = (req,res)=>{
+res.json('admin content')
+}
+module.exports ={
+    getAllUser,
+    deleteUser,
+    test
+}

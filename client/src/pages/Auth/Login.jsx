@@ -1,55 +1,59 @@
 import React, { useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authService from "../../utils/auth.service";
+import {useDispatch} from "react-redux";
 import "./Auth.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-     await authService.login(email,password)
-      .then((res) => {
-        navigate("/");
-      });
-
-     
+    const user ={
+      email ,
+      password,
+    }
+    authService.login(user,dispatch,navigate)
   };
-  
+
   return (
     <div id="Auth" className="Auth">
       <form className="authForm" onSubmit={handleSubmit}>
-        <h1>Oh!! Hi there, Welcome back </h1>
-        <div className="authFormInput">
-          <label>Email</label>
-          <input
-            className="authInput"
-            placeholder="email"
-            type="text"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-        </div>
-        <div className="authFormInput">
-          <label>Password</label>
-          <input
-            className="authInput"
-            placeholder="password"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
-        </div>
-        <button className="authBtn" type="submit">
+        <h2>Welcome</h2>
+
+        <input
+          className="authInput"
+          placeholder="Email..."
+          type="text"
+          name="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
+        <input
+          className="authInput"
+          placeholder="Password..."
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        />
+
+        <button className="auth-btn" type="submit">
           Login
         </button>
-        <div className="navRegister">
-          Don't have account? <Link to="/register"> Register here !!</Link>
+        <p className="text">OR LOGIN USING</p>
+
+        <div className="alt-login">
+          <div className="facebook"></div>
+          <div className="google"></div>
+          <div className="twitter"></div>
         </div>
-       
+
+        <div className="authRegister">
+          Not a member?<Link to="/register">Register now!</Link>
+        </div>
       </form>
     </div>
   );

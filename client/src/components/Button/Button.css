@@ -4,10 +4,11 @@
   
   .btn {
     padding: 8px 20px;
-    border-radius: 2px;
+    border-radius: 15px;
     outline: none;
     border: none;
     cursor: pointer;
+    justify-content: end;
   }
   
   .btn--primary {
@@ -22,11 +23,13 @@
     padding: 8px 20px;
     border: 1px solid var(--primary);
     transition: all 0.3s ease-out;
+    justify-content: end;
   }
   
   .btn--medium {
     padding: 8px 20px;
     font-size: 18px;
+    justify-content: end;
   }
   
   .btn--large {
@@ -40,4 +43,7 @@
     background: #fff;
     color: #242424;
     transition: 250ms;
+    text-decoration: uppercase;
+    transform: scale(1.1);  
+    transition: 0.5s;
   }

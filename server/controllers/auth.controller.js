@@ -1,15 +1,16 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
 const User = require("../models/user");
 const Role = require("../models/role");
 
+let refreshTokens = [];
 
-
-exports.register = async (req, res) => {
+const register = async (req, res) => {
   const { username, email, password } = req.body;
-  let existingUser = await User.findOne({ email: email });
-  
+  if (!username || !email || !password)
+    return res.status(400).json({ message: "Please fill all information!" });
+
+  const existingUser = await User.findOne({ email: email });
   if (existingUser) {
     return res
       .status(400)
@@ -25,41 +26,36 @@ exports.register = async (req, res) => {
     password: hashedPassword,
   });
 
-   user.save((err, user) => {
+  user.save((err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+      return res.status(500).send({ message: err });
     } else {
       console.log(user);
     }
     // check user role
     if (req.body.roles) {
-      Role.find({ title: { $in: req.body.roles } }, (err, roles) => {
+      Role.find({ name: { $in: req.body.roles } }, (err, roles) => {
         if (err) {
-          res.status(500).send({ message: err });
-          return;
+          return res.status(500).send({ message: err });
         }
         user.roles = roles.map((role) => role._id);
         user.save((err) => {
           if (err) {
-            res.status(500).send({ message: err });
-            return;
+            return res.status(500).send({ message: err });
           }
           res.status(200).send(user);
         });
       });
     } else {
-      Role.findOne({ title: "user" }, (err, role) => {
+      Role.findOne({ name: "user" }, (err, role) => {
         if (err) {
-          res.status(500).send({ message: err });
-          return;
+          return res.status(500).send({ message: err });
         }
         // Cho role của user là user
         user.roles = [role._id];
         user.save((err) => {
           if (err) {
-            res.status(500).send({ message: err });
-            return;
+            return res.status(500).send({ message: err });
           }
           res.send(user);
         });
@@ -68,88 +64,126 @@ exports.register = async (req, res) => {
   });
 };
 
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    {
+      id: user.id,
+      username: user.username,
+      role: user.roles,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "20s" }
+  );
+};
 
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    {
+      id: user.id,
+      username: user.username,
+      role: user.roles,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "30d" }
+  );
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
   const user = await User.findOne({ email: email })
-  .populate("roles", "-__v")
+    .select("+password")
+    .populate("roles", "-__v");
 
   if (!user) {
-    return res.status(404).send({ message: "User Not found." });
+    return res.status(404).send({ message: "Invalid Email!" });
   }
 
   //check password
   const passwordIsValid = bcrypt.compareSync(password, user.password);
   if (!passwordIsValid) {
-    return res.status(401).send({
-      message: "Invalid Password!",
+    return res.status(404).send({ message: "Invalid Password!" });
+  }
+  if (user && passwordIsValid) {
+    //check role
+    var authorities = [];
+    for (let i = 0; i < user.roles.length; i++) {
+      authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+    }
+
+    //Token generate
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+    refreshTokens.push(refreshToken);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false,
+      path: "/",
+      sameSite: "strict",
+    });
+
+    res.status(200).json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      roles: authorities,
+      accessToken,
     });
   }
+};
 
-  //Token generate
-  const accessToken = jwt.sign(
-    { id: user._id,username:user.username},
-    process.env.JWT_SECRET,
-    { expiresIn: "10s" }
-  );
-  const refreshToken = jwt.sign(
-    { id: user._id,username:user.username},
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "365d" }
-  );
-  
-  res.cookie("jwt", refreshToken, {
-    maxAge: 1000 * 60 * 60 * 24,
-    httpOnly: true,
-    secure:false, //set true when deploy
-  })
-
-  //check role
-  var authorities = [];
-  for (let i = 0; i < user.roles.length; i++) {
-    authorities.push("ROLE_" + user.roles[i].title.toUpperCase());
+const getUser = async (req, res) => {
+  const userId = req.id;
+  let user;
+  try {
+    user = await User.findById(userId, "-password");
+  } catch (err) {
+    return new Error(err);
   }
-  res.status(200).send({
-    id: user._id,
-    username: user.username,
-    email: user.email,
-    roles: authorities,
-    accessToken: accessToken,
-    status: true,
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  return res.status(200).json({ user });
+};
+
+const requestRefreshToken = async (req, res) => {
+  const refreshToken = req.cookies["refreshToken"];
+  if (!refreshToken)
+    return res.status(401).json({ message: "You're not authenticated" });
+  if (!refreshToken.includes(refreshToken)) {
+    return res.status(403).json("Refresh token is not valid");
+  }
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      console.log(err);
+    }
+    refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+    const newAccessToken = generateAccessToken(user);
+    const newRefreshToken = generateRefreshToken(user);
+    refreshTokens.push(newRefreshToken);
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      secure: false,
+      path: "/",
+      sameSite: "strict",
+    });
+    res
+      .status(200)
+      .json({ accessToken: newAccessToken});
   });
 };
 
+const logout = async (req, res) => {
+  res.clearCookie("refreshToken");
+  refreshTokens = refreshTokens.filter(
+    (token) => token !== req.cookies["refreshToken"]
+  );
+  res.status(200).json("Logged out!");
+};
 
-//Add role to DB
-exports.initial = (req, res) => {
-  Role.estimatedDocumentCount((err, count) => {
-    if (!err && count === 0) {
-      new Role({
-        title: "user",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-        console.log("added 'user' to roles collection");
-      });
-
-      new Role({
-        title: "moderator",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-        console.log("added 'moderator' to roles collection");
-      });
-
-      new Role({
-        title: "admin",
-      }).save((err) => {
-        if (err) {
-          console.log("error", err);
-        }
-        console.log("added 'admin' to roles collection");
-      });
-    }
-  });
+module.exports = {
+  logout,
+  login,
+  register,
+  getUser,
+  requestRefreshToken,
 };

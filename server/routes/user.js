@@ -1,36 +1,17 @@
 const { authJwt } = require("../middlewares");
-const controller = require("../controllers/user.controller");
-const router = require('express').Router();
+const {getAllUser,deleteUser, test} = require("../controllers/user.controller");
+const router = require("express").Router();
 
+// router.use(function (req, res, next) {
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "x-access-token, Origin, Content-Type, Accept"
+//   );
+//   next();
+// });
 
-
-//Chưa test
-
-router.use(function(req, res, next) {
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, Content-Type, Accept"
-    );
-    next();
-});
-// Chức năng dùng chung
-router.get("/", controller.allAccess);
-
-//chức năng cho user
-router.get("/", [authJwt.verifyToken], controller.userBoard);
-
-//chức năng cho mod
-router.get(
-    "/",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
-);
-
-//chức năng cho admin
-router.get(
-    "/",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
-);
+router.get("/",authJwt.verifyToken, getAllUser);
+router.delete("/:id",authJwt.verifyTokenAndAdminAuth, deleteUser)
+router.get('/test', authJwt.verifyToken,authJwt.isAdmin,test)
 
 module.exports = router;

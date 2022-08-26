@@ -1,82 +1,179 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
+}
+
 .Auth {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-image: url("../../assets/images/vscodebackground1.jpg");
+  width: 100%;
+  background-image: url("../../assets/images/vscodebackground6.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;
 }
+
 .authForm {
   display: flex;
-  background-color: rgba(31, 29, 29, 0.5);
-  padding: 30px 40px;
-  border-radius: 5px;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: black;
+  width: 60vw;
+  height: 90vh;
+  position: relative;
+  border-radius: 10px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.4rem;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8.5px);
+  -webkit-backdrop-filter: blur(8.5px);
   flex-direction: column;
-  width: 20rem;
 }
 
-  .authFormInput {
-    display: flex;
-    flex-direction: column;
-  }
+.alt-login {
+  display: flex;
+  width: 60%;
+  height: 2.5em;
+  justify-content: space-between;
+}
 
-  .authInput {
-    border: none;
-    width: auto;
-    padding: 15px;
-    margin: 10px 0px;
-    border-radius: 10px;
-    background-color: rgba(24, 22, 22, 0.9);
-    color: white;
-    font-weight: bold;
-  }
+.alt-login div {
+  width: 25%;
+  height: 100hv;
+  border-radius: 1em;
+  background-color: white;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
 
+.alt-login div:hover {
+    transform: scale(1.25);
+    transition: 0.5s;
+}
 
-  .authForm h1 {
-    text-align: center;
-    color: aliceblue;
-    font-weight: bold;
-  }
+.google {
+  background-image: url("../../assets/images/google.gif");
+}
 
-  label {
-    color: aliceblue;
-    margin-bottom: -5px;
-    font-size: small;
-    text-align: left;
-  }
+.facebook {
+  background-image: url("../../assets/images/facebook.gif");
+}
 
-  .authBtn {
-    background: #0c4ae6;
-    border: none;
-    border-radius: 10px;
-    padding: 10px;
-    color: white;
-    font-size: large;
-    cursor: pointer;
-    font-weight: bold;
-    opacity: 0.9;
-  }
-  .authBtn:hover {
-    opacity: 1;
-  }
+.twitter {
+  background-image: url("../../assets/images/twitter.gif");
+}
 
-  .navRegister {
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    padding: 5px;
-  }
+.authInput {
+  background: rgb(130, 87, 87);
+  box-shadow: 0 8px 32px 0 rgba(109, 118, 245, 0.37);
+  border-radius: 2rem;
+  width: 80%;
+  height: 3rem;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  color: #000000;
+  font-size: 1rem;
+  font-weight: bold;
+}
 
-  .navRegister a {
-    color: rgba(0, 0, 255);
-    text-decoration: none;
-  }
-  .navRegister a:hover {
-    color: blue;
-    text-decoration: underline;
-    box-shadow: 0 12px 16px 0 rgba(254, 254, 254, 0.15),
-      0 17px 50px 0 rgba(253, 253, 254, 0.15);
-  }
+.authInput:focus {
+  display: inline-block;
+  box-shadow: 0 0 0 0.2rem #b9abe0;
+  backdrop-filter: blur(12rem);
+  border-radius: 2rem;
+}
+
+.authInput::placeholder {
+  color: #ccc1eb99;
+  font-weight: 100;
+  font-size: 1rem;
+}
+
+.authInput:focus {
+  outline-color: rgb(32, 177, 255);
+}
+
+.auth-btn {
+  display: flex;
+  width: 40%;
+  height: 3em;
+  background: linear-gradient(to right, #1a1d58 40%, #2e4280 60%);
+  color: white;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  border-radius: 1em;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+}
+
+.auth-btn:hover {
+  transform: scale(1.25);
+  outline-color: rgb(32, 177, 255);
+}
+
+.text {
+  position: relative;
+  bottom: -0.5em;
+}
+
+@media only screen and (max-width: 1080px) {
+.authForm {
+  width: 65vw;
+  height: 90vh;
+}  
+}
+
+@media only screen and (min-width: 680px) {
+.authForm { 
+  width: 55vw;
+  height: 80vh;
+}
+} 
+
+.authRegister a {
+  color: black;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
+  top: 1em;
+}
+
+.authRegister a:hover {
+  color: white;
+  text-decoration: uppercase;
+  transform: scale(1.25);  
+  transition: 0.5s;
+}
+
+.authLogin a {
+  color: black;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
+  top: 1em;
+}
+
+.authLogin a:hover {
+  color: white;
+  text-decoration: uppercase;
+  transform: scale(1.25);  
+  transition: 0.5s;
+}
 

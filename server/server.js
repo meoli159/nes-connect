@@ -5,12 +5,15 @@ const dotenv = require('dotenv')
 const http = require('http')
 const {Server} = require('socket.io')
 
-const { checkUser, requireToken } = require('./middlewares/authJwt');
-const api = require('./routes/index')
-const auth = require('./routes/user')
-const group = require('./routes/group')
-const controller = require("./controllers/auth.controller");
+const { checkUser } = require('./middlewares/authJwt');
 
+
+const group = require('./routes/group')
+//const controller = require("./controllers/auth.controller");
+
+const api = require('./routes/auth')
+const user = require('./routes/user')
+const roleData = require('./database/RoleData');
 const app = express()
 
 
@@ -24,19 +27,16 @@ require("./database/DBconnect")
 
 
 //Middleware
-app.use(express.json());
+app.use(cors());
 app.use(cookieParser());
-app.use(cors({   
-    origin:"*",
-    methods:['GET,POST'],
-    credentials: true,
-}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use("/api", api)
-app.use("/auth", auth)
 app.use("/group", group)
-app.get("*", checkUser);
+app.use("/user", user)
+// app.get("*", checkUser);
 
 
 const server = http.createServer(app);
@@ -60,5 +60,5 @@ const port = process.env.PORT|| 3333;
 
 server.listen(port, ()=> {
     console.log('Server is listen to port:', port);
-    controller.initial();
+    roleData.initial();
 })

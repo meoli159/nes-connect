@@ -1,0 +1,28 @@
+.server-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #000000 0%, #434343 100%);
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    font-weight: bolder;
+    font-size: 20px;
+    font-family: "roboto", sans-serif;
+}
+
+.server-logo:hover {
+    transform: scale(1.1);  
+    transition: 0.5s;
+    background: linear-gradient(90deg, #fc00ff 0%, #00dbde 100%);
+    border-radius: 20%;
+}
+
+.fa-typo3 {
+    margin-left: 0.5rem;
+    font-size: 1.8rem;
+  }

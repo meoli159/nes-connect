@@ -1,0 +1,26 @@
+.server-chat-room {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    height: 48px;
+    margin-bottom: 5px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+}
+
+.server-chat-room:hover {
+    transform: scale(1.1);  
+    transition: 0.5s;
+    background: #424549;
+}
+
+.server-chat-room-name {
+    position: absolute;
+    left: 10%;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'roboto', sans-serif;
+    color: white;
+}

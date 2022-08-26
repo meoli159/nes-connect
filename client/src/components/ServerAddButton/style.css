@@ -1,0 +1,24 @@
+.server-add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 15px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    background: #424549;
+    color: green;
+}
+
+.server-add-button:hover {
+    transform: scale(1.2);  
+    transition: 0.5s;
+    background: linear-gradient(270deg, #00c6ff 0%, #0072ff 100%);
+    color: whitesmoke;
+    border-radius: 20%;
+}
+
+
+
