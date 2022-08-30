@@ -1,6 +1,6 @@
 import React from "react";
 import './Footer.css';
-import { Button } from "../../components/Button/Button";
+import { Button } from "../Button/Button";
 
 function Footer() {
   return (

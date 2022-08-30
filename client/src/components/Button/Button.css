@@ -4,10 +4,11 @@
   
   .btn {
     padding: 8px 20px;
-    border-radius: 2px;
+    border-radius: 10px;
     outline: none;
     border: none;
     cursor: pointer;
+    justify-content: end;
   }
   
   .btn--primary {
@@ -22,22 +23,40 @@
     padding: 8px 20px;
     border: 1px solid var(--primary);
     transition: all 0.3s ease-out;
+    justify-content: end;
   }
   
   .btn--medium {
     padding: 8px 20px;
     font-size: 18px;
+    justify-content: end;
+    letter-spacing: 2px;
+    border: 1px solid whitesmoke;
   }
   
   .btn--large {
     padding: 12px 26px;
     font-size: 20px;
+    font-weight: bold;
+    background: whitesmoke;
+    border: 1px solid black;
   }
   
-  .btn--large:hover,
+  .btn--large:hover {
+    transition: all 0.2s ease-in;
+    background: transparent;
+    color: whitesmoke;
+    transform: scale(1.25);  
+    backdrop-filter: blur(8.5px);
+    -webkit-backdrop-filter: blur(8.5px);
+    transition-delay: 0.15s;
+    box-shadow: 0px 0px 20px #E6DADA,
+                0px 0px 40px #E6DADA;
+  }
   .btn--medium:hover {
     transition: all 0.3s ease-out;
-    background: #fff;
-    color: #242424;
-    transition: 250ms;
+    background: #F6F6F6;
+    color: black;
+    transform: scale(1.25);  
+    transition-delay: 0.1s;
   }

@@ -1,0 +1,49 @@
+.member-in-chat-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    height: 45px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background: transparent;
+    cursor: pointer;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+.member-in-chat-wrapper:hover {
+    transform: scale(1.1);  
+    transition: 0.5s;
+    background: #424549;
+}
+
+.member-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    background-image: url("../../assets/images/profile.gif");
+    background-size:cover;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.member-name {
+    position: absolute;
+    font-size: 15px;
+    font-weight: 500;
+    margin-left: 45px;
+    font-family: 'roboto', sans-serif;
+    color: white;
+    width: 60%;
+    display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
+}

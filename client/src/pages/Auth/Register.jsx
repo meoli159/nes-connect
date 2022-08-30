@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Link} from 'react-router-dom';
 import "./Auth.css";
 import authService from "../../utils/auth.service";
 
@@ -20,41 +21,40 @@ export default function Register() {
 
   return (
     <div id="Auth" className="Auth">
+      
       <form className="authForm" onSubmit={handleSubmit}>
-        <h1>Register</h1>
-        <div className="authFormInput">
-          <label>User Name</label>
-          <input
-            className="authInput"
-            placeholder="user name"
-            type="text"
+
+        <h2>Welcome</h2>
+
+        <input className="authInput" placeholder="User name..." type="text"
             onChange={(e) => setUserName(e.target.value)}
-            value={username}
-          />
-        </div>
-        <div className="authFormInput">
-          <label>Email</label>
-          <input
-            className="authInput"
-            placeholder="email"
-            type="text"
+            value={username} />
+
+        <input  className="authInput" placeholder="Email..." type="text"
             onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-        </div>
-        <div className="authFormInput">
-          <label>Password</label>
-          <input
-            className="authInput"
-            placeholder="password"
-            type="password"
+            value={email} />
+
+        <input className="authInput" placeholder="Password..." type="password"
             onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
-        </div>
-        <button className="authBtn" type="submit">
-          Register
-        </button>
+            value={password} />
+
+        <input className="authInput" placeholder="Confirm Password..." type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password} />
+
+      <button className="auth-btn" type="submit">Register</button>
+      <p className="text" >OR LOGIN USING</p>
+
+      <div className="alt-login">
+        <div className="facebook"></div>
+        <div className="google"></div>
+        <div className="twitter"></div>
+      </div>
+      
+      <div className="authLogin">
+          Already a member?<Link to="/login">Join now!</Link>
+      </div> 
+
       </form>
     </div>
   );

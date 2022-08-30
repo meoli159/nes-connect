@@ -1,9 +1,24 @@
-import React from 'react'
+import React from "react";
+import Sidebar from "../../components/Sidebar/Index";
+import OtherFunctions from "../../components/OtherFunctions/Index";
+import ChatBox from "../../components/ChatBox/Index";
+import "./Community.css";
 
-function community() {
+
+export default function Community() {
+
   return (
-    <div>community</div>
-  )
+
+      <div className="app-wrapper">
+        
+        <Sidebar />
+
+        <ChatBox />
+
+        <OtherFunctions />
+        
+      </div>   
+      
+  );
 }
 
-export default community

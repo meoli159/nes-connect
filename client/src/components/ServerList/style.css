@@ -1,0 +1,32 @@
+.server-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1e2124;
+  padding: 15px;
+  height: 100vh;
+  width: 5%;
+  border-right: 1px solid #424549;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.separator1 {
+  width: 100%;
+  border-bottom: 2px solid #424549;
+  margin-bottom: 15px;
+}
+
+.separator2 {
+  width: 100%;
+  border-bottom: 2px solid #424549;
+  margin-bottom: 15px;
+}
+
+.separator3 {
+  width: 100%;
+  border-bottom: 2px solid #424549;
+  margin-bottom: 15px;
+}

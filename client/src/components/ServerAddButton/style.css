@@ -1,0 +1,35 @@
+.server-add-room {
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.server-add-text {
+    position: relative;
+    margin-top: 5px;
+    font-size: 25px;
+    font-weight: bold;
+    color: whitesmoke;
+    margin-right: 15px;
+}
+
+.server-create-room-button {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    background: #424549;
+    color: whitesmoke;
+}
+
+.server-create-room-button:hover {
+    transform: scale(1.2);  
+    transition: 0.5s;
+    background: linear-gradient(270deg, #00c6ff 0%, #0072ff 100%);
+    color: black;
+    border-radius: 20%;
+}
