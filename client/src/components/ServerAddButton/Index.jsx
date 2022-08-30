@@ -4,11 +4,19 @@ import "./style.css";
 export function ServerAddButton() {
      
         return (
-            <div>
-                <button className="server-add-button">
-                   <i className="fa fa-plus"></i>
+
+                <div className="server-add-room">
+
+                    <div className="server-add-text">
+                       <span>Chat</span>
+                    </div>
+
+                <button className="server-create-room-button">
+                  <i className='fas fa-edit'></i>
                 </button>
-            </div>
+
+                </div>
+           
         )
     }
 

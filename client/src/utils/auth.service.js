@@ -47,6 +47,7 @@ const deleteUser = async(accessToken,dispatch,id,axiosJWT)=>{
             headers:{Authorization: `Bearer ${accessToken}`},
           
         })
+        localStorage.removeItem()
         dispatch(deleteUserSuccess(res.data));
     } catch (error) {
         dispatch(deleteUserFailed(error.response.data));

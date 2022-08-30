@@ -1,4 +1,4 @@
-.server-chat-room-wrapper {
+.member-in-chat-wrapper {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -12,17 +12,16 @@
     border-radius: 15px;
 }
 
-.server-chat-room-wrapper:hover {
+.member-in-chat-wrapper:hover {
     transform: scale(1.1);  
     transition: 0.5s;
     background: #424549;
 }
 
-.server-chat-room-image {
+.member-image {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
     width: 30px;
     height: 30px;
     margin-left: 5px;
@@ -33,12 +32,11 @@
     border-radius: 50%;
 }
 
-.server-chat-room-name {
+.member-name {
     position: absolute;
-    left: 10%;
     font-size: 15px;
     font-weight: 500;
-    margin-left: 20px;
+    margin-left: 45px;
     font-family: 'roboto', sans-serif;
     color: white;
     width: 60%;

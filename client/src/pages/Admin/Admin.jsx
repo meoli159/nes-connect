@@ -10,22 +10,26 @@ export default function Admin() {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const userList = useSelector((state) => state.users.users?.allUsers);
   const msg = useSelector((state) => state.users?.msg);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
   let axiosJWT = createAxios(user,dispatch,loginSuccess);
 
   const handleDelete = (id) => {
     authService.deleteUser(user?.accessToken, dispatch, id, axiosJWT);
   };
+
   useEffect(() => {
-    // if (!user) {
-    //   navigate("/login");
-    // }
-    if (user?.accessToken) {
-      authService.getAllUsers(user?.accessToken, dispatch, axiosJWT);
+    if(!user){
+      navigate('/login');
     }
+    if (user?.accessToken) {
+      authService.getAllUsers(user?.accessToken, dispatch,axiosJWT);
+    }
+    
   }, []);
+  
   return (
     <main>
       <h1>Admin</h1>

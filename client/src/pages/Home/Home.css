@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-image: url("../../assets/images/vscodebackground6.jpg"); 
+    background-image: url("../../assets/images/background.jpeg"); 
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
@@ -13,17 +13,19 @@
   }
   
   .home-container > h1 {
-    color: whitesmoke;
+    color: white;
     font-size: 70px;
     margin-top: -100px;
+    animation:  animate 3.5s linear infinite;
+    animation-delay: 3s;
   }
   
   .home-container > h2 {
     margin-top: 8px;
     color: whitesmoke;
     font-size: 40px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-      'Lucida Sans', Arial, sans-serif;
+    animation:  animate 3.6s linear infinite;
+    animation-delay: 3.1s;
   }
   
   .home-btn {
@@ -66,3 +68,23 @@
     }
   }
   
+  @keyframes animate {
+    0%, 100% {
+      color: white;
+      filter: blur(2px);
+      text-shadow: 0px 0px 10px white;
+      text-shadow: 0px 0px 20px white;
+      text-shadow: 0px 0px 40px white;
+      text-shadow: 0px 0px 80px white;
+      text-shadow: 0px 0px 160px white;
+      text-shadow: 0px 0px 240px white;
+      text-shadow: 0px 0px 160px white;
+      text-shadow: 0px 0px 80px white;
+    }
+
+    25%, 75% {
+      color: transparent;
+      filter: blur(0px);
+      text-shadow: none
+    }
+  }

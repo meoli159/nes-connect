@@ -1,28 +1,41 @@
 .server-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    margin-bottom: 15px;
-    background: linear-gradient(90deg, #000000 0%, #434343 100%);
-    position: relative;
-    cursor: pointer;
-    border-radius: 50%;
-    font-weight: bolder;
-    font-size: 20px;
-    font-family: "roboto", sans-serif;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding: 8px 9px;
+  background: transparent;
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: 25px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  transition: 0.3s;
+  font-family: "roboto", sans-serif;
+  color: whitesmoke;
+  border-radius: 15px;
 }
 
 .server-logo:hover {
-    transform: scale(1.1);  
-    transition: 0.5s;
-    background: linear-gradient(90deg, #fc00ff 0%, #00dbde 100%);
-    border-radius: 20%;
+  color: black;
+  top: 0;
+  left: 0;
+  background: #E6DADA;
+  box-shadow: 0 0 10px #E6DADA, 0 0 40px #E6DADA, 0 0 80px #E6DADA;
+  transition-delay: 0.3s;
+  transform: rotate(360deg) scale(1.2);
 }
 
-.fa-typo3 {
-    margin-left: 0.5rem;
-    font-size: 1.8rem;
-  }
+
+
+
+
+
+
+
+
+
+
+  

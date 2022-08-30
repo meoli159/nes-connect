@@ -50,11 +50,12 @@ function App() {
 
           {/* Protect routes */}
           <Route element={<RequireAuth />}>
-            <Route path="/test" element={<Admin />} />
+            
             <Route path="/app" element={<Community />} />
           </Route>
 
           {/* Test route */}
+          <Route path="/test" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </div>

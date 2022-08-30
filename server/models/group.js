@@ -5,9 +5,9 @@ const GroupSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    admin: {
+    groupAdmin: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Role",
+        ref: "User",
       },
     users: [
         {

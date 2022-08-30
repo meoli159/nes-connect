@@ -1,4 +1,5 @@
 import React from 'react';
+import MemberList from '../MemberList/Index';
 import "./style.css";
 
 function OtherContent() {
@@ -9,26 +10,68 @@ function OtherContent() {
 
         <div className='other-content-container-top'>
 
-          <div>
-            <button className="call-button">
-              <i className="fa fa-phone"></i>
+          <div className="right-server-chat-room-name-wrapper-2">
+
+            <div className="server-chat-room-image-main-2">
+              <img src='' alt='' />
+            </div>
+
+            <div className="server-chat-box-name-2">
+              <span>Room 1 hihihihihahahahaha</span> 
+            </div>
+
+            <button className='edit-chat-room-name'>
+              <i className="fas fa-pen"></i>
             </button>
+
           </div>
             
         </div>
 
-        <div className="separator8" />
-
-          <div>
-            <button className="video-call-button">
-              <i className="fas fa-video"></i>
-            </button>
-          </div>
+        <div className="separator5" />
 
         <div className='other-content-preview'>
+
+          <div className='add-member-to-chat'>
+
+            <div className='add-member-to-chat-text'>
+              <span>
+                Add people
+              </span>
+            </div>
+
+            <button className='add-member-button'>
+              <i className="fas fa-user-plus"></i>
+            </button>
+
+          </div>
+
+          <div className='delete-chat'>
+
+            <div className='delete-chat-text'>
+              <span>
+                Detele chat
+              </span>
+            </div>
+
+            <button className='delete-chat-button'>
+              <i className="fas fa-trash"></i>
+            </button>
+
+          </div>
            
         </div>
-        
+
+        <div className="separator6" />
+
+          <div className='people-in-chat-text'>
+            <span>People in chat</span>
+          </div>
+
+          <div className='current-people-in-chat-list'>
+            <MemberList />
+          </div>
+           
     </div>
   )
 }

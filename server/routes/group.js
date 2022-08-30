@@ -1,6 +1,7 @@
 const controller = require("../controllers/group.controller");
-const router = require('express').Router();
+const { authJwt } = require("../middlewares");
 const { checkGroup } = require("../middlewares");
+const router = require('express').Router();
 
 router.post("/create", controller.createGroup)
 

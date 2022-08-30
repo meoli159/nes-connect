@@ -11,7 +11,7 @@ const { checkUser } = require('./middlewares/authJwt');
 const group = require('./routes/group')
 //const controller = require("./controllers/auth.controller");
 
-const api = require('./routes/auth')
+const auth = require('./routes/auth')
 const user = require('./routes/user')
 const roleData = require('./database/RoleData');
 const app = express()
@@ -33,9 +33,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Routes
-app.use("/api", api)
-app.use("/group", group)
-app.use("/user", user)
+app.use("/api/auth", auth)
+app.use("/api/group", group)
+app.use("/api/user", user)
 // app.get("*", checkUser);
 
 

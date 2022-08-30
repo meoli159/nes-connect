@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
 import authService from "../../utils/auth.service";
 import { Button } from "../Button/Button";
 import { ButtonLogout } from "../Button/ButtonLogout";
+import ServerLogo from "../ServerLogo/Index"
 import "./Navigation.css";
 import { createAxios } from "../../utils/createInstance";
 import { logOutSuccess } from "../../redux/authSlice";
+
 
 export default function Navigation() {
   const user = useSelector((state) => state.auth.login.currentUser);
@@ -14,14 +16,13 @@ export default function Navigation() {
 
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  let axiosJWT = createAxios(user,dispatch,logOutSuccess)
-
   const handleClick = () => setClick(!click);
+  let axiosJWT = createAxios(user,dispatch,logOutSuccess)
+  
   const closeMobileMenu = () => {
-    setClick(false);
+    setClick(false)
+    authService.logout();
   };
 
   const [navbar, setNavbar] = useState(false);
@@ -38,13 +39,14 @@ export default function Navigation() {
     showButton();
   }, []);
 
-  window.addEventListener("resize", showButton);
+  window.addEventListener('resize', showButton);
 
   const changeBackground = () => {
-    if (window.scrollY >= 80) {
-      setNavbar(true);
-    } else {
-      setNavbar(false);
+    if(window.scrollY >= 80) {
+      setNavbar(true)
+    }
+    else{
+      setNavbar(false)
     }
   };
 
@@ -53,47 +55,45 @@ export default function Navigation() {
   const logOut = () => {
     authService.logout(user?.accessToken, dispatch, id,axiosJWT);
   };
-
+  
   return (
     <>
       <nav className={navbar ? "navbar active" : "navbar"}>
-        <div className="navbar-container">
-          <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-            Nes <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>
+        <div className='navbar-container'>
+          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+            <ServerLogo />
           </Link>
-          <div className="menu-icon" onClick={handleClick}>
-            <i className={click ? "fas fa-times" : "fas fa-bars"} />
+          <div className='menu-icon' onClick={handleClick}>
+            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
           </div>
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li className="nav-item">
-              <Link to="/about" className="nav-links" onClick={closeMobileMenu}>
-                About
-              </Link>
+          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+
+            <li className='nav-item'>
+                <Link to='/about' className='nav-links'onClick={closeMobileMenu}>About</Link>
             </li>
 
-            <li className="nav-item">
-              <Link to="/app" className="nav-links" onClick={closeMobileMenu}>
-                Community
-              </Link>
+            <li className='nav-item'>
+                <Link to='/' className='nav-links'onClick={closeMobileMenu}>Blog</Link>
             </li>
-            <li className="nav-item">
-              <Link to="/test" className="nav-links" onClick={closeMobileMenu}>
-                Admin
-              </Link>
-            </li>
-            {/*             
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Download
-              </Link>
-            </li> */}
 
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Services
-              </Link>
+            <li className='nav-item'>
+                <Link to='/' className='nav-links'onClick={closeMobileMenu}>Support</Link>
             </li>
+
+            <li className='nav-item'>
+                <Link to='/app' className='nav-links' onClick={closeMobileMenu}>Community</Link>
+            </li>
+
+            <li className='nav-item'>
+                <Link to='/' className='nav-links' onClick={closeMobileMenu}>Download</Link>
+            </li>
+
+            <li className='nav-item'>
+                <Link to='/' className='nav-links' onClick={closeMobileMenu}>Services</Link>
+            </li>
+            
           </ul>
+
           {user ? (
             <div>
               <p>Hi, {user.username}</p>
@@ -108,6 +108,7 @@ export default function Navigation() {
               {button && <Button buttonStyle="btn--outline">LOGIN</Button>}
             </div>
           )}
+          
         </div>
       </nav>
     </>
