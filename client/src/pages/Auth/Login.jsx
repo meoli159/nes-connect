@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../../utils/auth.service";
+import authService from "../../api/authService";
 import {useDispatch} from "react-redux";
 import "./Auth.css";
 

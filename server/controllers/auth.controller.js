@@ -67,7 +67,7 @@ const register = async (req, res) => {
 const generateAccessToken = (user) => {
   return jwt.sign(
     {
-      id: user.id,
+      _id: user._id,
       username: user.username,
       role: user.roles,
     },
@@ -79,7 +79,7 @@ const generateAccessToken = (user) => {
 const generateRefreshToken = (user) => {
   return jwt.sign(
     {
-      id: user.id,
+      _id: user._id,
       username: user.username,
       role: user.roles,
     },
@@ -122,7 +122,7 @@ const login = async (req, res) => {
     });
 
     res.status(200).json({
-      id: user._id,
+      _id: user._id,
       username: user.username,
       email: user.email,
       roles: authorities,
@@ -132,7 +132,7 @@ const login = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const userId = req.id;
+  const userId = req._id;
   let user;
   try {
     user = await User.findById(userId, "-password");

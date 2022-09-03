@@ -17,7 +17,7 @@ verifyToken = (req, res, next) => {
 };
 
 isAdmin = (req, res, next) => {
-  User.findById(req.user.id).exec((err, user) => {
+  User.findById(req.user._id).exec((err, user) => {
     if (err) {
       res.status(500).send(err );
       return;
@@ -77,10 +77,10 @@ isModerator = (req, res, next) => {
 
 verifyTokenAndAdminAuth = (req, res, next) => {
   authJwt.verifyToken(req, res, () => {
-    if (req.user.id !== req.params.id) {
+    if (req.user._id !== req.params._id) {
       authJwt.isAdmin(req, res,next);
     } else {
-      if (req.user.id === req.params.id) {
+      if (req.user._id === req.params._id) {
         next();
       } else {
         return res.status(403).json("You are not allowed to do that");

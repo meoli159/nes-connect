@@ -1,64 +1,56 @@
-const express = require ('express')
-const cors = require ('cors')
-const cookieParser = require('cookie-parser');
-const dotenv = require('dotenv')
-const http = require('http')
-const {Server} = require('socket.io')
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
+const http = require("http");
+const { Server } = require("socket.io");
 
-const { checkUser } = require('./middlewares/authJwt');
+const { checkUser } = require("./middlewares/authJwt");
 
-
-const group = require('./routes/group')
+const group = require("./routes/group");
 //const controller = require("./controllers/auth.controller");
 
-const auth = require('./routes/auth')
-const user = require('./routes/user')
-const roleData = require('./database/RoleData');
-const app = express()
-
+const auth = require("./routes/auth");
+const user = require("./routes/user");
+const message = require("./routes/message");
+const roleData = require("./database/RoleData");
+const app = express();
 
 //Env file & DB connect
-dotenv.config()
-require("./database/DBconnect")
-
-
-
-
-
+dotenv.config();
+require("./database/DBconnect");
 
 //Middleware
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 //Routes
-app.use("/api/auth", auth)
-app.use("/api/group", group)
-app.use("/api/user", user)
+app.use("/api/auth", auth);
+app.use("/api/group", group);
+app.use("/api/user", user);
+app.use("/api/message", message);
 // app.get("*", checkUser);
 
-
 const server = http.createServer(app);
-const io = new Server(server,cors)
-
+const io = new Server(server, cors);
 
 //Real Time connection
-io.on("connection",(socket)=>{
-    console.log("user connected")
-    socket.on("join-room",()=>{
-        console.log("user join a room")
-    })
+io.on("connection", (socket) => {
+  console.log("user connected");
+  socket.on("join-room", () => {
+    console.log("user join a room");
+  });
 
-    socket.on("disconnect",()=>{
-        console.log("user disconnected")
-    })
-})
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 //Port
-const port = process.env.PORT|| 3333;
+const port = process.env.PORT || 3333;
 
-server.listen(port, ()=> {
-    console.log('Server is listen to port:', port);
-    roleData.initial();
-})
+server.listen(port, () => {
+  console.log("Server is listen to port:", port);
+  roleData.initial();
+});

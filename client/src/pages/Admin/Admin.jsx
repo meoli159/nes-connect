@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { createAxios } from "../../utils/createInstance";
-import authService from "../../utils/auth.service";
+import { createAxios } from "../../api/createInstance";
+import userService from "../../api/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../../redux/authSlice";
 
@@ -17,7 +17,7 @@ export default function Admin() {
   let axiosJWT = createAxios(user,dispatch,loginSuccess);
 
   const handleDelete = (id) => {
-    authService.deleteUser(user?.accessToken, dispatch, id, axiosJWT);
+    userService.deleteUser(user?.accessToken, dispatch, id, axiosJWT);
   };
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function Admin() {
       navigate('/login');
     }
     if (user?.accessToken) {
-      authService.getAllUsers(user?.accessToken, dispatch,axiosJWT);
+      userService.getAllUsers(user?.accessToken, dispatch,axiosJWT);
     }
     
   }, []);

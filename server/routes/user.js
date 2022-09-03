@@ -12,6 +12,6 @@ const router = require("express").Router();
 
 router.get("/",authJwt.verifyToken, getAllUser);
 router.delete("/:id",authJwt.verifyTokenAndAdminAuth, deleteUser)
-router.get('/test', authJwt.verifyToken,authJwt.isAdmin,test)
+
 
 module.exports = router;

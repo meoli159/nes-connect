@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./Auth.css";
-import authService from "../../utils/auth.service";
+import authService from "../../api/authService";
 
 export default function Register() {
   const [username, setUserName] = useState("");

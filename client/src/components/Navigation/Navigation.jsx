@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
-import authService from "../../utils/auth.service";
+import authService from "../../api/authService";
 import { Button } from "../Button/Button";
 import { ButtonLogout } from "../Button/ButtonLogout";
 import ServerLogo from "../ServerLogo/Index"
 import "./Navigation.css";
-import { createAxios } from "../../utils/createInstance";
+import { createAxios } from "../../api/createInstance";
 import { logOutSuccess } from "../../redux/authSlice";
 
 
@@ -22,7 +22,6 @@ export default function Navigation() {
   
   const closeMobileMenu = () => {
     setClick(false)
-    authService.logout();
   };
 
   const [navbar, setNavbar] = useState(false);

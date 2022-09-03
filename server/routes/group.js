@@ -3,7 +3,8 @@ const { authJwt } = require("../middlewares");
 const { checkGroup } = require("../middlewares");
 const router = require('express').Router();
 
-router.post("/create", controller.createGroup)
+router.get("/",authJwt.verifyToken,controller.fetchChats)
+router.post("/",authJwt.verifyToken, controller.createGroup)
 
 router.post("/addUser",[
     checkGroup.checkDuplicateUser,

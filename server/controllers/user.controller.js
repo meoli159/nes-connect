@@ -21,11 +21,8 @@ const deleteUser = async(req,res)=>{
       
     }
 }
-const test = (req,res)=>{
-res.json('admin content')
-}
+
 module.exports ={
     getAllUser,
     deleteUser,
-    test
 }
