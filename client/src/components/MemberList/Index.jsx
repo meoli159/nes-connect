@@ -3,14 +3,11 @@ import React from "react";
 import "./style.css";
 
 function MemberList() {
-  const currentCommunity = useSelector(
-    (state) => state.messages?.currentCommunity
-  );
   const currentCommunityMember = useSelector(
-    (state) => state.messages?.currentCommunity.users
+    (state) => state.messages.currentCommunity?.users
   );
   const currentCommunityAdmin = useSelector(
-    (state) => state.messages?.currentCommunity.groupAdmin
+    (state) => state.messages.currentCommunity?.groupAdmin
   );
 
   return (

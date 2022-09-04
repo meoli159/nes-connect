@@ -29,9 +29,7 @@ export default function ChatBox() {
     { id: 10, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
   ];
 
-  const currentCommunity = useSelector(
-    (state) => state.messages?.currentCommunity
-  );
+  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
 
   return (
     <div className="main-room-wrapper">
@@ -42,7 +40,7 @@ export default function ChatBox() {
           </div>
 
           <div className="server-chat-box-name-1">
-            <span>{currentCommunity.groupName}</span>
+            <span>{currentCommunity?.groupName}</span>
           </div>
         </div>
 

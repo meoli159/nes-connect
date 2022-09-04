@@ -1,6 +1,4 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { createAxios } from "../../api/createInstance";
 import userService from "../../api/userService";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,24 +10,19 @@ export default function Admin() {
   const msg = useSelector((state) => state.users?.msg);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  
-  let axiosJWT = createAxios(user,dispatch,loginSuccess);
+
+  let axiosJWT = createAxios(user, dispatch, loginSuccess);
 
   const handleDelete = (id) => {
     userService.deleteUser(user?.accessToken, dispatch, id, axiosJWT);
   };
 
   useEffect(() => {
-    if(!user){
-      navigate('/login');
-    }
     if (user?.accessToken) {
-      userService.getAllUsers(user?.accessToken, dispatch,axiosJWT);
+      userService.getAllUsers(user?.accessToken, dispatch, axiosJWT);
     }
-    
   }, []);
-  
+
   return (
     <main>
       <h1>Admin</h1>

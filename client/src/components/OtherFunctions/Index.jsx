@@ -4,9 +4,7 @@ import MemberList from "../MemberList/Index";
 import "./style.css";
 
 function OtherContent() {
-  const currentCommunity = useSelector(
-    (state) => state.messages?.currentCommunity
-  );
+  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
   return (
     <div className="other-content-wrapper">
       <div className="other-content-container-top">
@@ -16,7 +14,7 @@ function OtherContent() {
           </div>
 
           <div className="server-chat-box-name-2">
-            <span>{currentCommunity.groupName}</span>
+            <span>{currentCommunity?.groupName}</span>
           </div>
 
           <button className="edit-chat-room-name">
