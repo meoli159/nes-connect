@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const messageSlice = createSlice({
   name: "message",
   initialState: {
-    currentCommunity: null,
+    currentCommunity: {},
     messages: [],
     isFetching: false,
     error: false,
@@ -16,10 +16,13 @@ const messageSlice = createSlice({
       state.isFetching = false;
       state.currentCommunity = action.payload;
     },
-    getMessageSuccess: (state, action) => {
+    sendMessage: (state, action) => {
+      state.messages = [...state.messages,action.payload]
       state.isFetching = false;
-      state.currentCommunity = action.payload;
+    },
+    getMessageSuccess: (state, action) => {
       state.messages = action.payload;
+      state.isFetching = false;
     },
     getMessageFailed: (state) => {
       state.isFetching = false;
@@ -28,7 +31,12 @@ const messageSlice = createSlice({
   },
 });
 
-export const { getMessageStart, selectCommunity,getMessageSuccess, getMessageFailed } =
-  messageSlice.actions;
+export const {
+  getMessageStart,
+  selectCommunity,
+  getMessageSuccess,
+  sendMessage,
+  getMessageFailed,
+} = messageSlice.actions;
 
 export default messageSlice.reducer;

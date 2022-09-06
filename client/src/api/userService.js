@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import {
     deleteUserFailed,
     deleteUserStart,
@@ -11,7 +11,7 @@ import {
   const getAllUsers = async (accessToken, dispatch, axiosJWT) => {
     dispatch(getUsersStart());
     try {
-      const res = await axiosJWT.get("api/user", {
+      const res = await axiosJWT.get(`api/user`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       dispatch(getUsersSuccess(res.data));
@@ -20,16 +20,18 @@ import {
     }
   };
   
-  const deleteUser = async (accessToken, dispatch, id, axiosJWT) => {
+  const deleteUser = async (accessToken, dispatch, id, navigate,axiosJWT) => {
     dispatch(deleteUserStart());
     try {
-      const res = await axiosJWT.delete(`api/user/` + id, {
+      const res = await axiosJWT.delete(`api/user/${id}` , {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      localStorage.removeItem();
-      dispatch(deleteUserSuccess(res.data));
+      localStorage.clear();
+      navigate("/login");
+      window.dispatch(deleteUserSuccess(res.data));
+
     } catch (error) {
-      dispatch(deleteUserFailed(error.response.data));
+      dispatch(deleteUserFailed(error.response.data.message));
     }
   };
 

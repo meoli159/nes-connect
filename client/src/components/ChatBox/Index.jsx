@@ -1,36 +1,83 @@
-import { useSelector } from "react-redux";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createAxios } from "../../api/createInstance";
+import { loginSuccess } from "../../redux/authSlice";
+import messageService from "../../api/messageService";
 import "./style.css";
 
+import io from "socket.io-client";
+import { sendMessage } from "../../redux/messageSlice";
+const SERVER_POINT = "http://localhost:3000";
+var socket, currentChattingWith;
+
 export default function ChatBox() {
-  const listChatReceived = [
-    { id: 1, chatReceivedContent: "Kono Dio da!" },
-    { id: 2, chatReceivedContent: "Kono Dio da!" },
-    { id: 3, chatReceivedContent: "Kono Dio da!" },
-    { id: 4, chatReceivedContent: "Kono Dio da!" },
-    { id: 5, chatReceivedContent: "Kono Dio da!" },
-    { id: 6, chatReceivedContent: "Kono Dio da!" },
-    { id: 7, chatReceivedContent: "Kono Dio da!" },
-    { id: 8, chatReceivedContent: "Kono Dio da!" },
-    { id: 9, chatReceivedContent: "Kono Dio da!" },
-    { id: 10, chatReceivedContent: "Kono Dio da!" },
-  ];
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const currentCommunity = useSelector(
+    (state) => state.messages?.currentCommunity
+  );
+  const messages = useSelector((state) => state.messages?.messages);
+  const [text, setText] = useState("");
+ 
+  const dispatch = useDispatch();
 
-  const listChatSent = [
-    { id: 1, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 2, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 3, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 4, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 5, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 6, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 7, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 8, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 9, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 10, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-  ];
+  let axiosJWT = createAxios(user, dispatch, loginSuccess);
 
-  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
+  useEffect(() => {
+    socket = io(SERVER_POINT);
+    socket.emit("setup", user);
+    socket.on("connected");
+  }, []);
 
+  useEffect(() => {
+    //select chat so that user can join same community
+    if ( user?.accessToken && currentCommunity?._id) {
+      messageService.fetchMessages(
+        user?.accessToken,
+        dispatch,
+        currentCommunity?._id,
+        socket,
+        axiosJWT
+      );
+      currentChattingWith = currentCommunity?._id;
+    }
+  }, [currentCommunity?._id]);
+
+  useEffect(() => {
+    socket.on("message received", (newMessage) => {
+      if (currentChattingWith || currentChattingWith === newMessage.currentCommunity?._id) {
+      let filter = msg=>{
+        return msg.content.toLowerCase() === newMessage.content.toLowerCase() &&
+        msg.sender === newMessage.sender
+      }
+      newMessage.groupId.awaitMessages(filter,{
+        maxMatches:1,
+        time: 5*1000
+      })
+      
+        dispatch(sendMessage(newMessage));
+        
+      }
+    
+    });
+  }, []);
+
+  
+  const handleOnEnter = (text) => {
+    messageService.sendMessages(    
+      { content: text, groupId: currentCommunity?._id },
+      user?.accessToken,
+      dispatch,
+      socket,
+      axiosJWT
+    );
+  };
+  const handleKeyEnter = (e)=>{
+    if(e.key ==='Enter'){
+      handleOnEnter(text);
+        setText('');
+    }
+   
+  }
   return (
     <div className="main-room-wrapper">
       <div className="main-room-top">
@@ -56,31 +103,20 @@ export default function ChatBox() {
       <div className="separator3" />
 
       <div className="main-room-chat-page">
-        {listChatReceived?.map((chat) => {
+        {messages?.map((message) => {
           return (
-            <div className="message-received-wrapper" key={chat.id}>
+            <div className="message-received-wrapper" key={message._id}>
               <span className="message-user-name">
-                Dio
-                <span className="time">Today at 2:30 AM</span>
+                {message.sender.username}
+                <span className="time">
+                  {new Date(message.createdAt).getHours() +
+                    ":" +
+                    new Date(message.createdAt).getMinutes()}
+                </span>
               </span>
 
               <span className="message">
-                <span>{chat.chatReceivedContent}</span>
-              </span>
-            </div>
-          );
-        })}
-
-        {listChatSent?.map((chat) => {
-          return (
-            <div className="message-sent-wrapper" key={chat.id}>
-              <span className="message-user-name">
-                Giorno Giovanna
-                <span className="time">Today at 2:33 AM</span>
-              </span>
-
-              <span className="message">
-                <span>{chat.chatSentContent}</span>
+                <span>{message.content}</span>
               </span>
             </div>
           );
@@ -94,9 +130,12 @@ export default function ChatBox() {
           <div className="chat-input-wrapper">
             <div className="chat-input-icon">
               <input
-                className="chat-input-text"
-                placeholder="Message"
                 type="text"
+                className="chat-input-text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={handleKeyEnter}
+                placeholder="Message"
               />
             </div>
           </div>
