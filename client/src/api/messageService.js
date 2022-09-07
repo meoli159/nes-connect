@@ -5,32 +5,29 @@ import {
   getMessageFailed,
 } from "../redux/messageSlice";
 
-const fetchMessages = async (accessToken, dispatch, id, socket, axiosJWT) => {
+const fetchMessages = async ( groupId, accessToken,dispatch, axiosJWT) => {
   dispatch(getMessageStart());
   try {
-    const res = await axiosJWT.get(`api/message/${id}`, {
+    const res = await axiosJWT.get(`api/message/${groupId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-
-    socket.emit("join chat", id);
+  
     dispatch(getMessageSuccess(res.data));
   } catch (error) {
     dispatch(getMessageFailed(error));
   }
 };
 
-const sendMessages = async (msg, accessToken, dispatch, socket, axiosJWT) => {
+const sendMessages = async (msg, accessToken,socket, dispatch, axiosJWT) => {
   try {
     const res = await axiosJWT.post(`api/message`,msg, {
       headers: { Authorization: `Bearer ${accessToken}` },
-      
     },
     );
-    socket.emit("new message", res.data);
+    socket.emit("new message", res);
     dispatch(sendMessage(res.data));
   } catch (error) {
     dispatch(getMessageFailed(error));
-    console.log(msg);
   }
 };
 const messageService = {

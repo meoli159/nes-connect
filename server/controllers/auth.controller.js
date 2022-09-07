@@ -145,7 +145,7 @@ const requestRefreshToken = async (req, res) => {
   if (!refreshToken)
     return res.status(401).json({ message: "You're not authenticated" });
   if (!refreshToken.includes(refreshToken)) {
-    return res.status(403).json("Refresh token is not valid");
+    return res.status(403).json({message:"Refresh token is not valid"});
   }
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
     if (err) {

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createAxios } from "../../api/createInstance";
 import { loginSuccess } from "../../redux/authSlice";
+import { sendMessage } from "../../redux/messageSlice";
 import messageService from "../../api/messageService";
 import "./style.css";
 
 import io from "socket.io-client";
-import { sendMessage } from "../../redux/messageSlice";
-const SERVER_POINT = "http://localhost:3000";
+const ENDPOINT = "http://localhost:3333";
 var socket, currentChattingWith;
 
 export default function ChatBox() {
@@ -16,68 +16,65 @@ export default function ChatBox() {
     (state) => state.messages?.currentCommunity
   );
   const messages = useSelector((state) => state.messages?.messages);
-  const [text, setText] = useState("");
- 
-  const dispatch = useDispatch();
+  const [sendNewMessage, setSendNewMessage] = useState("");
 
+  // const [socketConnected, setSocketConnected] = useState(false);
+  const dispatch = useDispatch();
   let axiosJWT = createAxios(user, dispatch, loginSuccess);
 
-  useEffect(() => {
-    socket = io(SERVER_POINT);
-    socket.emit("setup", user);
-    socket.on("connected");
-  }, []);
+  const fetchMessages = () => {
+    if (!currentCommunity._id) return;
 
-  useEffect(() => {
-    //select chat so that user can join same community
-    if ( user?.accessToken && currentCommunity?._id) {
-      messageService.fetchMessages(
+    messageService.fetchMessages(
+      currentCommunity?._id,
+      user?.accessToken,
+     
+      dispatch,
+      axiosJWT
+    );
+    socket.emit("join chat", currentCommunity._id);
+  };
+
+  const sendAMessage = async (e) => {
+    if (e.key === "Enter" && sendNewMessage) {
+      await messageService.sendMessages(
+        { content: sendNewMessage, groupId: currentCommunity._id },
         user?.accessToken,
-        dispatch,
-        currentCommunity?._id,
         socket,
+        dispatch,
         axiosJWT
       );
-      currentChattingWith = currentCommunity?._id;
+     setSendNewMessage("");
     }
+      
+  };
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user._id);
+  
+    socket.on("connected");
+  }, []);
+  
+  useEffect(() => {
+    //select chat so that user can join same community
+    fetchMessages();
+    console.log(messages);
+    currentChattingWith = currentCommunity;
   }, [currentCommunity?._id]);
 
   useEffect(() => {
-    socket.on("message received", (newMessage) => {
-      if (currentChattingWith || currentChattingWith === newMessage.currentCommunity?._id) {
-      let filter = msg=>{
-        return msg.content.toLowerCase() === newMessage.content.toLowerCase() &&
-        msg.sender === newMessage.sender
+    socket.on("message received", (newMessageReceived) => {
+      if (
+        !currentChattingWith ||
+        currentChattingWith._id !== newMessageReceived.group._id
+      ) {
+        //give notify
+      } else {
+        dispatch(sendMessage(newMessageReceived));
       }
-      newMessage.groupId.awaitMessages(filter,{
-        maxMatches:1,
-        time: 5*1000
-      })
-      
-        dispatch(sendMessage(newMessage));
-        
-      }
-    
     });
   }, []);
 
-  
-  const handleOnEnter = (text) => {
-    messageService.sendMessages(    
-      { content: text, groupId: currentCommunity?._id },
-      user?.accessToken,
-      dispatch,
-      socket,
-      axiosJWT
-    );
-  };
-  const handleKeyEnter = (e)=>{
-    if(e.key ==='Enter'){
-      handleOnEnter(text);
-        setText('');
-    }
-   
-  }
   return (
     <div className="main-room-wrapper">
       <div className="main-room-top">
@@ -132,9 +129,9 @@ export default function ChatBox() {
               <input
                 type="text"
                 className="chat-input-text"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onKeyDown={handleKeyEnter}
+                value={sendNewMessage}
+                onChange={(e) => setSendNewMessage(e.target.value)}
+                onKeyDown={sendAMessage}
                 placeholder="Message"
               />
             </div>

@@ -2,6 +2,24 @@ const db = require("../models");
 const User = db.user;
 const Group = db.group;
 
+exports.fetchChats = async (req, res) => {
+  try {
+    await Group.find({
+      $or: [
+        { groupAdmin: { $eq: req.user._id } },
+        { users: { $elemMatch: { $eq: req.user._id } } },
+      ],
+    })
+      .populate("users")
+      .populate("groupAdmin")
+      .then((results) => {
+        res.status(200).send(results);
+      });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+};
+
 exports.createGroup = (req, res) => {
   User.findOne({
     user: req.user,
@@ -34,23 +52,7 @@ exports.createGroup = (req, res) => {
   });
 };
 
-exports.fetchChats = async (req, res) => {
-  try {
-    await Group.find({
-      $or: [
-        { groupAdmin: { $eq: req.user._id } },
-        { users: { $elemMatch: { $eq: req.user._id } } },
-      ],
-    })
-      .populate("users")
-      .populate("groupAdmin")
-      .then((results) => {
-        res.status(200).send(results);
-      });
-  } catch (error) {
-    return res.status(400).send(error.message);
-  }
-};
+
 
 exports.addUserToGroup = (req, res) => {
   Group.findOne({
