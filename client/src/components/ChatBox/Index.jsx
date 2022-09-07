@@ -7,7 +7,7 @@ import messageService from "../../api/messageService";
 import "./style.css";
 
 import io from "socket.io-client";
-const ENDPOINT = "http://localhost:3333";
+const ENDPOINT = "https://nes-connect.herokuapp.com/ ";
 var socket, currentChattingWith;
 
 export default function ChatBox() {
