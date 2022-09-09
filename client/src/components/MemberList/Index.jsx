@@ -7,7 +7,7 @@ function MemberList() {
     (state) => state.messages.currentCommunity?.users
   );
   const currentCommunityAdmin = useSelector(
-    (state) => state.messages.currentCommunity?.groupAdmin
+    (state) => state.messages.currentCommunity?.communityAdmin
   );
 
   return (

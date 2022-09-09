@@ -16,23 +16,30 @@ import {
 import storage from "redux-persist/lib/storage";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 
-const encrypt = encryptTransform({
-  secretKey: "nes-still-connecting-OKey",
-  onError: function (error) {
-    // Handle the error.
-    console.log("Encrypt died", error);
-  },
-});
+// const encrypt = encryptTransform({
+//   secretKey: "nes-still-connecting-OKey",
+//   onError: function (error) {
+//     // Handle the error.
+//     console.log("Encrypt died", error);
+//   },
+// });
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
   whitelist:['auth'],
-  transforms: [encrypt],
+  // transforms: [encrypt],
+};
+const authConfig = {
+  key: "auth",
+  version: 1,
+  storage,
+  whitelist:['login'],
+  // transforms: [encrypt],
 };
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth:persistReducer( authConfig,authReducer),
   users: userReducer,
   communities: communityReducer,
   messages: messageReducer,

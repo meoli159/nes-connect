@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,createRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createAxios } from "../../api/createInstance";
 import { loginSuccess } from "../../redux/authSlice";
@@ -7,73 +7,72 @@ import messageService from "../../api/messageService";
 import "./style.css";
 
 import io from "socket.io-client";
-const ENDPOINT = "https://nes-connect.herokuapp.com/ ";
-var socket, currentChattingWith;
+const ENDPOINT = "ws://localhost:3333";
+let socket, currentChattingWith;
 
 export default function ChatBox() {
   const user = useSelector((state) => state.auth.login?.currentUser);
-  const currentCommunity = useSelector(
-    (state) => state.messages?.currentCommunity
-  );
+  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
   const messages = useSelector((state) => state.messages?.messages);
-  const [sendNewMessage, setSendNewMessage] = useState("");
+  const [textChat, setTextChat] = useState("");
 
-  // const [socketConnected, setSocketConnected] = useState(false);
   const dispatch = useDispatch();
+  const scrollDiv = createRef();
+
   let axiosJWT = createAxios(user, dispatch, loginSuccess);
 
-  const fetchMessages = () => {
-    if (!currentCommunity._id) return;
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.on("connected");
+    
+  }, []);
 
-    messageService.fetchMessages(
-      currentCommunity?._id,
-      user?.accessToken,
-     
-      dispatch,
-      axiosJWT
-    );
-    socket.emit("join chat", currentCommunity._id);
-  };
-
-  const sendAMessage = async (e) => {
-    if (e.key === "Enter" && sendNewMessage) {
-      await messageService.sendMessages(
-        { content: sendNewMessage, groupId: currentCommunity._id },
+  const handleChatSubmit = (e) => {
+    if (e.key === "Enter" && textChat) {
+      messageService.sendMessages(
+        { content: textChat, communityId: currentCommunity._id },
         user?.accessToken,
         socket,
         dispatch,
         axiosJWT
       );
-     setSendNewMessage("");
+      setTextChat("");
     }
-      
   };
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user._id);
-  
-    socket.on("connected");
-  }, []);
-  
+
+
   useEffect(() => {
     //select chat so that user can join same community
-    fetchMessages();
-    console.log(messages);
-    currentChattingWith = currentCommunity;
+    if (!currentCommunity._id) return;
+    messageService.fetchMessages(
+      currentCommunity?._id,
+      user?.accessToken,
+      socket,
+      dispatch,
+      axiosJWT
+    );
+    
   }, [currentCommunity?._id]);
 
   useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
-      if (
-        !currentChattingWith ||
-        currentChattingWith._id !== newMessageReceived.group._id
-      ) {
-        //give notify
-      } else {
-        dispatch(sendMessage(newMessageReceived));
-      }
-    });
-  }, []);
+    const scrollToBottom = (node) => {
+      node.scrollTop = node.scrollHeight;
+    };
+    scrollToBottom(scrollDiv.current);
+  });
+
+  // useEffect(() => {
+  //   socket.off("message received").on("message received", (newMessageReceived) => {
+  //     if (
+  //       !currentChattingWith ||
+  //       currentChattingWith._id !== newMessageReceived.group._id
+  //     ) {
+  //       console.log("not in");
+  //     } else {
+  //       dispatch(sendMessage(newMessageReceived));
+  //     }
+  //   });
+  // }, []);
 
   return (
     <div className="main-room-wrapper">
@@ -84,7 +83,7 @@ export default function ChatBox() {
           </div>
 
           <div className="server-chat-box-name-1">
-            <span>{currentCommunity?.groupName}</span>
+            <span>{currentCommunity?.communityName}</span>
           </div>
         </div>
 
@@ -99,21 +98,21 @@ export default function ChatBox() {
 
       <div className="separator3" />
 
-      <div className="main-room-chat-page">
-        {messages?.map((message) => {
+      <div ref={scrollDiv} className="main-room-chat-page">
+        {messages?.map((el,index) => {
           return (
-            <div className="message-received-wrapper" key={message._id}>
+            <div className="message-received-wrapper" key={index}>
               <span className="message-user-name">
-                {message.sender.username}
+                {el.sender.username}
                 <span className="time">
-                  {new Date(message.createdAt).getHours() +
+                  {new Date(el.createdAt).getHours() +
                     ":" +
-                    new Date(message.createdAt).getMinutes()}
+                    new Date(el.createdAt).getMinutes()}
                 </span>
               </span>
 
               <span className="message">
-                <span>{message.content}</span>
+                <span>{el.content}</span>
               </span>
             </div>
           );
@@ -129,9 +128,9 @@ export default function ChatBox() {
               <input
                 type="text"
                 className="chat-input-text"
-                value={sendNewMessage}
-                onChange={(e) => setSendNewMessage(e.target.value)}
-                onKeyDown={sendAMessage}
+                value={textChat}
+                onChange={(e) => setTextChat(e.target.value)}
+                onKeyDown={handleChatSubmit}
                 placeholder="Message"
               />
             </div>

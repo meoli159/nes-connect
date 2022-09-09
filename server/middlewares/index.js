@@ -1,9 +1,9 @@
 const authJwt = require("./authJwt");
 const verifyRegister = require("./verifyRegister");
-const checkGroup = require("./checkGroup")
+const checkCommunity = require("./checkCommunity")
 
 module.exports = {
     authJwt,
     verifyRegister,
-    checkGroup,
+    checkCommunity,
 };

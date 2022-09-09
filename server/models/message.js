@@ -10,9 +10,9 @@ const messageSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    group: {
+    community: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Group",
+      ref: "Community",
     },
   },
   {

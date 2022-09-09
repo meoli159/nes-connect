@@ -12,7 +12,7 @@ const createChat = async () => {};
 const getCommunityList = async (accessToken, dispatch, axiosJWT) => {
     dispatch(getCommunityListStart());
   try {
-    const res = await axiosJWT.get(`api/group`, {
+    const res = await axiosJWT.get(`/api/community`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     dispatch(getCommunityListSuccess(res.data));

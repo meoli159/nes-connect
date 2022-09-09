@@ -14,7 +14,7 @@ function OtherContent() {
           </div>
 
           <div className="server-chat-box-name-2">
-            <span>{currentCommunity?.groupName}</span>
+            <span>{currentCommunity?.communityName}</span>
           </div>
 
           <button className="edit-chat-room-name">

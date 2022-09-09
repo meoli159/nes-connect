@@ -25,20 +25,22 @@ export default function ServerChatRoom() {
   return (
     <div>
       <div>
-        {communityList?.map((community) => {
+        {communityList?.map((el, index) => {
           return (
             <div
               className="server-chat-room-wrapper"
-              key={community._id}
-              onClick={() => handleSelectChat(community)}
+              key={index}
+              onClick={() => handleSelectChat(el)}
             >
-              <div className="server-chat-room-image">
-                <img src="" alt="" />
-              </div>
+    
+                <div className="server-chat-room-image">
+                  <img src="" alt="" />
+                </div>
 
-              <div className="server-chat-room-name">
-                <span>{community.groupName}</span>
-              </div>
+                <div className="server-chat-room-name">
+                  <span>{el.communityName}</span>
+                </div>
+            
             </div>
           );
         })}

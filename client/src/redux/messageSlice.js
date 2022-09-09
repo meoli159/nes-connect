@@ -17,7 +17,7 @@ const messageSlice = createSlice({
       state.currentCommunity = action.payload;
     },
     sendMessage: (state, action) => {
-      state.messages = [...state.messages,action.payload]
+      state.messages = [...state.messages,action.payload];
       state.isFetching = false;
     },
     getMessageSuccess: (state, action) => {

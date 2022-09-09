@@ -38,6 +38,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          
           {/* Public Routes with Navbar */}
           <Route element={<SidebarLayout />}>
             <Route path="/about" element={<About />} />
@@ -54,7 +55,6 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Route>
 
-          {/* Test route */}
         </Routes>
       </BrowserRouter>
     </div>
