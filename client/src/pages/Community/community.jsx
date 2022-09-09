@@ -1,7 +1,7 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar/Index";
-import OtherFunctions from "../../components/OtherFunctions/Index";
-import ChatBox from "../../components/ChatBox/Index";
+import Sidebar from "../../components/Sidebar";
+import OtherFunctions from "../../components/OtherFunctions";
+import ChatBox from "../../components/ChatBox";
 import "./Community.css";
 
 

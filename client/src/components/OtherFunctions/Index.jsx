@@ -1,8 +1,15 @@
-import React from 'react';
-import MemberList from '../MemberList/Index';
+import React, { useState } from "react";
+import MemberList from '../MemberList';
 import "./style.css";
+import EditGroupNameModal from "../Modal/EditGroupNameModal";
+import AddPeopleModal from "../Modal/AddPeopleModal";
+import LeaveGroupChatModal from "../Modal/LeaveGroupChatModal";
 
 function OtherContent() {
+
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openLeaveModal, setOpenLeaveModal] = useState(false);
 
   return (
 
@@ -17,12 +24,14 @@ function OtherContent() {
             </div>
 
             <div className="server-chat-box-name-2">
-              <span>Room 1 hihihihi hahahahaha hehehehehehe</span> 
+              <span>Dragon Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball</span> 
             </div>
 
-            <button className='edit-chat-room-name'>
+            <button className='edit-chat-room-name' onClick={() => {setOpenEditModal(true)}}>
               <i className="fas fa-pen"></i>
             </button>
+
+            {openEditModal && <EditGroupNameModal closeEditModal={setOpenEditModal}/>}
 
           </div>
             
@@ -34,29 +43,21 @@ function OtherContent() {
 
           <div className='add-member-to-chat'>
 
-            <div className='add-member-to-chat-text'>
-              <span>
-                Add people
-              </span>
-            </div>
-
-            <button className='add-member-button'>
+            <button className='add-member-button' onClick={() => {setOpenAddModal(true)}}>
               <i className="fas fa-user-plus"></i>
             </button>
 
+            {openAddModal && <AddPeopleModal closeAddModal={setOpenAddModal}/>}
+
           </div>
 
-          <div className='delete-chat'>
+          <div className='leave-chat'>
 
-            <div className='delete-chat-text'>
-              <span>
-                Detele chat
-              </span>
-            </div>
-
-            <button className='delete-chat-button'>
-              <i className="fas fa-trash"></i>
+            <button className='leave-chat-button' onClick={() => {setOpenLeaveModal(true)}}>
+              <i className="fas fa-sign-out-alt"></i>
             </button>
+
+            {openLeaveModal && <LeaveGroupChatModal closeLeaveModal={setOpenLeaveModal}/>}
 
           </div>
            

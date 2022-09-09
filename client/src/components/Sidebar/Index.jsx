@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./style.css";
-import ServerChatRoom from '../ServerChatRoom/Index';
-import ServerAddButton from "../ServerAddButton/Index";
-import ServerLogo from '../ServerLogo/Index';
+import ServerChatRoom from '../ServerChatRoom';
+import ServerAddButton from "../ServerAddButton";
+import ServerLogo from '../ServerLogo';
 
 export default function Sidebar() {
+
+  const user = useSelector((state) => state.auth.login.currentUser);
 
   return (
     <div className='side-bar-wrapper'>
@@ -69,7 +72,7 @@ export default function Sidebar() {
 
               <div className='current-user-name-text'>
                 <span>
-                  Mayonnaise178 Lolicon hentai hihihihehehehahaha
+                  {user.username}
                 </span>
               </div>
 

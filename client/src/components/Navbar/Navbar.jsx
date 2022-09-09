@@ -1,20 +1,19 @@
-import React,{ useState, useEffect } from "react";
-import { Link ,useNavigate} from "react-router-dom";
-import authService from "../../utils/auth.service";
-import "./Navbar.css";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Button } from "../Button/Button";
-import ServerLogo from "../ServerLogo/Index";
+import ServerLogo from "../ServerLogo";
+import "./Navbar.css";
+
 
 export default function Navigation() {
-  const [currentUser, setCurrentUser] = useState(null);
-
+  const user = useSelector((state) => state.auth.login?.currentUser); 
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  const navigate = useNavigate();
   const handleClick = () => setClick(!click);
+  
   const closeMobileMenu = () => {
     setClick(false)
-    authService.logout();
   };
 
   const [navbar, setNavbar] = useState(false);
@@ -29,10 +28,6 @@ export default function Navigation() {
 
   useEffect(() => {
     showButton();
-    authService.getCurrentUser()
-    .then( (res) => {
-      setCurrentUser(res.data);
-    });
   }, []);
 
   window.addEventListener('resize', showButton);
@@ -47,13 +42,6 @@ export default function Navigation() {
   };
 
   window.addEventListener("scroll", changeBackground);
-
-  const logOut = () => {
-    authService.logout()
-    .then((res) => {
-      navigate("/");
-    })  
-  };
   
   return (
     <>
@@ -93,9 +81,19 @@ export default function Navigation() {
             
           </ul>
 
-          <div>        
-            {button && <Button buttonStyle='btn--outline'>LOGIN</Button>}
-          </div>
+          {user ? (
+            <div>
+              {button && (
+                <Button buttonStyle="btn--outline">
+                  Open community
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div>
+              {button && <Button buttonStyle="btn--outline">LOGIN</Button>}
+            </div>
+          )}
           
         </div>
       </nav>

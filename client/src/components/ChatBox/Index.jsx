@@ -1,48 +1,48 @@
-import React from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
+import { useSelector } from "react-redux";
 import "./style.css";
 
 export default function ChatBox() {
-  const listChatReceived = [
-    { id: 1, chatReceivedContent: "Kono Dio da!" },
-    { id: 2, chatReceivedContent: "Kono Dio da!" },
-    { id: 3, chatReceivedContent: "Kono Dio da!" },
-    { id: 4, chatReceivedContent: "Kono Dio da!" },
-    { id: 5, chatReceivedContent: "Kono Dio da!" },
-    { id: 6, chatReceivedContent: "Kono Dio da!" },
-    { id: 7, chatReceivedContent: "Kono Dio da!" },
-    { id: 8, chatReceivedContent: "Kono Dio da!" },
-    { id: 9, chatReceivedContent: "Kono Dio da!" },
-    { id: 10, chatReceivedContent: "Kono Dio da!" },
-  ];
+  const listChat =  useMemo(() => [
+    { id: 1, chatContent: "Hello hooman" },
+    { id: 2, chatContent: "Hi" },
+    { id: 3, chatContent: "Omae wa mou shindeiru." },
+    { id: 4, chatContent: "Nani !?" },
+    { id: 5, chatContent: "Kono Dio da!" },
+  ], []);
 
-  const listChatSent = [
-    { id: 1, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 2, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 3, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 4, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 5, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 6, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 7, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 8, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 9, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-    { id: 10, chatSentContent: "Kono Joruno Jobāna niwa yume ga aru." },
-  ];
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+
+    if(containerRef && containerRef.current) {
+      const element = containerRef.current;
+      element.scroll({
+        top: element.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+      })
+    }
+
+  }, [containerRef, listChat ])
+
+  const user = useSelector((state) => state.auth.login.currentUser);
 
   return (
 
-    <div className='main-room-wrapper'>
+    <div className='chat-box-wrapper'>
 
-      <div className='main-room-top'>
+      <div className='chat-box-top'>
         
-          <div className="server-chat-box-name-wrapper-1">
+          <div className="chat-box-top-wrapper">
 
-            <div className="server-chat-room-image-main-1">
+            <div className="chat-box-image-main">
               <img src='' alt=''/>
             </div>
             
-            <div className='server-chat-box-name-1'>
+            <div className='chat-box-room-name'>
 
-              <span>Room 1</span> 
+              <span>Dragon Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball</span> 
 
             </div>
 
@@ -60,47 +60,33 @@ export default function ChatBox() {
 
         <div className="separator3" />
 
-          <div className='main-room-chat-page'>
+          <div className='chat-box-page' ref={containerRef}>
 
-            {listChatReceived?.map((chat) => {
+            {listChat?.map((chat) => {
             return (
-            <div className='message-received-wrapper' key={chat.id}>
+            <div className='message-wrapper' key={chat.id}>
+                <div className="message-user-image">
+                  <img src="" alt="" />
+                </div>
 
-              <span className='message-user-name'>
-                Dio
+                <div className='message-user-name'>
+                  <span className='user-name-text'>
+                    {user.username}
+                  </span> 
+
                   <span className='time'>
                     Today at 2:30 AM
                   </span>
-              </span>
+                </div>
 
-              <span className='message'>
-                <span>{chat.chatReceivedContent}</span>
-              </span>
-
+                <div className='message'>
+                  <span>{chat.chatContent}</span>
+                </div>                 
             </div>
             );
           })}
-        
-          {listChatSent?.map((chat) => {
-          return (
-            <div className='message-sent-wrapper' key={chat.id}>
 
-              <span className='message-user-name'>
-                Giorno Giovanna
-                  <span className='time'>
-                    Today at 2:33 AM
-                  </span>
-              </span>
-
-              <span className='message'>
-                <span>{chat.chatSentContent}</span>
-              </span>
-
-            </div>
-            );
-          })}
-          </div>
-          
+          </div>       
 
         <div className="separator4" />
 
@@ -110,7 +96,7 @@ export default function ChatBox() {
 
               <div className='chat-input-wrapper'>
 
-                <div className='chat-input-icon'>  
+                <div className='chat-input-content'>  
 
                   <input className='chat-input-text' 
                     placeholder='Message' 

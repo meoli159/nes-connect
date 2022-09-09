@@ -3,7 +3,7 @@ import "./style.css";
 
 export function ServerChatRoom() { 
   const listRoom = [
-    { id: 1, roomName: "Dragon Ball Ball Ball Ball" }, 
+    { id: 1, roomName: "Dragon Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball" }, 
     { id: 2, roomName: "Naruto" },
     { id: 3, roomName: "Naruto" },
     { id: 4, roomName: "Naruto" },
@@ -44,7 +44,7 @@ export function ServerChatRoom() {
                 );
               })}
                        
-            </div>
+              </div>
 
             </div>
         )

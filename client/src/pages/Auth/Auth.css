@@ -1,6 +1,7 @@
 * {
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
 }
 
 .Auth {
@@ -20,7 +21,7 @@
   align-items: center;
   justify-content: space-evenly;
   background-color: black;
-  width: 50vw;
+  width: 60vw;
   height: 90vh;
   position: relative;
   border-radius: 10px;
@@ -30,6 +31,7 @@
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(8.5px);
+  -webkit-backdrop-filter: blur(8.5px);
   flex-direction: column;
 }
 
@@ -69,8 +71,8 @@
 }
 
 .authInput {
-  background: rgb(130, 87, 87);
-  border-radius: 2rem;
+  background: #424549;
+  border-radius: 10px;
   width: 80%;
   height: 3rem;
   padding: 1rem;
@@ -85,11 +87,11 @@
   display: inline-block;
   box-shadow: 0 0 0 0.2rem #b9abe0;
   backdrop-filter: blur(12rem);
-  border-radius: 2rem;
+  border-radius: 10px;
 }
 
 .authInput::placeholder {
-  color: #ccc1eb99;
+  color: #F6F6F6;
   font-weight: 100;
   font-size: 1rem;
 }

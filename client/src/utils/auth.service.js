@@ -1,48 +1,87 @@
 import axios from "axios";
+import {
+  loginFailed,
+  loginStart,
+  loginSuccess,
+  logOutSuccess,
+  registerFailed,
+  registerStart,
+  registerSuccess,
+} from "../redux/authSlice";
+import {
+  deleteUserFailed,
+  deleteUserStart,
+  deleteUserSuccess,
+  getUsersFailed,
+  getUsersStart,
+  getUsersSuccess,
+} from "../redux/userSlice";
 
-const API_URL = "/api";
+const register = async (user, dispatch, navigate) => {
+  dispatch(registerStart());
+  try {
+    await axios.post(`api/auth/register`, user);
+    dispatch(registerSuccess());
+    navigate("/login");
+  } catch (error) {
+    dispatch(registerFailed());
+  }
+};
+
+const login = async (user, dispatch, navigate) => {
+  dispatch(loginStart());
+  try {
+    const res = await axios.post(`/api/auth/login`, user);
+    dispatch(loginSuccess(res.data));
+    navigate("/app");
+  } catch (error) {
+    dispatch(loginFailed());
+  }
+};
 
 
-const register = async (username, email, password) =>{
-return await axios
-    .post(API_URL + "/register", {
-        username,
-        email,
-        password,
-      })
-}
+const logout = async (accessToken, dispatch, id, axiosJWT) => {
+  try {
+    await axiosJWT.post(`/api/auth/logout`, id, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    dispatch(logOutSuccess());
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-const login = async (email, password) =>{
-return await axios 
-    .post(API_URL + "/login",{
-        email,
-        password,
-    },
-    {withCredentials: true}
-    )
-    
-}
+const getAllUsers = async (accessToken, dispatch, axiosJWT) => {
+  dispatch(getUsersStart());
+  try {
+    const res = await axiosJWT.get("api/user", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    dispatch(getUsersSuccess(res.data));
+  } catch (error) {
+    dispatch(getUsersFailed());
+  }
+};
 
-
-const getCurrentUser =  async () => {
-    return  await axios 
-    .get(API_URL + "/user",{
-        withCredentials: true,
-    })
-}
-
-const logout = async () => {
-    return  await axios 
-    .post(API_URL + "/logout")
-}
+const deleteUser = async (accessToken, dispatch, id, axiosJWT) => {
+  dispatch(deleteUserStart());
+  try {
+    const res = await axiosJWT.delete(`api/user/` + id, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    localStorage.removeItem();
+    dispatch(deleteUserSuccess(res.data));
+  } catch (error) {
+    dispatch(deleteUserFailed(error.response.data));
+  }
+};
 
 const authService = {
- 
-    register,
-    login,
-    logout,
-    getCurrentUser,
-    
-  };
+  getAllUsers,
+  register,
+  login,
+  logout,
+  deleteUser,
+};
 
-  export default authService;
+export default authService;

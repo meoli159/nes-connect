@@ -5,7 +5,7 @@
     position: relative;
     height: 45px;
     margin-top: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     background: transparent;
     cursor: pointer;
     margin-left: 20px;
@@ -40,10 +40,10 @@
     margin-left: 45px;
     font-family: 'roboto', sans-serif;
     color: white;
-    width: 60%;
+    max-width: 75%;
     display:inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 15ch;
+    width: 20ch;
 }

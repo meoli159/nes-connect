@@ -1,8 +1,9 @@
-.server-add-room {
+.server-add-room-wrapper {
     display: inline-flex;
     justify-content: center;
     align-content: center;
     margin-top: 15px;
+    height: 5vh;
     width: 100%;
 }
 

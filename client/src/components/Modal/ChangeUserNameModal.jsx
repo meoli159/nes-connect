@@ -1,0 +1,41 @@
+import React from 'react';
+import "./ChangeUserNameModal.css";
+
+function ChangeUserNameModal({ closeChangeUserNameModal }) {
+  return (
+    <div className='change-user-name-background'>
+
+      <form className='change-user-name-container'>
+        <div className='title'>
+          <p>Change Your Username</p>
+        </div>
+
+        <div className='body'>
+
+          <div className='change-user-name-description'>
+            <p>Enter a new username.</p>
+          </div>
+
+          <div className='change-user-name-title'>
+            <p>Username</p>
+          </div>
+
+         <input
+            className="change-user-name"
+            placeholder="New username..."
+            type="text"
+          />
+
+        </div>
+
+        <div className='footer'>
+          <button className='cancel-change-user-name-modal' onClick={() => closeChangeUserNameModal(false)}>Cancel</button>
+          <button className='continue-change-user-name-modal'>Continue</button>
+        </div>
+      </form>
+
+    </div>
+  )
+}
+
+export default ChangeUserNameModal;

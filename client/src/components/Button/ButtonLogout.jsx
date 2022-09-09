@@ -20,12 +20,17 @@ export const ButtonLogout = ({
   const checkButtonSize = SIZES.includes(buttonSize) ? buttonSize : SIZES[0];
 
   return (
-    <Link to='/community' className='btns-mobile'>
+    <Link to='/' className='btns-mobile'>
       <button
         className={`btn ${checkButtonStyle} ${checkButtonSize}`}
         onClick={onClick}
         type={type}>
         {children}
+
+        <div className='log-out-icon'>
+          <i className="fas fa-sign-out-alt"></i>
+        </div>
+
       </button>
     </Link>
   );

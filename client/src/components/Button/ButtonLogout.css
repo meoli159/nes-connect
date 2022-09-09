@@ -2,45 +2,29 @@
     --primary: #fff;
   }
   
-  .btns {
-    padding: 8px 20px;
-    border-radius: 2px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    justify-content: end;
-  }
+.btns {
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+}
   
-  .btns--primary {
-    background-color: var(--primary);
-    color: black;
-    border: 1px solid var(--primary);
-  }
-  
-  .btns--outline {
-    background-color: transparent;
-    color: black;
-    padding: 8px 20px;
-    border: 1px solid var(--primary);
-    transition: all 0.3s ease-out;
-    justify-content: end;
-  }
-  
-  .btns--medium {
-    padding: 8px 20px;
-    font-size: 18px;
-    justify-content: end;
-  }
-  
-  .btns--large {
-    padding: 12px 26px;
-    font-size: 20px;
-  }
-  
-  .btns--large:hover,
-  .btns--medium:hover {
-    transition: all 0.3s ease-out;
-    background: black;
-    color: white;
-    transition: 250ms;
-  }
+.btns--medium {
+  width: 100%;
+  font-size: 20px;
+  justify-content: end;
+  letter-spacing: 2px;
+  color: whitesmoke;
+  background: transparent;
+}
+
+.btns--medium:hover {
+  transition: all 0.3s ease-out;
+  background: #424549;
+  color: whitesmoke;
+  transition-delay: 0.1s;
+}
+
+.log-out-icon {
+  display: inline-flex;
+  margin-left: 55px;
+}
