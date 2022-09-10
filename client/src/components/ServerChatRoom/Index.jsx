@@ -1,54 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCommunity } from "../../redux/messageSlice";
+import { createAxios } from "../../api/createInstance";
+import chatService from "../../api/communityService";
 import "./style.css";
+import { loginSuccess } from "../../redux/authSlice";
 
-export function ServerChatRoom() { 
-  const listRoom = [
-    { id: 1, roomName: "Dragon Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball Ball" }, 
-    { id: 2, roomName: "Naruto" },
-    { id: 3, roomName: "Naruto" },
-    { id: 4, roomName: "Naruto" },
-    { id: 5, roomName: "Naruto" },
-    { id: 6, roomName: "Naruto" },
-    { id: 7, roomName: "Naruto" },
-    { id: 8, roomName: "Naruto" },
-    { id: 9, roomName: "Naruto" },
-    { id: 10, roomName: "Naruto" },
-    { id: 11, roomName: "Naruto" },
-    { id: 12, roomName: "Naruto" },
-    { id: 13, roomName: "Naruto" },
-    { id: 14, roomName: "Naruto" },
-    { id: 15, roomName: "Naruto" },
-    { id: 16, roomName: "Naruto" },
-    { id: 17, roomName: "Naruto" },
-    { id: 18, roomName: "Naruto" },
-    { id: 19, roomName: "Naruto" },
-    { id: 20, roomName: "Naruto" },
-  ];
+export default function ServerChatRoom() {
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const communityList = useSelector(
+    (state) => state.communities?.communityList
+  );
 
-        return (
-            <div>
-              <div>
-                {listRoom?.map((room) => {
-                  return (
-                    <div className="server-chat-room-wrapper" key={room.id}>
-
-                    <div className="server-chat-room-image">
-                      <img src="" alt="" />
-                    </div>
-    
-                    <div className="server-chat-room-name">
-                      <span>{room.roomName}</span>
-                    </div>
-                  
-                  </div>
-                );
-              })}
-                       
-              </div>
-
-            </div>
-        )
+  const dispatch = useDispatch();
+  let axiosJWT = createAxios(user, dispatch, loginSuccess);
+  const handleSelectChat = (community) => {
+    dispatch(selectCommunity(community));
+  };
+  useEffect(() => {
+    if (user?.accessToken) {
+      chatService.getCommunityList(user?.accessToken, dispatch, axiosJWT);
     }
+  }, []);
+  return (
+    <div>
+      <div>
+        {communityList?.map((el, index) => {
+          return (
+            <div
+              className="server-chat-room-wrapper"
+              key={index}
+              onClick={() => handleSelectChat(el)}
+            >
+    
+                <div className="server-chat-room-image">
+                  <img src="" alt="" />
+                </div>
 
-
-export default ServerChatRoom;
+                <div className="server-chat-room-name">
+                  <span>{el.communityName}</span>
+                </div>
+            
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

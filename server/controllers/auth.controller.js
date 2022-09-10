@@ -3,8 +3,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const Role = require("../models/role");
 
-let refreshTokens = [];
-
 const register = async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password)
@@ -67,21 +65,19 @@ const register = async (req, res) => {
 const generateAccessToken = (user) => {
   return jwt.sign(
     {
-      id: user.id,
+      _id: user._id,
       username: user.username,
-      role: user.roles,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "20s" }
+    { expiresIn: "30d" }
   );
 };
 
 const generateRefreshToken = (user) => {
   return jwt.sign(
     {
-      id: user.id,
+      _id: user._id,
       username: user.username,
-      role: user.roles,
     },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "30d" }
@@ -113,7 +109,6 @@ const login = async (req, res) => {
     //Token generate
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    refreshTokens.push(refreshToken);
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
@@ -122,7 +117,7 @@ const login = async (req, res) => {
     });
 
     res.status(200).json({
-      id: user._id,
+      _id: user._id,
       username: user.username,
       email: user.email,
       roles: authorities,
@@ -132,7 +127,7 @@ const login = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const userId = req.id;
+  const userId = req._id;
   let user;
   try {
     user = await User.findById(userId, "-password");
@@ -150,33 +145,19 @@ const requestRefreshToken = async (req, res) => {
   if (!refreshToken)
     return res.status(401).json({ message: "You're not authenticated" });
   if (!refreshToken.includes(refreshToken)) {
-    return res.status(403).json("Refresh token is not valid");
+    return res.status(403).json({message:"Refresh token is not valid"});
   }
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
     if (err) {
       console.log(err);
     }
-    refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
     const newAccessToken = generateAccessToken(user);
-    const newRefreshToken = generateRefreshToken(user);
-    refreshTokens.push(newRefreshToken);
-    res.cookie("refreshToken", newRefreshToken, {
-      httpOnly: true,
-      secure: false,
-      path: "/",
-      sameSite: "strict",
-    });
-    res
-      .status(200)
-      .json({ accessToken: newAccessToken});
+    res.status(200).json({ accessToken: newAccessToken});
   });
 };
 
 const logout = async (req, res) => {
   res.clearCookie("refreshToken");
-  refreshTokens = refreshTokens.filter(
-    (token) => token !== req.cookies["refreshToken"]
-  );
   res.status(200).json("Logged out!");
 };
 

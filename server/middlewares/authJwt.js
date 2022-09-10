@@ -8,16 +8,16 @@ verifyToken = (req, res, next) => {
     const accessToken = token.split(" ")[1];
     jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        return res.status(403).json("Invalid Token" );
+        return res.status(403).json({message:"Invalid Token" });
       }
       req.user = user;
       next();
     });
-  } else return res.status(401).json("You're not authenticated" );
+  } else return res.status(401).json({message:"You're not authenticated" });
 };
 
 isAdmin = (req, res, next) => {
-  User.findById(req.user.id).exec((err, user) => {
+  User.findById(req.user._id).exec((err, user) => {
     if (err) {
       res.status(500).send(err );
       return;
@@ -37,7 +37,7 @@ isAdmin = (req, res, next) => {
             return;
           }
         }
-        res.status(403).send("Require Admin Role!" );
+        res.status(403).send({message:"Require Admin Role!" });
         return;
       }
     );
@@ -77,13 +77,15 @@ isModerator = (req, res, next) => {
 
 verifyTokenAndAdminAuth = (req, res, next) => {
   authJwt.verifyToken(req, res, () => {
-    if (req.user.id !== req.params.id) {
+    if (req.user._id !== req.params._id) {
       authJwt.isAdmin(req, res,next);
     } else {
-      if (req.user.id === req.params.id) {
+      if (req.user._id === req.params._id) {
+        
         next();
+
       } else {
-        return res.status(403).json("You are not allowed to do that");
+        return res.status(403).json({message:"You are not allowed to do that"});
       }
     }
   });

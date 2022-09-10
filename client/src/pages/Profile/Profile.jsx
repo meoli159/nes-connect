@@ -7,9 +7,9 @@ import ChangePassWordModal from "../../components/Modal/ChangePassWordModal";
 import ServerLogo from "../../components/ServerLogo";
 import { ButtonLogout } from "../../components/Button/ButtonLogout";
 import ProfileSettingFunction from "../../components/ProfileSettingFunction";
-import { createAxios } from "../../utils/createInstance";
+import { createAxios } from "../../api/createInstance";
 import { logOutSuccess } from "../../redux/authSlice";
-import authService from "../../utils/auth.service";
+import authService from "../../api/authService";
 
 
 function Profile() {

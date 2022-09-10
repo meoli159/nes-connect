@@ -23,7 +23,7 @@ import Community from "./pages/Community/Community";
 import Admin from "./pages/Admin/Admin";
 
 function App() {
-  const user = useSelector((state) => state.auth.login.currentUser);
+  const user = useSelector((state) => state.auth.login?.currentUser);
 
   const RequireAuth = () => {
     return user ? <Outlet /> : <Navigate to="/login" replace />;
@@ -39,6 +39,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          
           {/* Public Routes with Navbar */}
           <Route element={<SidebarLayout />}>
             <Route path="/about" element={<About />} />
@@ -51,12 +52,11 @@ function App() {
 
           {/* Protect routes */}
           <Route element={<RequireAuth />}>
-          <Route path="/profile" element={<Profile />} />
             <Route path="/app" element={<Community />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/admin" element={<Admin />} />
           </Route>
 
-          {/* Test route */}
-          <Route path="/test" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </div>

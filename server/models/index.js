@@ -5,7 +5,8 @@ const db = {};
 
 db.user = require("./user");
 db.role = require("./role");
-db.group = require("./group");
+db.community = require("./community");
+db.message = require("./message");
 
 db.ROLES = ["user", "admin", "moderator"];
 
