@@ -118,7 +118,7 @@
     flex-direction: column;
 }
 
-.message-wrapper {
+.message-received-wrapper {
     flex-direction: column;
     width: 100%;
     color: white;
@@ -143,13 +143,15 @@
     align-content: center;
     justify-content: flex-start;
     margin-left: 15px;
-    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 18px;
     font-family: 'Roboto', sans-serif;
     font-weight: bolder;
     max-width: 100%;
 }
 
-span.user-name-text {
+span.message-user-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -160,6 +162,7 @@ span.user-name-text {
 .time {
     display: inline-flex;
     margin-top: 5px;
+    margin-left: 5px;
     font-size: x-small;
     font-weight: 400;
     color: #008080;
@@ -167,13 +170,14 @@ span.user-name-text {
 
 .message {
     display: flex;
-    margin-left: 65px;
-    margin-bottom: 8px;
-    font-size: 14px;
+    margin-left: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 13px;
     font-weight: 400;
 }
 
-.message-wrapper:hover { 
+.message-received-wrapper:hover { 
     transition: 0.5s;
     background: #424549;
 }
@@ -204,7 +208,7 @@ span.user-name-text {
   
 .chat-input-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 40px;
     background: whitesmoke;
@@ -221,10 +225,11 @@ span.user-name-text {
     font-size: 15px;
     font-weight: 400;
     outline: none;
-    justify-content: center;
+    justify-content: flex-start;
     align-content: center;
     align-items: center;
     width: 100%;
+    margin: 15px;
 }
   
 ::placeholder {
@@ -239,5 +244,5 @@ span.user-name-text {
     flex-direction: row;
     align-content: flex-start;
     align-items: center;
-    width: 98%;
+    width: 100%;
 }

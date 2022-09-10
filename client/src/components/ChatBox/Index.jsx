@@ -75,14 +75,14 @@ export default function ChatBox() {
   // }, []);
 
   return (
-    <div className="main-room-wrapper">
-      <div className="main-room-top">
-        <div className="server-chat-box-name-wrapper-1">
-          <div className="server-chat-room-image-main-1">
+    <div className="chat-box-wrapper">
+      <div className="chat-box-top ">
+        <div className="chat-box-top-wrapper">
+          <div className="chat-box-image-main">
             <img src="" alt="" />
           </div>
 
-          <div className="server-chat-box-name-1">
+          <div className="chat-box-room-name">
             <span>{currentCommunity?.communityName}</span>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function ChatBox() {
 
       <div className="separator3" />
 
-      <div ref={scrollDiv} className="main-room-chat-page">
+      <div ref={scrollDiv} className="chat-box-page">
         {messages?.map((el,index) => {
           return (
             <div className="message-received-wrapper" key={index}>
@@ -124,7 +124,7 @@ export default function ChatBox() {
       <div className="main-room-bottom">
         <div className="chat-input-container">
           <div className="chat-input-wrapper">
-            <div className="chat-input-icon">
+            <div className="chat-input-content">
               <input
                 type="text"
                 className="chat-input-text"

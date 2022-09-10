@@ -35,20 +35,7 @@ function OtherContent() {
       <div className="separator5" />
 
       <div className="other-content-preview">
-        <div className="add-member-to-chat">
-          <div className="add-member-to-chat-text">
-            <span>Add people</span>
-          </div>
-
-          <button className="add-member-button">
-            <i className="fas fa-user-plus"></i>
-          </button>
-        </div>
-
-        <div className="separator5" />
-
-        <div className='other-content-preview'>
-
+        
           <div className='add-member-to-chat'>
 
             <button className='add-member-button' onClick={() => {setOpenAddModal(true)}}>
@@ -68,8 +55,7 @@ function OtherContent() {
             {openLeaveModal && <LeaveGroupChatModal closeLeaveModal={setOpenLeaveModal}/>}
 
           </div>
-           
-        </div>
+            
       </div>
 
       <div className="separator6" />

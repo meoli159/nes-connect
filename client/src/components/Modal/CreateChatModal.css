@@ -94,7 +94,15 @@
   text-transform: uppercase;
 }
 
+.create-chat-room-name-wrapper {
+  width: 100%;
+  height: 60%;
+}
+
 .create-chat-room-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: whitesmoke;
   border-radius: 10px;
   width: 100%;
@@ -103,12 +111,6 @@
   color: rgb(0, 0, 0);
   font-size: 15px;
   font-weight: bold;
-}
-
-.create-chat-room-name:focus {
-  display: inline-block;
-  box-shadow: 0 0 0 0.2rem #ffffff;
-  backdrop-filter: blur(12rem);
 }
 
 .create-chat-room-name::placeholder {

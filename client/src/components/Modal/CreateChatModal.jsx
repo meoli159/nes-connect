@@ -20,15 +20,18 @@ function CreateChatModal({ closeModal }) {
               <input type="file" />
             </button>
 
-            <div className='group-chat-title'>
-              <p>Group chat name</p>
-            </div>
-                    
-              <input
-                 className="create-chat-room-name"
-                 placeholder="Group chat name..."
-                 type="text"
-               />
+              <div className='create-chat-room-name-wrapper'> 
+
+                <div className='group-chat-title'>
+                  <p>Group chat name</p>
+                </div>
+
+                <input
+                  className="create-chat-room-name"
+                  placeholder="Group chat name..."
+                  type="text"
+                />
+              </div>      
 
             </div>
             <div className='footer'>
