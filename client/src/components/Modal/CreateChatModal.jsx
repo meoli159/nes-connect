@@ -1,7 +1,32 @@
 import React from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import communityService from '../../api/communityService';
 import "./CreateChatModal.css";
 
 function CreateChatModal({ closeModal }) {
+  const user = useSelector((state)=> state.auth.login?.currentUser);
+  const [communityName,setCommunityName] = useState('');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleCloseModal = (e)=>{
+    e.preventDefault()
+    closeModal(false)
+  }
+
+  const handleSubmitCreateCommunity = (e)=>{
+    e.preventDefault();
+    const community = {
+      communityName,
+      user:user,
+    }
+
+    communityService.createCommunity(community,user?.accessToken,dispatch,navigate)
+    handleCloseModal(e)
+  }
   return (
     <div className='modalBackground'>
         <form className='modalContainer'>
@@ -28,6 +53,8 @@ function CreateChatModal({ closeModal }) {
 
                 <input
                   className="create-chat-room-name"
+                  value={communityName}
+                  onChange={(e)=>setCommunityName(e.target.value)}
                   placeholder="Group chat name..."
                   type="text"
                 />
@@ -35,8 +62,8 @@ function CreateChatModal({ closeModal }) {
 
             </div>
             <div className='footer'>
-                <button className='cancel-create-group-modal' onClick={() => closeModal(false)}>Cancel</button>
-                <button className='continue-create-group-modal'>Continue</button>
+                <button className='cancel-create-group-modal' onClick={handleCloseModal}>Cancel</button>
+                <button className='continue-create-group-modal'onClick={handleSubmitCreateCommunity}>Continue</button>
             </div>
         </form>
     </div>

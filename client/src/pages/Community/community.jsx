@@ -4,21 +4,14 @@ import OtherFunctions from "../../components/OtherFunctions";
 import ChatBox from "../../components/ChatBox";
 import "./Community.css";
 
-
 export default function Community() {
-
   return (
+    <div className="app-wrapper">
+      <Sidebar />
 
-      <div className="app-wrapper">
-        
-        <Sidebar />
+      <ChatBox />
 
-        <ChatBox />
-
-        <OtherFunctions />
-        
-      </div>   
-      
+      <OtherFunctions />
+    </div>
   );
 }
-

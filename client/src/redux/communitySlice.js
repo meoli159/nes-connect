@@ -19,6 +19,30 @@ const communitySlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    createStart: (state) => {
+      state.isFetching = true;
+    },
+    createSuccess: (state, action) => {
+      state.isFetching = false;
+      state.communityList = [...state.communityList, action.payload];
+    },
+    createFails: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
+    renameCommunitySuccess: (state, action) => {
+      state.communityList.map((community) => {
+        if (community._id === action.payload._id) {
+          community.communityName = action.payload.communityName;
+        }
+       
+      });
+     
+    },
+    fetchingFail: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   },
 });
 
@@ -26,6 +50,11 @@ export const {
   getCommunityListStart,
   getCommunityListSuccess,
   getCommunityListFailed,
+  createStart,
+  createSuccess,
+  createFails,
+  renameCommunitySuccess,
+  fetchingFail,
 } = communitySlice.actions;
 
 export default communitySlice.reducer;

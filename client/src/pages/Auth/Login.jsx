@@ -1,27 +1,29 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../api/authService";
-import {useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Auth.css";
+import { useEffect } from "react";
 
 export default function Login() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleSubmit = async (e) => {
+
+  const handleSubmit =  (e) => {
     e.preventDefault();
-    const user ={
-      email ,
+    const user = {
+      email,
       password,
-    }
-    authService.login(user,dispatch,navigate)
+    };
+    authService.login(user, dispatch, navigate);
   };
 
   return (
     <div id="Auth" className="Auth">
-
       <form className="authForm" onSubmit={handleSubmit}>
         <h2>Welcome</h2>
 
@@ -59,4 +61,3 @@ export default function Login() {
     </div>
   );
 }
-

@@ -9,11 +9,14 @@ function MemberList() {
   const currentCommunityAdmin = useSelector(
     (state) => state.messages.currentCommunity?.communityAdmin
   );
-
+    const currentCommunity = useSelector((state)=> state.messages.currentCommunity?.communityName);
   return (
     <div>
       <div>
-        {/* Group Admin display */}
+        {currentCommunity ? 
+        (
+          <div>
+             {/* Group Admin display */}
         <div className="member-in-chat-wrapper">
           <div className="member-image">
             <img src="" alt="" />
@@ -39,6 +42,22 @@ function MemberList() {
             </div>
           );
         })}
+          
+          </div>
+
+        ):(
+            
+            <div>
+              <span>
+                No User Found
+              </span>
+            </div>
+            
+          
+        )
+
+        }
+     
       </div>
     </div>
   );

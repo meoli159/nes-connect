@@ -3,16 +3,16 @@ import {
   loginFailed,
   loginStart,
   loginSuccess,
-  logOutSuccess,
-  registerFailed,
   registerStart,
   registerSuccess,
+  registerFailed,
+  logOutSuccess,
 } from "../redux/authSlice";
 
-const register = async (user, dispatch, navigate) => {
+const register = (user, dispatch, navigate) => {
   dispatch(registerStart());
   try {
-    await axios.post(`/api/auth/register`, user);
+    axios.post(`/api/auth/register`, user);
     dispatch(registerSuccess());
     navigate("/login");
   } catch (error) {
@@ -31,20 +31,17 @@ const login = async (user, dispatch, navigate) => {
   }
 };
 
-
-const logout = async (accessToken, dispatch, id, axiosJWT) => {
+const logout = async (accessToken, dispatch, id) => {
   try {
-    await axiosJWT.post(`/api/auth/logout`, id, {
+    await axios.post(`/api/auth/logout`, id, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    localStorage.removeItem("persist:root")
+    localStorage.removeItem("persist:root", "persist:auth");
     dispatch(logOutSuccess());
   } catch (error) {
     console.log(error);
   }
 };
-
-
 
 const authService = {
   register,

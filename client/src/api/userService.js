@@ -1,4 +1,5 @@
 
+import axios from "axios";
 import {
     deleteUserFailed,
     deleteUserStart,
@@ -8,10 +9,10 @@ import {
     getUsersSuccess,
   } from "../redux/userSlice";
 
-  const getAllUsers = async (accessToken, dispatch, axiosJWT) => {
+  const getAllUsers = async (accessToken, dispatch) => {
     dispatch(getUsersStart());
     try {
-      const res = await axiosJWT.get(`api/user`, {
+      const res = await axios.get(`/api/user`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       dispatch(getUsersSuccess(res.data));
@@ -20,10 +21,10 @@ import {
     }
   };
   
-  const deleteUser = async (accessToken, dispatch, id, navigate,axiosJWT) => {
+  const deleteUser = async (accessToken, dispatch, id, navigate) => {
     dispatch(deleteUserStart());
     try {
-      const res = await axiosJWT.delete(`api/user/${id}` , {
+      const res = await axios.delete(`/api/user/${id}` , {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       localStorage.clear();

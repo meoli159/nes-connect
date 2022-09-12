@@ -8,7 +8,7 @@ import ServerLogo from '../ServerLogo';
 
 export default function Sidebar() {
 
-  const user = useSelector((state) => state.auth.login.currentUser);
+  const user = useSelector((state) => state.auth.login?.currentUser);
 
   return (
     <div className='side-bar-wrapper'>
@@ -67,7 +67,8 @@ export default function Sidebar() {
             <div className='sidebar-bottom-user'>
 
               <div className='current-user-image'>
-                <img src='/' alt='' />
+                {/* <img src={user?.pic} alt='' /> */}
+                <img src={user?.pic} alt=''/>
               </div>
 
               <div className='current-user-name-text'>

@@ -7,8 +7,6 @@ import ChangePassWordModal from "../../components/Modal/ChangePassWordModal";
 import ServerLogo from "../../components/ServerLogo";
 import { ButtonLogout } from "../../components/Button/ButtonLogout";
 import ProfileSettingFunction from "../../components/ProfileSettingFunction";
-import { createAxios } from "../../api/createInstance";
-import { logOutSuccess } from "../../redux/authSlice";
 import authService from "../../api/authService";
 
 
@@ -22,9 +20,8 @@ function Profile() {
   const [openChangePassWordModal, setOpenChangePassWordModal] = useState(false);
 
   const dispatch = useDispatch();
-  let axiosJWT = createAxios(user,dispatch,logOutSuccess)
   const logOut = () => {
-    authService.logout(user?.accessToken, dispatch, id,axiosJWT);
+    authService.logout(user?.accessToken, dispatch, id);
   };
   
   return (

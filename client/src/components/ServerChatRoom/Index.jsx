@@ -1,25 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCommunity } from "../../redux/messageSlice";
-import { createAxios } from "../../api/createInstance";
 import chatService from "../../api/communityService";
 import "./style.css";
-import { loginSuccess } from "../../redux/authSlice";
 
 export default function ServerChatRoom() {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const communityList = useSelector(
     (state) => state.communities?.communityList
   );
-
   const dispatch = useDispatch();
-  let axiosJWT = createAxios(user, dispatch, loginSuccess);
+
   const handleSelectChat = (community) => {
     dispatch(selectCommunity(community));
   };
   useEffect(() => {
     if (user?.accessToken) {
-      chatService.getCommunityList(user?.accessToken, dispatch, axiosJWT);
+      chatService.getCommunityList(user?.accessToken, dispatch);
     }
   }, []);
   return (
@@ -32,15 +29,13 @@ export default function ServerChatRoom() {
               key={index}
               onClick={() => handleSelectChat(el)}
             >
-    
-                <div className="server-chat-room-image">
-                  <img src="" alt="" />
-                </div>
+              <div className="server-chat-room-image">
+                <img src="" alt="" />
+              </div>
 
-                <div className="server-chat-room-name">
-                  <span>{el.communityName}</span>
-                </div>
-            
+              <div className="server-chat-room-name">
+                <span>{el.communityName}</span>
+              </div>
             </div>
           );
         })}

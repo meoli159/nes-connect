@@ -1,5 +1,4 @@
 const db = require("../models");
-const { findByIdAndDelete, findByIdAndUpdate } = require("../models/user");
 const User = db.user;
 const Community = db.community;
 
@@ -46,9 +45,9 @@ const createCommunity = (req, res) => {
 //edit community
 const renameCommunity = async (req, res) => {
   try {
-    const { communityId, communityName } = req.body;
+    const { communityName,communityId } = req.body;
     const updatedCommunity = await Community.findByIdAndUpdate(
-      communityId,
+     communityId,
       {
         communityName: communityName,
       },
@@ -68,12 +67,22 @@ const renameCommunity = async (req, res) => {
   }
 };
 
+//delete community
+const deleteCommunity = async (req, res) => {
+  try {
+    await Community.findByIdAndDelete(req.params.communityId);
+    return res.status(200).send({ message: "Delete Successfully" });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
 //add user to community
 const addUserToCommunity = async (req, res) => {
   try {
-    const { communityId, userId } = req.body;
+    const { userId } = req.body;
     const added = await Community.findByIdAndUpdate(
-      communityId,
+      req.params.communityId,
       {
         $addToSet: { users: userId },
       },
@@ -97,9 +106,9 @@ const addUserToCommunity = async (req, res) => {
 //remove user from community
 const removeUserFromCommunity = async (req, res) => {
   try {
-    const { communityId, userId } = req.body;
+    const { userId } = req.body;
     const removed = await Community.findByIdAndUpdate(
-      communityId,
+      req.params.communityId,
       {
         $pull: { users: userId },
       },
@@ -123,6 +132,7 @@ module.exports = {
   getCommunity,
   createCommunity,
   renameCommunity,
+  deleteCommunity,
   addUserToCommunity,
   removeUserFromCommunity,
 };

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import { createAxios } from "../../api/createInstance";
 import userService from "../../api/userService";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../../redux/authSlice";
 import {useNavigate} from "react-router-dom"
 export default function Admin() {
   const user = useSelector((state) => state.auth.login?.currentUser);
@@ -11,15 +9,15 @@ export default function Admin() {
 
   const dispatch = useDispatch();
 const navigate = useNavigate();
-  let axiosJWT = createAxios(user, dispatch, loginSuccess);
+
 
   const handleDelete = (_id) => {
-    userService.deleteUser(user?.accessToken, dispatch, _id, navigate,axiosJWT);
+    userService.deleteUser(user?.accessToken, dispatch, _id, navigate);
   };
 
   useEffect(() => {
     if (user?.accessToken) {
-      userService.getAllUsers(user?.accessToken, dispatch, axiosJWT);
+      userService.getAllUsers(user?.accessToken, dispatch);
     }
   }, []);
 

@@ -9,7 +9,7 @@ const fetchAllMessages = async (req, res) => {
       .populate("sender")
       .populate("community")
       .lean()
-      .exec();
+      .exec()
     return res.status(200).send(messages);
   } catch (error) {
     return res.status(400).send(error.messages);
@@ -19,30 +19,23 @@ const fetchAllMessages = async (req, res) => {
 const createMessage = async (req, res) => {
   const { content, communityId } = req.body;
   if (!content || !communityId) {
-    console.log(communityId)
-    return res
-      .status(400)
-      .send({ message: "Invalid data passed into request" });
+    return res.status(400).send({ message: "Invalid data passed into request" });
   }
 
-  const message = new Message({
+  var newMessage = {
     sender: req.user._id,
     content: content,
-    communityId: communityId,
-  });
-
-  message.save(async(err, message) => {
-    if (err) {
-      return res.status(400).send({ message: err });
-    } else {
-     await Message.findOne({ _id: message._id })
-        .populate("sender")
-        .populate("community")
-        .lean()
-        .exec();
-      return res.status(200).send(message);
-    }
-  });
+    community: communityId,
+  };
+  try {
+    var message = await Message.create(newMessage);
+    message = await Message.findOne({ _id: message._id })
+      .populate("sender")
+      .populate("community");
+    return res.status(200).send(message);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 };
 
 module.exports = {

@@ -36,7 +36,7 @@ const authSlice = createSlice({
         },
         registerSuccess:(state)=>{
             state.register.isFetching = false;
-            state.register.success =true;
+            state.register.success = true;
             state.register.error = false;
         },
         registerFailed:(state)=>{

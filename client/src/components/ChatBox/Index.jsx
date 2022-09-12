@@ -1,31 +1,29 @@
-import React, { useEffect, useState,createRef } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createAxios } from "../../api/createInstance";
-import { loginSuccess } from "../../redux/authSlice";
 import { sendMessage } from "../../redux/messageSlice";
 import messageService from "../../api/messageService";
 import "./style.css";
 
 import io from "socket.io-client";
-const ENDPOINT = "ws://localhost:3333";
-let socket, currentChattingWith;
+const ENDPOINT = "http://localhost:3333";
+var socket, currentChattingWith;
 
 export default function ChatBox() {
   const user = useSelector((state) => state.auth.login?.currentUser);
-  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
+  const currentCommunity = useSelector(
+    (state) => state.messages?.currentCommunity
+  );
   const messages = useSelector((state) => state.messages?.messages);
   const [textChat, setTextChat] = useState("");
 
   const dispatch = useDispatch();
   const scrollDiv = createRef();
 
-  let axiosJWT = createAxios(user, dispatch, loginSuccess);
-
   useEffect(() => {
     socket = io(ENDPOINT);
+    socket.emit("setup", user);
     socket.on("connected");
-    
-  }, []);
+  }, [user]);
 
   const handleChatSubmit = (e) => {
     if (e.key === "Enter" && textChat) {
@@ -33,13 +31,12 @@ export default function ChatBox() {
         { content: textChat, communityId: currentCommunity._id },
         user?.accessToken,
         socket,
-        dispatch,
-        axiosJWT
+        dispatch
+        
       );
       setTextChat("");
     }
   };
-
 
   useEffect(() => {
     //select chat so that user can join same community
@@ -48,31 +45,33 @@ export default function ChatBox() {
       currentCommunity?._id,
       user?.accessToken,
       socket,
-      dispatch,
-      axiosJWT
+      dispatch
+      
     );
-    
-  }, [currentCommunity?._id]);
+    currentChattingWith = currentCommunity;
+  }, [currentCommunity, dispatch, user?.accessToken]);
 
   useEffect(() => {
     const scrollToBottom = (node) => {
       node.scrollTop = node.scrollHeight;
     };
     scrollToBottom(scrollDiv.current);
-  });
+  }, [scrollDiv]);
 
-  // useEffect(() => {
-  //   socket.off("message received").on("message received", (newMessageReceived) => {
-  //     if (
-  //       !currentChattingWith ||
-  //       currentChattingWith._id !== newMessageReceived.group._id
-  //     ) {
-  //       console.log("not in");
-  //     } else {
-  //       dispatch(sendMessage(newMessageReceived));
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    socket.on("received-message", (newMessageReceived) => {
+      if (
+        !currentChattingWith ||
+        currentChattingWith._id !== newMessageReceived.community._id
+      ) {
+        console.log("no message!");
+      } else {
+        setTimeout(() => {
+          dispatch(sendMessage(newMessageReceived));
+        }, 3000);
+      }
+    });
+  }, [dispatch]);
 
   return (
     <div className="chat-box-wrapper">

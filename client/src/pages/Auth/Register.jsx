@@ -9,6 +9,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ export default function Register() {
       email,
       password,
     };
+
     if (password !== cPassword) {
       return console.error("Confirm password not matched");
     } else {
@@ -28,7 +30,6 @@ export default function Register() {
 
   return (
     <div id="Auth" className="Auth">
-      
       <form className="authForm" onSubmit={handleSubmit}>
         <h2>Welcome</h2>
 

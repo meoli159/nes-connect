@@ -19,12 +19,10 @@ const UserSchema = new mongoose.Schema({
         required:true,
         unique:true,
     },
-    roles: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Role",
-        },
-      ]
+    pic:{
+        type: String,
+        default:"https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg",
+    },
 },{
     timestamps: true
 });
