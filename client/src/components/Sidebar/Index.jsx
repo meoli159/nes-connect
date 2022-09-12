@@ -66,8 +66,8 @@ export default function Sidebar() {
           <Link to="/profile" style={{ color: '#FFF', textDecoration: 'none'  }}>
             <div className='sidebar-bottom-user'>
 
-              <div className='current-user-image'>
-                <img src='/' alt='' />
+              <div className='current-user-image img'>
+                <img src='https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg?fbclid=IwAR0gLORQDSkOYlg89GKCW0FboJc6Zv2CpboFkVlsg0YSqv2B1PsN4w3jSzA' alt='' />
               </div>
 
               <div className='current-user-name-text'>

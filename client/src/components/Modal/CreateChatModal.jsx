@@ -15,12 +15,12 @@ function CreateChatModal({ closeModal }) {
               <p>Give your new group chat a name. You can always change it later. Have fun!</p>
             </div>
 
-            <button className='upload-group-chat-image'>
-              <i className="fas fa-camera"></i>
-              <input type="file" />
-            </button>
-
               <div className='create-chat-room-name-wrapper'> 
+
+                <button className='create-group-chat-image'>
+                  <i className="fas fa-camera"></i>
+                  <input type="file" />
+                </button>
 
                 <div className='group-chat-title'>
                   <p>Group chat name</p>

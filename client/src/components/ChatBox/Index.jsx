@@ -13,6 +13,8 @@ let socket, currentChattingWith;
 export default function ChatBox() {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
+  const currentCommunityButton = useSelector((state)=> state.messages.currentCommunity?.communityName);
+  const currentCommunityChatInput = useSelector((state)=> state.messages.currentCommunity?.communityName);
   const messages = useSelector((state) => state.messages?.messages);
   const [textChat, setTextChat] = useState("");
 
@@ -78,22 +80,30 @@ export default function ChatBox() {
     <div className="chat-box-wrapper">
       <div className="chat-box-top ">
         <div className="chat-box-top-wrapper">
-          <div className="chat-box-image-main">
-            <img src="" alt="" />
-          </div>
 
           <div className="chat-box-room-name">
             <span>{currentCommunity?.communityName}</span>
           </div>
         </div>
 
-        <button className="call-button">
-          <i className="fa fa-phone"></i>
-        </button>
+        {currentCommunityButton ? (
+          <button className="call-button">
+            <i className="fa fa-phone"></i>
+          </button>
+          ) : (
+            <>
+            </>
+          )}
 
-        <button className="video-call-button">
-          <i className="fas fa-video"></i>
-        </button>
+        {currentCommunityButton ? (
+          <button className="video-call-button">
+            <i className="fas fa-video"></i>
+          </button>
+          ) : (
+            <>
+            </>
+          )}
+        
       </div>
 
       <div className="separator3" />
@@ -120,12 +130,13 @@ export default function ChatBox() {
       </div>
 
       <div className="separator4" />
+        <div className="main-room-bottom">
 
-      <div className="main-room-bottom">
+      {currentCommunityChatInput? (
         <div className="chat-input-container">
           <div className="chat-input-wrapper">
             <div className="chat-input-content">
-              <input
+            <input
                 type="text"
                 className="chat-input-text"
                 value={textChat}
@@ -136,6 +147,9 @@ export default function ChatBox() {
             </div>
           </div>
         </div>
+              ) : (
+                <></>
+              )}
       </div>
     </div>
   );

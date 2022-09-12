@@ -12,7 +12,7 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
         <div className='body'>
 
           <div className='leave-description'>   
-            <p>Are you sure you want to leave this group chat? You won't be ale to rejoin this group chat unless you are re-invited.</p>
+            <p>Are you sure you want to leave this group chat? You won't be able to rejoin this group chat unless you are re-invited.</p>
           </div>  
 
         </div>
