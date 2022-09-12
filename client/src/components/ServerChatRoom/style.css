@@ -19,26 +19,11 @@
     background: #424549;
 }
 
-.server-chat-room-image {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    margin-left: 5px;
-    background-image: url("../../assets/images/profile.gif");
-    background-size:cover;
-    position: relative;
-    cursor: pointer;
-    border-radius: 50%;
-}
-
 .server-chat-room-name {
     position: absolute;
-    left: 10%;
     font-size: 15px;
     font-weight: 500;
-    margin-left: 20px;
+    margin-left: 10px;
     font-family: 'roboto', sans-serif;
     color: white;
     max-width: 80%;
