@@ -1,7 +1,32 @@
 import React from 'react';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import communityService from "../../api/communityService";
 import "./AddPeopleModal.css";
 
 function AddPeopleModal({ closeAddModal }) {
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const currentCommunity = useSelector(
+    (state) => state.messages?.currentCommunity
+  );
+  // const [editCommunityName, setEditCommunityName] = useState("");
+  const dispatch = useDispatch();
+
+  const handleCloseModal = (e) => {
+    e.preventDefault();
+    closeAddModal(false);
+  };
+
+  const handleEditCommunity = (e) => {
+    e.preventDefault();
+
+    communityService.generateLinkInvite(
+      currentCommunity?._id,
+      user._id ,
+    );
+
+    // handleCloseModal(e);
+  };
   return (
     <div className='modal-add-background'>
 
@@ -33,7 +58,7 @@ function AddPeopleModal({ closeAddModal }) {
 
         <div className='add-modal-footer'>
             <button className='cancel-add-people-modal' onClick={() => closeAddModal(false)}>Cancel</button>
-            <button className='continue-add-people-modal'>Continue</button>
+            <button className='continue-add-people-modal'onClick={handleEditCommunity}>Continue</button>
         </div>
 
     </form>

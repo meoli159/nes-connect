@@ -1,12 +1,24 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import communityService from "../../api/communityService"
 import "./LeaveGroupChatModal.css";
 
 function LeaveGroupChatModal({ closeLeaveModal }) {
-  const communityAdmin = useSelector(
-    (state) => state.messages.currentCommunity?.communityAdmin
-  );
+  const communityAdmin = useSelector((state) => state.messages.currentCommunity?.communityAdmin);
+  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
   const user = useSelector((state) => state.auth.login?.currentUser);
+  const dispatch = useDispatch()
+
+  const handleCloseModal = (e)=>{
+    e.preventDefault();
+    closeLeaveModal(false)
+  }
+  const handleDeleteCommunity = (e)=>{
+    e.preventDefault();
+    communityService.deleteCommunity(currentCommunity?._id,user?.accessToken,dispatch)
+    handleCloseModal(e)
+  }
+
   return (
     <div className="modal-leave-background">
       {communityAdmin._id === user._id ? (
@@ -25,11 +37,11 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
           <div className="footer">
             <button
               className="cancel-leave-chat-modal"
-              onClick={(e) => closeLeaveModal(e.preventDefault(false))}
+              onClick={handleCloseModal}
             >
               Cancel
             </button>
-            <button className="continue-leave-chat-modal">Delete</button>
+            <button className="continue-leave-chat-modal" onClick={handleDeleteCommunity}>Delete</button>
           </div>
         </form>
       ) : (

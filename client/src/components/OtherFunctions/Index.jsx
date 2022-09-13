@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
-import MemberList from "../MemberList";
+import MemberList from "../MemberList/";
 import "./style.css";
 import EditGroupNameModal from "../Modal/EditGroupNameModal";
 import AddPeopleModal from "../Modal/AddPeopleModal";

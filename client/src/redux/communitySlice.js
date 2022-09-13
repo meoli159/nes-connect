@@ -39,6 +39,13 @@ const communitySlice = createSlice({
       });
      
     },
+    deleteCommunitySuccess:(state,action)=>{
+      state.isFetching = false;
+      state.communityList = [...state.communityList.filter((community)=>
+        community._id !== action.payload._id
+      )]
+      
+    },
     fetchingFail: (state) => {
       state.isFetching = false;
       state.error = true;
@@ -54,6 +61,7 @@ export const {
   createSuccess,
   createFails,
   renameCommunitySuccess,
+  deleteCommunitySuccess,
   fetchingFail,
 } = communitySlice.actions;
 

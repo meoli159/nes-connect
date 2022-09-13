@@ -45,9 +45,9 @@ const createCommunity = (req, res) => {
 //edit community
 const renameCommunity = async (req, res) => {
   try {
-    const { communityName,communityId } = req.body;
+    const { communityName } = req.body;
     const updatedCommunity = await Community.findByIdAndUpdate(
-     communityId,
+      req.params.communityId,
       {
         communityName: communityName,
       },
@@ -57,6 +57,7 @@ const renameCommunity = async (req, res) => {
     )
       .populate("users")
       .populate("communityAdmin");
+      
     if (!updatedCommunity)
       return res.status(401).send({ message: "Community Not Found" });
     else {
