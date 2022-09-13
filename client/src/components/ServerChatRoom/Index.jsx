@@ -29,8 +29,10 @@ export default function ServerChatRoom() {
               key={index}
               onClick={() => handleSelectChat(el)}
             >
-              <div className="server-chat-room-image">
-                <img src="" alt="" />
+              <div className="server-chat-room-image img">
+                <img src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg?fbclid=IwAR0gLORQDSkOYlg89GKCW0FboJc6Zv2CpboFkVlsg0YSqv2B1PsN4w3jSzA" 
+                alt="" 
+                />
               </div>
 
               <div className="server-chat-room-name">

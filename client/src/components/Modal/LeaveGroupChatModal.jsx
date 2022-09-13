@@ -12,8 +12,7 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
       {communityAdmin._id === user._id ? (
         <form className="modal-leave-container">
           <div className="title">
-            <p>Delete Chat</p>
-            <i className="fas fa-exclamation"></i>
+            <p>Delete Chat!</p>
           </div>
           <div className="body">
             <div className="leave-description">
