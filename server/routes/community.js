@@ -5,7 +5,7 @@ const router = require('express').Router();
 
 router.get("/",authJwt.verifyToken,getCommunity)
 router.post("/",authJwt.verifyToken, createCommunity)
-router.put("/",authJwt.verifyToken,checkCommunity.isCommunityAdmin,renameCommunity);
+router.put("/:communityId",authJwt.verifyToken,checkCommunity.isCommunityAdmin,renameCommunity);
 router.delete("/:communityId",authJwt.verifyToken,checkCommunity.isCommunityAdmin,deleteCommunity);
 
 router.put("/:communityId/adduser",authJwt.verifyToken,checkCommunity.isCommunityAdmin,addUserToCommunity);

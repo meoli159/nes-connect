@@ -8,7 +8,9 @@ import {
   createFails,
   fetchingFail,
   renameCommunitySuccess,
+  deleteCommunitySuccess,
 } from "../redux/communitySlice";
+import { selectCommunity } from "../redux/messageSlice";
 
 const getCommunityList = async (accessToken, dispatch) => {
   dispatch(getCommunityListStart());
@@ -35,18 +37,41 @@ const createCommunity = async (community, accessToken, dispatch, navigate) => {
   }
 };
 
-const renameCommunity = async (community, accessToken, dispatch) => {
+const renameCommunity = async (communityId, communityName,accessToken, dispatch) => {
   try {
-    const res = await axios.put(`/api/community`, community, {
+    const res = await axios.put(`/api/community/${communityId}` ,communityName,{
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     dispatch(renameCommunitySuccess(res.data));
+    dispatch(selectCommunity(res.data));
+    
   } catch (error) {
     dispatch(fetchingFail());
   }
 };
 
-const deleteCommunity = async () => {};
+const deleteCommunity = async (communityId,accessToken,dispatch) => {
+  try {
+    await axios.delete(`/api/community/${communityId}`,{
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    dispatch(deleteCommunitySuccess(communityId))
+    dispatch(selectCommunity(communityId));
+    getCommunityList(accessToken,dispatch)
+  } catch (error) {
+    dispatch(fetchingFail())
+  }
+};
+
+const generateLinkInvite = async(communityId,userId)=>{
+const res = await axios.get(`/api/community/`,{
+  params: {
+    communityId,
+    userId
+  }
+})
+console.log(res)
+}
 
 const addUserToCommunity = async () => {};
 
@@ -57,6 +82,7 @@ const chatService = {
   createCommunity,
   renameCommunity,
   deleteCommunity,
+  generateLinkInvite,
   addUserToCommunity,
   leaveRemoveUserFromCommunity,
 };

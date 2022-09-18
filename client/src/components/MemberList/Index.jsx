@@ -15,6 +15,9 @@ function MemberList() {
     (state) => state.messages.currentCommunity?.communityName
   );
 
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const picture = user.pic;
+
   return (
     <div>
       <div>
@@ -25,7 +28,7 @@ function MemberList() {
             <div className="member-in-chat-wrapper">
               <div className="member-image">
                 <img
-                  src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg?fbclid=IwAR06WJlATDqI74cupelGvlok1ZL65hmfOgooBq2d_j9lLb1NgH6WIyDFeCc"
+                  src={picture}
                   alt=""
                 />
               </div>
@@ -47,7 +50,7 @@ function MemberList() {
                 <div className="member-in-chat-wrapper" key={member._id}>
                   <div className="member-image img">
                     <img
-                      src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg?fbclid=IwAR06WJlATDqI74cupelGvlok1ZL65hmfOgooBq2d_j9lLb1NgH6WIyDFeCc"
+                      src={picture}
                       alt=""
                     />
                   </div>
