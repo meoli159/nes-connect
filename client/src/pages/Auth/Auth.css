@@ -35,6 +35,44 @@
   flex-direction: column;
 }
 
+.authConfirmEmailForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: black;
+  width: 40vw;
+  height: 40vh;
+  position: relative;
+  border-radius: 10px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.4rem;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8.5px);
+  -webkit-backdrop-filter: blur(8.5px);
+  flex-direction: column;
+}
+
+.authConfirmPasswordForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: black;
+  width: 40vw;
+  height: 40vh;
+  position: relative;
+  border-radius: 10px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.4rem;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8.5px);
+  -webkit-backdrop-filter: blur(8.5px);
+  flex-direction: column;
+}
+
 .alt-login {
   display: flex;
   width: 60%;
@@ -85,7 +123,7 @@
 
 .authInput:focus {
   display: inline-block;
-  box-shadow: 0 0 0 0.2rem #b9abe0;
+  box-shadow: 0 0 0 0.2rem #424549;
   backdrop-filter: blur(12rem);
   border-radius: 10px;
 }
@@ -96,15 +134,28 @@
   font-size: 1rem;
 }
 
-.authInput:focus {
-  outline-color: rgb(32, 177, 255);
+.forgot-password-wrapper a {
+  color: black;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
+  top: 1em;
+}
+
+.forgot-password-wrapper a:hover {
+  color: white;
+  text-decoration: uppercase;
+  transform: scale(1.25);  
+  transition: 0.5s;
 }
 
 .auth-btn {
   display: flex;
   width: 40%;
   height: 3em;
-  background: linear-gradient(to right, #1a1d58 40%, #2e4280 60%);
+  background: linear-gradient(to right, #08113B, #19083B, #082A3B);
   color: white;
   justify-content: center;
   align-items: center;

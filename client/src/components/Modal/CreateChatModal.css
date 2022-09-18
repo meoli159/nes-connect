@@ -13,12 +13,11 @@
 .modalBackground:target {
   opacity: 1;
   pointer-events: all;
-  transition-delay: 0.5s;
 }
     
 .modalContainer {
   margin: auto;
-  width: 25%;
+  width: 35%;
   height: 40%;
   background-color: #1e2124;
   border-radius: 10px;
@@ -91,8 +90,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
 }
 
@@ -140,7 +139,7 @@
   align-items: center;
   justify-content: center;
   background: whitesmoke;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 100%;
   height: 35px;
   padding: 15px;
@@ -159,15 +158,15 @@
   width: 100%;
   height: 20%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 }
   
 .modalContainer .modal-create-footer button {
-  width: 120px;
+  width: 100px;
   height: 35px;
-  margin: 45px;
-  border: none;
+  margin: 15px;
+  border-radius: 5px;
   font-size: 17px;
   font-weight: bolder;
 }

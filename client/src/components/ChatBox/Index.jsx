@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../../redux/messageSlice";
 import messageService from "../../api/messageService";
 import "./style.css";
+import { FaPhone, FaVideo } from 'react-icons/fa';
 
 import io from "socket.io-client";
 const ENDPOINT = "http://localhost:3333";
@@ -87,7 +88,7 @@ export default function ChatBox() {
 
         {currentCommunityButton ? (
           <button className="call-button">
-            <i className="fa fa-phone"></i>
+            <FaPhone />
           </button>
           ) : (
             <>
@@ -96,7 +97,7 @@ export default function ChatBox() {
 
         {currentCommunityButton ? (
           <button className="video-call-button">
-            <i className="fas fa-video"></i>
+            <FaVideo />
           </button>
           ) : (
             <>

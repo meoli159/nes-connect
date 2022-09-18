@@ -5,26 +5,28 @@
 .btns {
   cursor: pointer;
   width: 100%;
-  border-radius: 5px;
 }
   
 .btns--medium {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  font-size: 20px;
-  justify-content: end;
-  letter-spacing: 2px;
+  font-size: 18px;
+  font-weight: bolder;
   color: whitesmoke;
   background: transparent;
+  border-radius: 5px;
 }
 
 .btns--medium:hover {
   transition: all 0.3s ease-out;
-  background: #424549;
+  background: #5e6268;
   color: whitesmoke;
   transition-delay: 0.1s;
 }
 
 .log-out-icon {
   display: inline-flex;
-  margin-left: 55px;
+  margin-left: 5px;
 }

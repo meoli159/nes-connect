@@ -1,6 +1,7 @@
 import React from 'react';
 import './ButtonLogout.css';
 import { Link } from 'react-router-dom';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 const STYLES = ['btns--primary', 'btns--outline', 'btns--test'];
 
@@ -20,7 +21,9 @@ export const ButtonLogout = ({
   const checkButtonSize = SIZES.includes(buttonSize) ? buttonSize : SIZES[0];
 
   return (
-    <Link to='/' className='btns-mobile'>
+    <Link to='/' className='btns-mobile'
+    style={{ color: '#FFF', textDecoration: 'none' }}
+    >
       <button
         className={`btn ${checkButtonStyle} ${checkButtonSize}`}
         onClick={onClick}
@@ -28,7 +31,7 @@ export const ButtonLogout = ({
         {children}
 
         <div className='log-out-icon'>
-          <i className="fas fa-sign-out-alt"></i>
+          <FaSignOutAlt />
         </div>
 
       </button>

@@ -5,9 +5,11 @@ import "./style.css";
 import ServerChatRoom from "../ServerChatRoom";
 import ServerAddButton from "../ServerAddButton";
 import ServerLogo from "../ServerLogo";
+import { FaSearch } from 'react-icons/fa';
 
 export default function Sidebar() {
   const user = useSelector((state) => state.auth.login?.currentUser);
+  const picture = user.pic;
 
   return (
     <div className="side-bar-wrapper">
@@ -32,7 +34,7 @@ export default function Sidebar() {
               />
 
               <div className="sidebar-search-input-icon">
-                <i className="fa fa-search"></i>
+                <FaSearch />
               </div>
             </div>
           </div>
@@ -51,7 +53,7 @@ export default function Sidebar() {
             <div className="sidebar-bottom-user">
               <div className="current-user-image img">
                 <img
-                  src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg?fbclid=IwAR0gLORQDSkOYlg89GKCW0FboJc6Zv2CpboFkVlsg0YSqv2B1PsN4w3jSzA"
+                  src={picture}
                   alt=""
                 />
               </div>

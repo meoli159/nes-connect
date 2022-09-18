@@ -17,6 +17,9 @@
 }
 
 .server-create-room-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 30px;
     height: 30px;
     position: relative;
@@ -28,6 +31,28 @@
 }
 
 .server-create-room-button:hover {
+    transform: scale(1.2);  
+    transition: 0.5s;
+    background: linear-gradient(270deg, #00c6ff 0%, #0072ff 100%);
+    color: black;
+    border-radius: 20%;
+}
+
+.join-group-chat-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    background: #424549;
+    color: whitesmoke;
+}
+
+.join-group-chat-button:hover {
     transform: scale(1.2);  
     transition: 0.5s;
     background: linear-gradient(270deg, #00c6ff 0%, #0072ff 100%);

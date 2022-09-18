@@ -43,6 +43,14 @@ export default function Login() {
           value={password}
         />
 
+        <div className="forgot-password-wrapper">
+          Forgot your password?
+          <Link to="/confirmemail"  
+          style={{ textDecoration: 'none' }}>
+            Click here!
+          </Link>
+        </div>
+
         <button className="auth-btn" type="submit">
           Login
         </button>
@@ -55,7 +63,10 @@ export default function Login() {
         </div>
 
         <div className="authRegister">
-          Not a member?<Link to="/register">Register now!</Link>
+          Not a member?
+          <Link to="/register">
+            Register now!
+          </Link>
         </div>
       </form>
     </div>

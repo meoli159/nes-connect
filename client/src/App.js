@@ -22,6 +22,10 @@ import About from "./pages/About/About";
 import Community from "./pages/Community/Community";
 import Admin from "./pages/Admin/Admin";
 import NoPageFound from "./pages/404/NoPageFound";
+import UserProfile from "./components/UserProfile/UserProfile";
+import ProfileSidebar from "./components/ProfileSidebar";
+import ConfirmEmail from "./pages/Auth/ConfirmEmail";
+import ConfirmPassword from "./pages/Auth/ConfirmPassword";
 
 function App() {
   const user = useSelector((state) => state.auth.login?.currentUser);
@@ -36,6 +40,14 @@ function App() {
       <Footer />
     </>
   );
+
+  const ProfileLayout = () => (
+    <>
+      <ProfileSidebar />
+      <UserProfile />
+    </>
+  )
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -49,12 +61,20 @@ function App() {
           {/* Public Routes without Navbar */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/confirmemail" element={<ConfirmEmail />} />
+          <Route path="/confirmpassword" element={<ConfirmPassword />} />
 
           {/* Protect routes */}
           <Route element={<RequireAuth />}>
             <Route exact path="/app" element={<Community />}/>           
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin" element={<Admin />} />
+
+            <Route element={<ProfileLayout />}>
+              <Route path="/sidebarprofile" element={<ProfileSidebar />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>  
+
           </Route>
           <Route path="*" element={<NoPageFound/>}/>
         </Routes>

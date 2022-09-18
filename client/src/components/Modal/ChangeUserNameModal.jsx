@@ -12,19 +12,25 @@ function ChangeUserNameModal({ closeChangeUserNameModal }) {
 
         <div className='body'>
 
-          <div className='change-user-name-description'>
-            <p>Enter a new username.</p>
-          </div>
+          <div className='change-user-name-wrapper'>
 
-          <div className='change-user-name-title'>
-            <p>Username</p>
-          </div>
+            <div className='change-user-name-description'>
+              <p>Enter a new username.</p>
+            </div>
 
-         <input
-            className="change-user-name"
-            placeholder="New username..."
-            type="text"
-          />
+            <div className='change-user-name-title'>
+              <p>Username</p>
+            </div>
+
+            <div className='change-user-name-input-wrapper'>
+              <input
+                className="change-user-name-input"
+                placeholder="New username..."
+                type="text"
+              />
+            </div>
+
+          </div>
 
         </div>
 

@@ -3,31 +3,44 @@
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    width: 70%;
+    width: 60%;
     height: 35px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 30%;
+    margin-left: 40%;
     background: transparent;
-    cursor: pointer;
     border-radius: 5px; 
+    background: #36393e;
+    
 }
 
 .setting-function-wrapper:hover { 
     transition: 0.5s;
-    background: #424549;
+    background: #5e6268;
 }
 
-.setting-function-title {
-    color: whitesmoke;
+.setting-user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     font-size: 15px;
     font-weight: bolder;
     margin-left: 10px;
 }
 
+.setting-user-profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: whitesmoke;
+    background: transparent;
+    cursor: pointer;
+}
+
 .separator8 {
-    width: 65%;
-    margin-left: 35%;
+    width: 60%;
+    margin-left: 40%;
     border-bottom: 1px solid;
     border-color: #99AAB5;
 }

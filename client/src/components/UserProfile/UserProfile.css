@@ -1,0 +1,232 @@
+.profile-form {
+    width: 85%;
+    height: 100%;
+    padding: 15%;
+    background-color: #36393e;
+}
+  
+.profile-form-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.back-to-chat-box-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.back-to-chat-box-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+    background: #1e2124;
+    border-radius: 50%;
+    border: 2px solid whitesmoke;
+    cursor: pointer;
+}
+
+.back-to-chat-box-button:hover {
+    transform: scale(1.25);
+    transition-delay: 0.2s;
+    transition: 0.5s;
+    background: #36393e;
+    border-color: whitesmoke;
+}
+
+.back-to-chat-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.profile-form-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 10px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: #282b30;
+    flex-direction: column;
+    overflow: hidden;
+}
+  
+.profile-user-image img {
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px; 
+    position: relative;
+    border-radius: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50ch;
+}
+
+.upload-image-file-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+  
+.upload-image-file-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 87px;
+    height: 21px;
+    font-size: 15px;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+    transition: 0.2s;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+  
+.upload-image-file-button input[type="file"] {
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    opacity: 1;
+}
+  
+  
+input[type="file"]::-webkit-file-upload-button {
+    cursor: pointer;
+}
+  
+.profile-user-name {
+    display: flex;
+    width: 100%;
+    margin: 10px;
+    height: 5%;
+    font-size: 20px;
+    font-weight: bolder;
+    align-items: center;
+    justify-content: center;
+    text-transform: none;
+}
+  
+.user-name-title-wrapper {
+    display: inline-flex;
+    width: 95%;
+    height: 15%;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+    background: #36393e;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    text-transform: none;
+}
+  
+.user-name-title {
+    display: flex;
+    max-width: 80%;
+    font-size: 15px;
+    font-weight: bolder;
+}
+  
+span.user-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 60ch;
+    margin-left: 5px;
+    font-weight: lighter;
+}
+  
+.change-user-name-button{
+    width: 75px;
+    height: 40px;
+    border-radius: 5px;
+    background:  #424549;
+    color: whitesmoke;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+}
+  
+.change-user-name-button:hover {
+    transition: 0.5s;
+    background-color: #61656b;
+}
+  
+.user-email-title-wrapper {
+    display: inline-flex;
+    width: 95%;
+    height: 15%;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+    background: #36393e;
+    text-transform: none;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+  
+.user-email-title {
+    display: flex;
+    max-width: 80%;
+    font-size: 15px;
+    font-weight: bolder;
+}
+  
+span.user-email {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 60ch;
+    margin-left: 5px;
+    font-weight: lighter;
+}
+  
+.user-password-title-wrapper {
+    display: inline-flex;
+    width: 95%;
+    height: 15%;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+  
+.user-password-title {
+    display: flex;
+    max-width: 80%;
+    font-size: 15px;
+}
+  
+span.user-password {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90ch;
+}
+  
+.change-user-password-button {
+    width: 75px;
+    height: 40px;
+    border-radius: 5px;
+    background:  cornflowerblue;
+    color: whitesmoke;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+}
+  
+.change-user-password-button:hover {
+    transition: 0.5s;
+    background-color: rgb(51, 108, 214);
+}

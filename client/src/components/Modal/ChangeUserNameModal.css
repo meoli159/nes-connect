@@ -17,7 +17,7 @@
 
 .change-user-name-container {
   margin: auto;
-  width: 25%;
+  width: 35%;
   height: 30%;
   background-color: #1e2124;
   border-radius: 10px;
@@ -37,36 +37,54 @@
 
 .change-user-name-container .body {
   width: 100%;
-  height: 60%;
+  height: 65%;
   padding: 15px;
   align-items: center;
   justify-content: center;
 }
 
+.change-user-name-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
 .change-user-name-description {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%; 
+  height: 40%;
   text-align: center;
+  text-transform: uppercase;
   color: whitesmoke;
   padding: 15px;
-  margin-top: 15px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: lighter;
-  text-transform: none;
 }
 
 .change-user-name-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
   width: 100%; 
-  margin-top: 15px;
-  margin-bottom: 7px;
+  height: 25%;
   color: whitesmoke;
   font-size: 15px;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.change-user-name {
+.change-user-name-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 35%;
+}
+
+.change-user-name-input {
   background: whitesmoke;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 100%;
   height: 40px;
   padding: 15px;
@@ -75,13 +93,7 @@
   font-weight: bold;
 }
 
-.change-user-name:focus {
-  display: inline-block;
-  box-shadow: 0 0 0 0.2rem #ffffff;
-  backdrop-filter: blur(12rem);
-}
-
-.change-user-name::placeholder {
+.change-user-name-input::placeholder {
   color: #00000099;
   font-weight: bold;
   font-size: 15px;
@@ -89,17 +101,19 @@
 
 .change-user-name-container .footer {
   width: 100%;
-  height: 30%;
+  height: 25%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 }
 
 .change-user-name-container .footer button {
-  width: 120px;
-  height: 45px;
-  margin: 45px;
-  border: none;
+  width: 100px;
+  height: 35px;
+  margin: 15px;
+  border-radius: 5px;
+  font-size: 17px;
+  font-weight: bolder;
 }
 
 .cancel-change-user-name-modal {

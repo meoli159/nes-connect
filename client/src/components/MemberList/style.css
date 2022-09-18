@@ -32,32 +32,55 @@
     border-radius: 50%;
 }
 
-.member-name {
+.member-name-wrapper {
     position: absolute;
-    font-size: 15px;
-    font-weight: 500;
     margin-left: 55px;
-    margin-bottom: 5px;
     font-family: 'roboto', sans-serif;
     color: white;
     max-width: 75%;
     display:inline-block;
+    align-items: center;
+    justify-content: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 20ch;
 }
 
-.fa-toilet {
-    margin-left: 5px;
+.host-name {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
-.fa-poop {
-    margin-left: 5px;
+.host-name-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    color: yellow;
+    transform: scale(1.5);
 }
 
-.fa-smile {
-    margin-left: 5px;
+.member-name {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.member-name-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    color: whitesmoke;
+    transform: scale(1.5);
 }
 
 .no-user-display-wrapper {

@@ -51,7 +51,7 @@ export default function Navigation() {
             <ServerLogo />
           </Link>
           <div className='menu-icon' onClick={handleClick}>
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+            <i className={click ? 'FaTimes' : 'FaBars'} />
           </div>
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
 

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import React from "react";
 import "./style.css";
+import { FaJenkins, FaMailchimp, FaGrinWink } from 'react-icons/fa';
 
 function MemberList() {
   const currentCommunityMember = useSelector(
@@ -29,9 +30,14 @@ function MemberList() {
                 />
               </div>
 
-              <div className="member-name">
-                <span>{currentCommunityAdmin?.username}</span>{" "}
-                <i className="fas fa-toilet" style={{ color: "#f3da35" }} />
+              <div className="member-name-wrapper">
+                <span className="host-name">
+                  {currentCommunityAdmin?.username}
+                </span>{" "}
+                <div className="host-name-icon" >
+                  <FaJenkins
+                  />
+                </div>
               </div>
             </div>
 
@@ -46,9 +52,13 @@ function MemberList() {
                     />
                   </div>
 
-                  <div className="member-name">
-                    <span>{member.username}</span>
-                    <i className="fas fa-poop"></i>
+                  <div className="member-name-wrapper">
+                    <span className="member-name">
+                      {member.username}
+                    </span>
+                      <FaMailchimp 
+                      className="member-name-icon"
+                      />
                   </div>
                 </div>
               );
@@ -63,8 +73,7 @@ function MemberList() {
             <div className="no-user-display-description-2">
               <span>
                 Please join or create a group chat, we will show your active
-                friends here
-                <i className="fas fa-smile"></i>
+                friends here.
               </span>
             </div>
           </div>
