@@ -49,8 +49,7 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
       ) : (
         <form className="modal-leave-container">
           <div className="title">
-            <p>Leave Chat</p>
-            <i className="fas fa-exclamation"></i>
+            <p>Leave Chat!</p>
           </div>
           <div className="body">
             <div className="leave-chat-wrapper">
@@ -63,12 +62,7 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
             </div>
           </div>
           <div className="footer">
-            <button
-              className="cancel-leave-chat-modal"
-              onClick={(e) => closeLeaveModal(e.preventDefault(false))}
-            >
-              Cancel
-            </button>
+            <button className="cancel-leave-chat-modal"onClick={handleCloseModal}>Cancel</button>
             <button className="continue-leave-chat-modal">Leave</button>
           </div>
         </form>

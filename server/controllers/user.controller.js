@@ -11,6 +11,29 @@ const getAllUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { userName ,password} = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.userId, 
+      {$set:{
+        userName: userName,
+        password:password,
+      }},
+      {
+      new: true,
+      }
+    );
+    if (!user)
+      return res.status(401).send({ message: "User Not Found" });
+    else {
+      res.json(user);
+    }
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params._id);
@@ -22,5 +45,6 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   getAllUser,
+  updateUser,
   deleteUser,
 };

@@ -17,6 +17,7 @@ const community = require("./routes/community");
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 //Routes
 app.use("/api/auth", auth);
@@ -41,9 +42,7 @@ app.use("/api/message", message);
 //Port
 const PORT = process.env.PORT || 3333;
 
-const server = app.listen(PORT,
-  console.log("Server is listen to port:", PORT),
-);
+const server = app.listen(PORT, console.log("Server is listen to port:", PORT));
 
 //socket
 const io = require("socket.io")(server, {

@@ -9,6 +9,9 @@ import {
   logOutSuccess,
 } from "../redux/authSlice";
 
+import jwt_decode from 'jwt-decode'
+     
+
 const register = (user, dispatch, navigate) => {
   dispatch(registerStart());
   try {
@@ -23,7 +26,7 @@ const register = (user, dispatch, navigate) => {
 const login = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post(`/api/auth/login`, user);
+    const res = await axios.post(`/api/auth/login`, user)
     dispatch(loginSuccess(res.data));
     navigate("/app");
   } catch (error) {
@@ -36,7 +39,7 @@ const logout = async (accessToken, dispatch, id) => {
     await axios.post(`/api/auth/logout`, id, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    localStorage.removeItem("persist:root", "persist:auth");
+    localStorage.removeItem("persist");
     dispatch(logOutSuccess());
   } catch (error) {
     console.log(error);
