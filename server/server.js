@@ -12,6 +12,7 @@ const auth = require("./routes/auth");
 const user = require("./routes/user");
 const message = require("./routes/message");
 const community = require("./routes/community");
+const cloudinary = require("./utils/cloudinary")
 
 //Middleware
 app.use(cors());

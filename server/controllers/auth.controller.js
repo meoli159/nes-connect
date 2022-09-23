@@ -2,6 +2,16 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    {
+      _id: user._id,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "30d" }
+  );
+};
+
 const register = async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password)
@@ -9,61 +19,43 @@ const register = async (req, res) => {
 
   const existingUser = await User.findOne({ email: email });
   if (existingUser) {
-    return res.status(400).json({ message: "User already exists! Login Instead" });
+    return res
+      .status(400)
+      .json({ message: "User already exists! Login Instead" });
   }
 
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = bcrypt.hashSync(password, salt);
-  // Add new user
   const user = new User({
     username,
     email,
-    password: hashedPassword,
+    password,
   });
 
   await user.save((err, user) => {
     if (err) {
       return res.status(500).send({ message: err });
     } else {
-      console.log(user);
+      res.status(200).json(user);
     }
   });
 };
 
-const generateAccessToken = (user) => {
-  return jwt.sign(
-    {
-      _id: user._id,
-      username: user.username,
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: "30d" }
-  );
-};
-
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email: email }).select("+password");
 
-  if (!user) {
-    return res.status(404).send({ message: "Invalid Email!" });
-  }
+  const user = await User.findOne({ email }).select("+password");
 
-  //check password
-  const passwordIsValid = bcrypt.compareSync(password, user.password);
-  if (!passwordIsValid) {
-    return res.status(404).send({ message: "Invalid Password!" });
-  }
-  if (user && passwordIsValid) {
+  if (user && (await user.matchPassword(password))) {
     //Token generate
     const accessToken = generateAccessToken(user);
     res.status(200).json({
       _id: user._id,
       username: user.username,
       email: user.email,
-      pic:user.pic,
+      pic: user.pic,
       accessToken,
     });
+  } else {
+    res.status(404).send({ message: "Invalid Email or Password!" });
   }
 };
 
@@ -73,8 +65,9 @@ const logout = async (req, res) => {
 
 //Reset password
 
-
 module.exports = {
+  generateAccessToken,
+
   logout,
   login,
   register,

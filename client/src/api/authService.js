@@ -39,7 +39,6 @@ const logout = async (accessToken, dispatch, id) => {
     await axios.post(`/api/auth/logout`, id, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    localStorage.removeItem("persist");
     dispatch(logOutSuccess());
   } catch (error) {
     console.log(error);

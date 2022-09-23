@@ -71,7 +71,7 @@ export default function ChatBox() {
       } else {
         setTimeout(() => {
           dispatch(sendMessage(newMessageReceived));
-        }, 3000);
+        }, 2000);
       }
     });
   }, [dispatch]);
