@@ -46,7 +46,7 @@ function CreateChatModal({ closeModal }) {
               <div className='create-chat-room-name-wrapper'> 
 
                 <div className='create-description'>
-                  <p>Give your new group chat a name. You can always change it later. Have fun!</p>
+                  <p>Give your new group chat a name. You can always change it later!</p>
                 </div>
 
                 <div className='create-group-chat-preview-image-wrapper'>
@@ -59,6 +59,7 @@ function CreateChatModal({ closeModal }) {
 
                   <div className='create-group-chat-image-button-wrapper'>
                     <button className='create-group-chat-image-button'>
+                      <p>Upload Image</p>
                       <input 
                         accept="image/*" 
                         type="file" 
@@ -78,7 +79,7 @@ function CreateChatModal({ closeModal }) {
                     className="create-chat-room-name-input"
                     value={communityName}
                     onChange={(e)=>setCommunityName(e.target.value)}
-                    placeholder="Group chat name..."
+                    placeholder="Group Chat Name..."
                     type="text"
                   />
                 </div>
@@ -88,7 +89,7 @@ function CreateChatModal({ closeModal }) {
             </div>
             <div className='modal-create-footer'>
                 <button className='cancel-create-group-modal' onClick={handleCloseModal}>Cancel</button>
-                <button className='continue-create-group-modal'onClick={handleSubmitCreateCommunity}>Continue</button>
+                <button className='continue-create-group-modal'onClick={handleSubmitCreateCommunity}>Create</button>
             </div>
         </form>
     </div>

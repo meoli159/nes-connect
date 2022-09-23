@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import authService from "../../api/authService";
 import { useDispatch, useSelector } from "react-redux";
 import "./Auth.css";
-import { useEffect } from "react";
 
 export default function Login() {
 

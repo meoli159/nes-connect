@@ -6,6 +6,7 @@ import EditGroupNameModal from "../Modal/EditGroupNameModal";
 import AddPeopleModal from "../Modal/AddPeopleModal";
 import LeaveGroupChatModal from "../Modal/LeaveGroupChatModal";
 import { FaPen, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
+import OfflineUser from "../OfflineUser";
 
 function OtherContent() {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -81,24 +82,38 @@ function OtherContent() {
           </div>
             
       </div>
-
-        {currentCommunityButton ? (
-          <div className="separator6" />
-        ) : (
-          <>  
-          </>
-        )} 
         
-        
-        <div className="people-in-chat-text">
+      {currentCommunityButton ? (
+        <div className="online-user-text">
           <span>
-            Active friends
+            Online users
+          </span>
+        </div>) : (
+          <div className="online-user-text-1">
+          <span>
+             Active now
           </span>
         </div>
+        )}
         
-      <div className="current-people-in-chat-list">
-        <MemberList />
-      </div>
+        <div className="online-user-list">
+          <MemberList />
+        </div>
+        
+        {currentCommunityButton ? (
+        <div className="offline-user-text">
+          <span>
+            Offline users
+          </span>
+        </div>) : (
+          <>
+          </>
+        )}
+        
+        <div className="offline-user-list">
+          <OfflineUser />
+        </div>
+
     </div>
   );
 }

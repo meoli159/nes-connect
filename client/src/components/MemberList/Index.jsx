@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import React from "react";
 import "./style.css";
-import { FaJenkins, FaMailchimp, FaGrinWink } from 'react-icons/fa';
+import { FaBiohazard } from 'react-icons/fa';
 
 function MemberList() {
   const currentCommunityMember = useSelector(
@@ -31,6 +31,8 @@ function MemberList() {
                   src={picture}
                   alt=""
                 />
+                <span className='online-icon'>
+                </span>
               </div>
 
               <div className="member-name-wrapper">
@@ -38,7 +40,7 @@ function MemberList() {
                   {currentCommunityAdmin?.username}
                 </span>{" "}
                 <div className="host-name-icon" >
-                  <FaJenkins
+                  <FaBiohazard
                   />
                 </div>
               </div>
@@ -53,15 +55,14 @@ function MemberList() {
                       src={picture}
                       alt=""
                     />
+                    <span className='online-icon'>
+                    </span>
                   </div>
 
                   <div className="member-name-wrapper">
                     <span className="member-name">
                       {member.username}
                     </span>
-                      <FaMailchimp 
-                      className="member-name-icon"
-                      />
                   </div>
                 </div>
               );

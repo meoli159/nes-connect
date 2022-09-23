@@ -44,7 +44,7 @@ function App() {
   const ProfileLayout = () => (
     <>
       <ProfileSidebar />
-      <UserProfile />
+      <Outlet />
     </>
   )
 
@@ -71,8 +71,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
 
             <Route element={<ProfileLayout />}>
-              <Route path="/sidebarprofile" element={<ProfileSidebar />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:userId" element={<Profile />} />
             </Route>  
 
           </Route>

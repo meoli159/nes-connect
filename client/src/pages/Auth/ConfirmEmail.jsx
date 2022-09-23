@@ -1,29 +1,13 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import authService from "../../api/authService";
-import { useDispatch, useSelector } from "react-redux";
 import "./Auth.css";
 
 function ForgotPassword() {
 
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-  
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleSubmit =  (e) => {
-        e.preventDefault();
-        const user = {
-          email,
-          password,
-        };
-        authService.login(user, dispatch, navigate);
-      };
 
   return (
     <div id="Auth" className="Auth">
-      <form className="authConfirmEmailForm" onSubmit={handleSubmit}>
+      <form className="authConfirmEmailForm">
         <h2>Confirm Your Email</h2>
 
         <input
@@ -35,12 +19,8 @@ function ForgotPassword() {
           value={email}
         />
         
-        <button className="auth-btn" type="submit">
-          <Link to="/confirmpassword"
-          style={{ color: '#FFF', textDecoration: 'none' }}
-          >
+        <button className="auth-btn" type="submit">        
             Confirm
-          </Link>
         </button>
 
       </form>

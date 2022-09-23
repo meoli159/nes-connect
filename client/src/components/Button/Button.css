@@ -54,9 +54,9 @@
                 0px 0px 40px #E6DADA;
   }
   .btn--medium:hover {
-    transition: all 0.3s ease-out;
     background: #F6F6F6;
     color: black;
     transform: scale(1.25);  
-    transition-delay: 0.1s;
+    transition: 0.5s;
+    transition-delay: 0.25s;
   }

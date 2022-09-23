@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import "./ChangePassWordModal.css";
-import { FaEyeSlash, FaEye } from 'react-icons/fa'; 
 
 function ChangePassWordModal({ closeChangePassWordModal }) {
 
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
-  const [state, setState] = useState(false);
-
-  const handleShowPassword = () => {
-   setState(prevState => !prevState)
-  };
+  const [crPassword, setCRPassword] = useState("");
 
   return (
     <div className='change-user-password-background'>
 
       <form className='change-user-password-container'>
         <div className='title'>
-          <p>Change Your Password</p>
+          <p>Update Your Password</p>
         </div>
 
         <div className='body'>
@@ -25,7 +20,21 @@ function ChangePassWordModal({ closeChangePassWordModal }) {
           <div className='change-user-password-wrapper'>
 
           <div className='change-user-password-description'>
-            <p>Enter a new password.</p>
+            <p>Enter your current password and a new password.</p>
+          </div>
+          
+          <div className='user-current-password-title'>
+            <p>Current Password</p>
+          </div>
+
+          <div className='user-current-password-input-wrapper'>
+            <input 
+              className='user-current-password-input'
+              type="password"
+              onChange={(e) => setCRPassword(e.target.value)}
+              value={crPassword}
+              placeholder='Current password...'
+            />
           </div>
 
           <div className='change-user-password-title'>
@@ -35,16 +44,11 @@ function ChangePassWordModal({ closeChangePassWordModal }) {
           <div className='change-user-password-input-wrapper'>
             <input 
               className='change-user-password-input'
-              type={state? "text" : "password"} 
+              type="password" 
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               placeholder='New password...'
             />
-
-            <span className='show-button' onClick={handleShowPassword}>
-              {state? <FaEyeSlash /> : <FaEye />}
-            </span>
-
           </div>
           
           <div className='confirm-new-password-title'>
@@ -55,15 +59,10 @@ function ChangePassWordModal({ closeChangePassWordModal }) {
             <input
               className="confirm-new-password-input"
               placeholder="Confirm new password..."
-              type={state? "text" : "password"} 
+              type="password" 
               onChange={(e) => setCPassword(e.target.value)}
               value={cPassword}
             />
-
-            <span className='show-button' onClick={handleShowPassword}>
-              {state? <FaEyeSlash /> : <FaEye />}
-            </span>
-            
           </div>
 
           </div>
@@ -72,7 +71,7 @@ function ChangePassWordModal({ closeChangePassWordModal }) {
 
         <div className='footer'>
           <button className='cancel-change-user-password-modal' onClick={() => closeChangePassWordModal(false)}>Cancel</button>
-          <button className='continue-change-user-password-modal'>Change</button>
+          <button className='continue-change-user-password-modal'>Update</button>
         </div>
       </form>
 

@@ -112,14 +112,16 @@ export default function ChatBox() {
         {messages?.map((el,index) => {
           return (
             <div className="message-received-wrapper" key={index}>
-              <span className="message-user-name">
-                {el.sender.username}
-                <span className="time">
-                  {new Date(el.createdAt).getHours() +
+              <div className="message-user-name-wrapper">
+                <span className="message-user-name">
+                  {el.sender.username}
+                  <span className="time">
+                    {new Date(el.createdAt).getHours() +
                     ":" +
                     new Date(el.createdAt).getMinutes()}
+                  </span>
                 </span>
-              </span>
+              </div>
 
               <span className="message">
                 <span>{el.content}</span>

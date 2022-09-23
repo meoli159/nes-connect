@@ -24,14 +24,16 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
       {communityAdmin._id === user._id ? (
         <form className="modal-leave-container">
           <div className="title">
-            <p>Delete Chat!</p>
+            <p>Delete Chat</p>
           </div>
           <div className="body">
-            <div className="leave-description">
-              <p>
-                Are you sure you want to delete this group chat? You won't be
-                able to see this community again.
-              </p>
+            <div className="leave-chat-wrapper">
+              <div className="leave-description">
+                <p>
+                  Are you sure you want to delete this group chat? You won't be
+                  able to see this community again.
+                </p>
+              </div>
             </div>
           </div>
           <div className="footer">
@@ -51,11 +53,13 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
             <i className="fas fa-exclamation"></i>
           </div>
           <div className="body">
-            <div className="leave-description">
-              <p>
-                Are you sure you want to leave this group chat? You won't be
-                able to rejoin this group chat unless you are re-invited.
-              </p>
+            <div className="leave-chat-wrapper">
+              <div className="leave-description">
+                <p>
+                  Are you sure you want to leave this group chat? You won't be
+                  able to rejoin this group chat unless you are re-invited.
+                </p>
+              </div>
             </div>
           </div>
           <div className="footer">

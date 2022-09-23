@@ -37,67 +37,63 @@ function EditGroupNameModal({ closeEditModal }) {
   };
 
   return (
-    <div className="modalEditBackground">
-      <form className="modalEditContainer">
-        <div className="modal-edit-title">
-          <p>Edit Your Group Chat</p>
-        </div>
-
-        <div className="modal-edit-body">
-          <div className="edit-chat-room-name-wrapper">
-            <div className="edit-description">
-              <p>
-                Give your new group chat a name. You can always change it later.
-                Have fun!
-              </p>
+    <div className='modalEditBackground'>
+        <form className='modalEditContainer'>
+            <div className='modal-edit-title'>
+              <p>Edit Your Group Chat</p>
             </div>
 
-            <div className="edit-group-chat-preview-image-wrapper">
-              <div className="edit-image-preview-wrapper">
-                <img
-                  className="edit-image-preview"
-                  src={file ? URL.createObjectURL(file) : null}
-                  alt={file ? file.name : null}
-                />
-              </div>
+            <div className='modal-edit-body'>
 
-              <div className="edit-group-chat-image-button-wrapper">
-                <button className="edit-group-chat-image-button">
-                  <input accept="image/*" type="file" onChange={fileHandler} />
-                </button>
-              </div>
-            </div>
+              <div className='edit-chat-room-name-wrapper'> 
 
-            <div className="group-chat-title">
-              <p>Group chat name</p>
-            </div>
+                <div className='edit-description'>
+                  <p>Feel free to give your group chat a new name. Have fun!</p>
+                </div>
 
-            <div className="edit-chat-room-name-input-wrapper">
-              <input
-                className="edit-chat-room-name-input"
-                value={editCommunityName}
-                onChange={(e) => setEditCommunityName(e.target.value)}
-                placeholder="Group chat name..."
-                type="text"
-              />
+                <div className='edit-group-chat-preview-image-wrapper'>
+                  <div className='edit-image-preview-wrapper'>
+                    <img className='edit-image-preview' 
+                      src={file? URL.createObjectURL(file) : user?.pic} 
+                      alt={file? file.name : user?.pic}
+                    />
+                  </div>
+
+                  <div className='edit-group-chat-image-button-wrapper'>
+                    <button className='edit-group-chat-image-button'>
+                      <p>Upload Image</p>
+                      <input 
+                        accept="image/*" 
+                        type="file" 
+                        onChange={fileHandler}
+                      />
+                    </button>
+                  </div> 
+
+                </div>
+
+                <div className='group-chat-title'>
+                  <p>Group chat name</p>
+                </div>
+
+                <div className='edit-chat-room-name-input-wrapper'>
+                  <input
+                    className="edit-chat-room-name-input"
+                    value={editCommunityName}
+                    onChange={(e)=>setEditCommunityName(e.target.value)}
+                    placeholder="Edit Your Group Chat Name..."
+                    type="text"
+                  />
+                </div>
+
+              </div>      
+
             </div>
-          </div>
-        </div>
-        <div className="modal-edit-footer">
-          <button
-            className="cancel-edit-group-modal"
-            onClick={handleCloseModal}
-          >
-            Cancel
-          </button>
-          <button
-            className="continue-edit-group-modal"
-            onClick={handleEditCommunity}
-          >
-            Continue
-          </button>
-        </div>
-      </form>
+            <div className='modal-edit-footer'>
+                <button className='cancel-edit-group-modal' onClick={handleCloseModal}>Cancel</button>
+                <button className='continue-edit-group-modal' onClick={handleEditCommunity}>Edit</button>
+            </div>
+        </form>
     </div>
   );
 }

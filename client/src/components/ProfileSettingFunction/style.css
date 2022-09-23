@@ -16,6 +16,7 @@
 
 .setting-function-wrapper:hover { 
     transition: 0.5s;
+    transition-delay: 0.1s;
     background: #5e6268;
 }
 
@@ -29,6 +30,47 @@
 }
 
 .setting-user-profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: whitesmoke;
+    background: transparent;
+    cursor: pointer;
+}
+
+.setting-function-wrapper-1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 60%;
+    height: 35px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 40%;
+    background: transparent;
+    border-radius: 5px; 
+    background: #36393e;
+    
+}
+
+.setting-function-wrapper-1:hover { 
+    transition: 0.5s;
+    transition-delay: 0.1s;
+    background: #5e6268;
+}
+
+.setting-user-profile-1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 15px;
+    font-weight: bolder;
+    margin-left: 10px;
+}
+
+.setting-user-profile-button-1 {
     display: flex;
     align-items: center;
     justify-content: center;
