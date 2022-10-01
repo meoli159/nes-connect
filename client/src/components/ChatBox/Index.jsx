@@ -3,18 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../../redux/messageSlice";
 import messageService from "../../api/messageService";
 import "./style.css";
-import { FaPhone, FaVideo } from 'react-icons/fa';
-
-import io from "socket.io-client";
-const ENDPOINT = "http://localhost:3333";
-var socket, currentChattingWith;
+import { FaPhone, FaVideo } from "react-icons/fa";
+import { useContext } from "react";
+import { SocketContext } from "../../utils/context/SocketContext";
 
 export default function ChatBox() {
-  const user = useSelector((state) => state.auth.login?.currentUser);
-
-  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
-  const currentCommunityButton = useSelector((state)=> state.messages.currentCommunity?.communityName);
-  const currentCommunityChatInput = useSelector((state)=> state.messages.currentCommunity?.communityName);
+  const user = useSelector((state) => state.auth?.currentUser);
+  const socket = useContext(SocketContext);
+  const currentCommunity = useSelector(
+    (state) => state.messages?.currentCommunity
+  );
+  const currentCommunityName = currentCommunity?.communityName;
 
   const messages = useSelector((state) => state.messages?.messages);
   const [textChat, setTextChat] = useState("");
@@ -23,10 +22,9 @@ export default function ChatBox() {
   const scrollDiv = createRef();
 
   useEffect(() => {
-    socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected");
-  }, [user]);
+  }, [socket, user]);
 
   const handleChatSubmit = (e) => {
     if (e.key === "Enter" && textChat) {
@@ -35,7 +33,6 @@ export default function ChatBox() {
         user?.accessToken,
         socket,
         dispatch
-        
       );
       setTextChat("");
     }
@@ -49,10 +46,8 @@ export default function ChatBox() {
       user?.accessToken,
       socket,
       dispatch
-      
     );
-    currentChattingWith = currentCommunity;
-  }, [currentCommunity, dispatch, user?.accessToken]);
+  }, [currentCommunity, dispatch, socket, user?.accessToken]);
 
   useEffect(() => {
     const scrollToBottom = (node) => {
@@ -63,68 +58,59 @@ export default function ChatBox() {
 
   useEffect(() => {
     socket.on("received-message", (newMessageReceived) => {
-      if (
-        !currentChattingWith ||
-        currentChattingWith._id !== newMessageReceived.community._id
-      ) {
+      if (!newMessageReceived.community._id) {
         console.log("no message!");
       } else {
-        setTimeout(() => {
-          dispatch(sendMessage(newMessageReceived));
-        }, 2000);
+        dispatch(sendMessage(newMessageReceived));
       }
     });
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   return (
     <div className="chat-box-wrapper">
       <div className="chat-box-top ">
         <div className="chat-box-top-wrapper">
-
           <div className="chat-box-room-name">
             <span>{currentCommunity?.communityName}</span>
           </div>
         </div>
 
-        {currentCommunityButton ? (
+        {currentCommunityName ? (
           <button className="call-button">
             <FaPhone />
           </button>
-          ) : (
-            <>
-            </>
-          )}
+        ) : (
+          <></>
+        )}
 
-        {currentCommunityButton ? (
+        {currentCommunityName ? (
           <button className="video-call-button">
             <FaVideo />
           </button>
-          ) : (
-            <>
-            </>
-          )}
-        
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="separator3" />
 
       <div ref={scrollDiv} className="chat-box-page">
-        {messages?.map((el,index) => {
+        {messages?.map((message, index) => {
           return (
-            <div className="message-received-wrapper" key={index}>
+            <div className="message-received-wrapper" key={message._id}>
               <div className="message-user-name-wrapper">
                 <span className="message-user-name">
-                  {el.sender.username}
+                  {message.sender.username}
                   <span className="time">
-                    {new Date(el.createdAt).getHours() +
-                    ":" +
-                    new Date(el.createdAt).getMinutes()}
+                    {new Date(message.createdAt).getHours() +
+                      ":" +
+                      new Date(message.createdAt).getMinutes()}
                   </span>
                 </span>
               </div>
 
               <span className="message">
-                <span>{el.content}</span>
+                <span>{message.content}</span>
               </span>
             </div>
           );
@@ -132,26 +118,25 @@ export default function ChatBox() {
       </div>
 
       <div className="separator4" />
-        <div className="main-room-bottom">
-
-      {currentCommunityChatInput? (
-        <div className="chat-input-container">
-          <div className="chat-input-wrapper">
-            <div className="chat-input-content">
-            <input
-                type="text"
-                className="chat-input-text"
-                value={textChat}
-                onChange={(e) => setTextChat(e.target.value)}
-                onKeyDown={handleChatSubmit}
-                placeholder="Message"
-              />
+      <div className="main-room-bottom">
+        {currentCommunityName ? (
+          <div className="chat-input-container">
+            <div className="chat-input-wrapper">
+              <div className="chat-input-content">
+                <input
+                  type="text"
+                  className="chat-input-text"
+                  value={textChat}
+                  onChange={(e) => setTextChat(e.target.value)}
+                  onKeyDown={handleChatSubmit}
+                  placeholder="Message"
+                />
+              </div>
             </div>
           </div>
-        </div>
-              ) : (
-                <></>
-              )}
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

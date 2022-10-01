@@ -22,22 +22,6 @@ const userSlice = createSlice({
       state.users.isFetching = false;
       state.users.error = true;
     },
-    updateUsersStart: (state) => {
-      state.users.isFetching = true;
-    },
-    updateUsersSuccess: (state, action) => {
-      state.users.isFetching = false;
-      state.users.allUsers.map((user)  => {
-        if (user._id === action.payload._id) {
-          user.username = action.payload.username;
-        }
-       
-      });
-    },
-    updateUsersFailed: (state) => {
-      state.users.isFetching = false;
-      state.users.error = true;
-    },
     deleteUserStart: (state) => {
       state.users.isFetching = true;
     },
@@ -57,9 +41,6 @@ export const {
   getUsersStart,
   getUsersSuccess,
   getUsersFailed,
-  updateUsersStart,
-  updateUsersSuccess,
-  updateUsersFailed,
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailed,

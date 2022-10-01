@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCommunity } from "../../redux/messageSlice";
-import chatService from "../../api/communityService";
+import chatService, { getCommunityList } from "../../api/communityService";
 import "./style.css";
+import { fetchCommunityThunk } from "../../redux/community/communityThunk";
 
 export default function ServerChatRoom() {
-  const user = useSelector((state) => state.auth.login?.currentUser);
+  const user = useSelector((state) => state.auth?.currentUser);
   const communityList = useSelector(
-    (state) => state.communities?.communityList
+    (state) => state.communities?.communities
   );
   const dispatch = useDispatch();
 
@@ -15,28 +16,24 @@ export default function ServerChatRoom() {
     dispatch(selectCommunity(community));
   };
   useEffect(() => {
-    if (user?.accessToken) {
-      chatService.getCommunityList(user?.accessToken, dispatch);
-    }
-  }, []);
+    dispatch(fetchCommunityThunk())
+  }, [dispatch, user?.accessToken]);
   return (
     <div>
       <div>
-        {communityList?.map((el, index) => {
+        {communityList?.map((community) => {
           return (
             <div
               className="server-chat-room-wrapper"
-              key={index}
-              onClick={() => handleSelectChat(el)}
+              key={community._id}
+              onClick={() => handleSelectChat(community)}
             >
               <div className="server-chat-room-image img">
-                <img src="https://icon-library.com/images/coffee-icon/coffee-icon-4.jpg" 
-                alt="" 
-                />
+                <img src={community.pic} alt="" />
               </div>
 
               <div className="server-chat-room-name">
-                <span>{el.communityName}</span>
+                <span>{community.communityName}</span>
               </div>
             </div>
           );

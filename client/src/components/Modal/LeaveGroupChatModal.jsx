@@ -6,7 +6,7 @@ import "./LeaveGroupChatModal.css";
 function LeaveGroupChatModal({ closeLeaveModal }) {
   const communityAdmin = useSelector((state) => state.messages.currentCommunity?.communityAdmin);
   const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
-  const user = useSelector((state) => state.auth.login?.currentUser);
+  const user = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch()
 
   const handleCloseModal = (e)=>{

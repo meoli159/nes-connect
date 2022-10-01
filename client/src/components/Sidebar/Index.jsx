@@ -5,11 +5,10 @@ import "./style.css";
 import ServerChatRoom from "../ServerChatRoom";
 import ServerAddButton from "../ServerAddButton";
 import ServerLogo from "../ServerLogo";
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch } from "react-icons/fa";
 
 export default function Sidebar() {
-  const user = useSelector((state) => state.auth.login?.currentUser);
-  const picture = user.pic;
+  const user = useSelector((state) => state.auth.currentUser);
 
   return (
     <div className="side-bar-wrapper">
@@ -52,10 +51,7 @@ export default function Sidebar() {
           <Link to="/profile" style={{ color: "#FFF", textDecoration: "none" }}>
             <div className="sidebar-bottom-user">
               <div className="current-user-image img">
-                <img
-                  src={picture}
-                  alt=""
-                />
+                <img src={user.pic} alt="" />
               </div>
 
               <div className="current-user-name-text">

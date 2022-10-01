@@ -1,45 +1,15 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 
-const getAllUser = async (req, res) => {
-  try {
-    const user = await User.find();
-    res.status(200).json(user);
-    return;
-  } catch (error) {
-    res.status(500).json(error.message);
-    return;
-  }
-};
-
-const updateUser = async (req, res) => {
-  try {
-    const { username, oldPassword, password } = req.body;
-    const user = await User.findById(req.user._id).select("+password");
-
-    if (user) {
-      user.username = username || user.username;
-      
-      if (password) {
-        const passwordValid = await user.matchPassword(oldPassword,user.password);
-        if (!passwordValid) {
-          return res.status(400).send({message:"Please enter correct old password"});
-        } 
-          user.password = password || user.password;
-          console.log(passwordValid)
+const searchUser = async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        email: { $regex: req.query.search, $options: "i" },
       }
-    }
-  
-    const updatedUser = await user.save();
-    res.json({
-      _id: updatedUser._id,
-      username: updatedUser.username,
-      email: updatedUser.email,
-      pic: updatedUser.pic
-    });
-  } catch (error) {
-    return res.status(400).send(error.message);
-  }
+    : {};
+
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  res.send(users);
 };
 
 const deleteUser = async (req, res) => {
@@ -52,7 +22,6 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-  getAllUser,
-  updateUser,
+  searchUser,
   deleteUser,
 };

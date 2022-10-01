@@ -16,6 +16,10 @@ const messageSlice = createSlice({
       state.isFetching = false;
       state.currentCommunity = action.payload;
     },
+    // addUser:(state, action) => {
+    //   state.isFetching = false;
+    //   state.currentCommunity = action.payload;
+    // },
     sendMessage: (state, action) => {
       state.messages = [...state.messages,action.payload];
       state.isFetching = false;
@@ -34,6 +38,7 @@ const messageSlice = createSlice({
 export const {
   getMessageStart,
   selectCommunity,
+  // addUser,
   getMessageSuccess,
   sendMessage,
   getMessageFailed,

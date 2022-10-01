@@ -1,21 +1,17 @@
 import { useSelector } from "react-redux";
 import React from "react";
 import "./style.css";
-import { FaBiohazard } from 'react-icons/fa';
+import { FaBiohazard } from "react-icons/fa";
 
 function MemberList() {
-  const currentCommunityMember = useSelector(
-    (state) => state.messages.currentCommunity?.users
+  const user = useSelector((state) => state.auth?.currentUser);
+  const selectedCommunity = useSelector(
+    (state) => state.messages?.currentCommunity
   );
-  const currentCommunityAdmin = useSelector(
-    (state) => state.messages.currentCommunity?.communityAdmin
-  );
+  const currentCommunityMember = selectedCommunity?.users;
+  const currentCommunityAdmin = selectedCommunity?.communityAdmin;
+  const currentCommunity = selectedCommunity.communityName;
 
-  const currentCommunity = useSelector(
-    (state) => state.messages.currentCommunity?.communityName
-  );
-
-  const user = useSelector((state) => state.auth.login?.currentUser);
   const picture = user.pic;
 
   return (
@@ -27,21 +23,16 @@ function MemberList() {
 
             <div className="member-in-chat-wrapper">
               <div className="member-image">
-                <img
-                  src={picture}
-                  alt=""
-                />
-                <span className='online-icon'>
-                </span>
+                <img src={picture} alt="" />
+                <span className="online-icon"></span>
               </div>
 
               <div className="member-name-wrapper">
                 <span className="host-name">
                   {currentCommunityAdmin?.username}
                 </span>{" "}
-                <div className="host-name-icon" >
-                  <FaBiohazard
-                  />
+                <div className="host-name-icon">
+                  <FaBiohazard />
                 </div>
               </div>
             </div>
@@ -51,18 +42,12 @@ function MemberList() {
               return (
                 <div className="member-in-chat-wrapper" key={member._id}>
                   <div className="member-image img">
-                    <img
-                      src={picture}
-                      alt=""
-                    />
-                    <span className='online-icon'>
-                    </span>
+                    <img src={picture} alt="" />
+                    <span className="online-icon"></span>
                   </div>
 
                   <div className="member-name-wrapper">
-                    <span className="member-name">
-                      {member.username}
-                    </span>
+                    <span className="member-name">{member.username}</span>
                   </div>
                 </div>
               );

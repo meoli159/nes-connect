@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosClient from "./createInstance";
 import {
   getMessageStart,
   getMessageSuccess,
@@ -9,7 +9,7 @@ import {
 const fetchMessages = async ( communityId, accessToken,socket,dispatch) => {
   dispatch(getMessageStart());
   try {
-    const res = await axios.get(`/api/message/${communityId}`, {
+    const res = await axiosClient.get(`/message/${communityId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     socket.emit("join chat",communityId);
@@ -21,7 +21,7 @@ const fetchMessages = async ( communityId, accessToken,socket,dispatch) => {
 
 const sendMessages = async (msg, accessToken,socket, dispatch) => {
   try {
-    const res = await axios.post(`/api/message`,msg, {
+    const res = await axiosClient.post(`/message`,msg, {
       headers: { Authorization: `Bearer ${accessToken}` },
     },
     );

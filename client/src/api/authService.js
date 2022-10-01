@@ -1,54 +1,40 @@
-import axios from "axios";
+import axiosClient from "./createInstance";
 import {
-  loginFailed,
-  loginStart,
-  loginSuccess,
-  registerStart,
-  registerSuccess,
-  registerFailed,
   logOutSuccess,
-} from "../redux/authSlice";
+  updateUsersStart,
+  updateUsersSuccess,
+  updateUsersFailed,
+} from "../redux/auth/authSlice";
 
-import jwt_decode from 'jwt-decode'
-     
-
-const register = (user, dispatch, navigate) => {
-  dispatch(registerStart());
-  try {
-    axios.post(`/api/auth/register`, user);
-    dispatch(registerSuccess());
-    navigate("/login");
-  } catch (error) {
-    dispatch(registerFailed());
-  }
+export const register = (user) => {
+ const res = axiosClient.post(`/auth/register`, user);
+ return res.data
 };
 
-const login = async (user, dispatch, navigate) => {
-  dispatch(loginStart());
-  try {
-    const res = await axios.post(`/api/auth/login`, user)
-    dispatch(loginSuccess(res.data));
-    navigate("/app");
-  } catch (error) {
-    dispatch(loginFailed());
-  }
+export const login = async (user) => {
+  const res = await axiosClient.post(`/auth/login`, user);
+  return res.data
 };
 
-const logout = async (accessToken, dispatch, id) => {
+const updateUser = async (user, accessToken, dispatch) => {
+  dispatch(updateUsersStart());
   try {
-    await axios.post(`/api/auth/logout`, id, {
+    const res = await axiosClient.put(`/auth`, user, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    dispatch(logOutSuccess());
+    dispatch(updateUsersSuccess(res.data));
   } catch (error) {
-    console.log(error);
+    dispatch(updateUsersFailed());
   }
+};
+
+export const logout = async (dispatch, id) => {
+  await axiosClient.post(`/auth/logout`, id);
+  dispatch(logOutSuccess());
 };
 
 const authService = {
-  register,
-  login,
-  logout,
+  updateUser,
 };
 
 export default authService;

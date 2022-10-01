@@ -8,14 +8,14 @@ import { FaTimes } from 'react-icons/fa';
 
 
 export default function UserProfile() {
-  const user = useSelector((state) => state.auth.login?.currentUser);
+  const user = useSelector((state) => state.auth?.currentUser);
   const email = user.email;
   
  
   const [openChangeUserNameModal, setOpenChangeUserNameModal] = useState(false);
   const [openChangePassWordModal, setOpenChangePassWordModal] = useState(false);
 
-  const [file, setFile] = React.useState(null);
+  const [file, setFile] = useState(null);
     
   const fileHandler = (e) => {
       setFile(e.target.files[0])

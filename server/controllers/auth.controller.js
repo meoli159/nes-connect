@@ -6,6 +6,7 @@ const generateAccessToken = (user) => {
   return jwt.sign(
     {
       _id: user._id,
+      username: user.username
     },
     process.env.JWT_SECRET,
     { expiresIn: "30d" }
@@ -59,6 +60,38 @@ const login = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { username, oldPassword, password } = req.body;
+    const user = await User.findById(req.user._id).select("+password");
+
+    if (user) {
+      user.username = username || user.username;
+      
+      if (password) {
+        const passwordValid = await user.matchPassword(oldPassword,user.password);
+        if (!passwordValid) {
+          return res.status(400).send({message:"Please enter correct old password"});
+        } 
+          user.password = password || user.password;
+          console.log(passwordValid)
+      }
+    }
+    
+    const updatedUser = await user.save();
+    const accessToken = generateAccessToken(updatedUser);
+    res.json({
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      pic: updatedUser.pic,
+      accessToken
+    });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+};
+
 const logout = async (req, res) => {
   res.status(200).json("Logged out!");
 };
@@ -67,7 +100,7 @@ const logout = async (req, res) => {
 
 module.exports = {
   generateAccessToken,
-
+  updateUser,
   logout,
   login,
   register,
