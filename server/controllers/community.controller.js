@@ -5,13 +5,11 @@ const Community = db.community;
 const getCommunity = async (req, res) => {
   try {
     await Community.find({
-      $or: [
-        { communityAdmin: { $eq: req.user._id } },
-        { users: { $elemMatch: { $eq: req.user._id } } },
-      ],
+      users: { $elemMatch: { $eq: req.user._id } },
     })
       .populate("users")
       .populate("communityAdmin")
+      .sort({ createdAt: -1 })
       .then((results) => {
         res.status(200).send(results);
       });

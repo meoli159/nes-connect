@@ -19,39 +19,23 @@ function MemberList() {
       <div>
         {currentCommunity ? (
           <div>
-            {/* Group Admin display */}
+            {currentCommunityMember?.map((member) => (
+              <div className="member-in-chat-wrapper" key={member._id}>
+                <div className="member-image img">
+                  <img src={picture} alt="" />
+                  <span className="online-icon"></span>
+                </div>
 
-            <div className="member-in-chat-wrapper">
-              <div className="member-image">
-                <img src={picture} alt="" />
-                <span className="online-icon"></span>
-              </div>
-
-              <div className="member-name-wrapper">
-                <span className="host-name">
-                  {currentCommunityAdmin?.username}
-                </span>{" "}
-                <div className="host-name-icon">
-                  <FaBiohazard />
+                <div className="member-name-wrapper">
+                  <span className="member-name">{member.username}</span>
+                  {member._id === currentCommunityAdmin._id && (
+                    <div className="host-name-icon">
+                      <FaBiohazard />
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-
-            {/* Member display */}
-            {currentCommunityMember?.map((member) => {
-              return (
-                <div className="member-in-chat-wrapper" key={member._id}>
-                  <div className="member-image img">
-                    <img src={picture} alt="" />
-                    <span className="online-icon"></span>
-                  </div>
-
-                  <div className="member-name-wrapper">
-                    <span className="member-name">{member.username}</span>
-                  </div>
-                </div>
-              );
-            })}
+            ))}
           </div>
         ) : (
           <div className="no-user-display-wrapper">

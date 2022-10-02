@@ -10,5 +10,5 @@ export const fetchCommunityThunk = createAsyncThunk("community/fetch", async() =
   });
 
 export const createCommunityThunk = createAsyncThunk("community/create",async(community)=>{
-    return await  createCommunityAPI(community);
+    return await createCommunityAPI(community);
 })

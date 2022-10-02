@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCommunityThunk } from "./communityThunk";
+import { createCommunityThunk, fetchCommunityThunk } from "./communityThunk";
 
 
 
@@ -11,9 +11,6 @@ const communitySlice = createSlice({
     error: false,
   },
   reducers: {
-    createCommunity: (state, action) => {
-      state.communities.unshift(action.payload);
-    },
     renameCommunitySuccess: (state, action) => {
       const communityL = state.communities.map((community) => {
         if (community._id === action.payload._id) {
@@ -43,11 +40,13 @@ const communitySlice = createSlice({
     .addCase(fetchCommunityThunk.fulfilled, (state, action) => {
       state.communities = action.payload;
     })
+    .addCase(createCommunityThunk.fulfilled,(state,action)=>{
+      state.communities.unshift(action.payload.community);
+    })
   },
 });
 
 export const {
-  createCommunity,
   renameCommunitySuccess,
   deleteCommunitySuccess,
   pending,
