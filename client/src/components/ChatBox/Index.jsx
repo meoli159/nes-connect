@@ -6,8 +6,10 @@ import "./style.css";
 import { FaPhone, FaVideo } from "react-icons/fa";
 import { useContext } from "react";
 import { SocketContext } from "../../utils/context/SocketContext";
+import { fetchMessagesThunk } from "../../redux/message/messageThunk";
 
 export default function ChatBox() {
+  let lastSenderId = undefined;
   const user = useSelector((state) => state.auth?.currentUser);
   const socket = useContext(SocketContext);
   const currentCommunity = useSelector(
@@ -41,13 +43,9 @@ export default function ChatBox() {
   useEffect(() => {
     //select chat so that user can join same community
     if (!currentCommunity._id) return;
-    messageService.fetchMessages(
-      currentCommunity?._id,
-      user?.accessToken,
-      socket,
-      dispatch
-    );
-  }, [currentCommunity, dispatch, socket, user?.accessToken]);
+    dispatch(fetchMessagesThunk(currentCommunity._id));
+    socket.emit("join chat", currentCommunity._id);
+  }, [currentCommunity, dispatch, socket]);
 
   useEffect(() => {
     const scrollToBottom = (node) => {
@@ -66,6 +64,35 @@ export default function ChatBox() {
     });
   }, [dispatch, socket]);
 
+  const mapMessages = (message) => {
+    let showMessageHeader =
+      !lastSenderId || message.sender._id !== lastSenderId;
+    lastSenderId = message.sender._id;
+
+    return (
+      <div className="message-received-wrapper" key={message._id}>
+        {showMessageHeader && (
+          <div className="message-user-name-wrapper">
+            <span className="sender-image img">
+              <img src={message.sender.pic} alt="" />
+            </span>
+            <span className="message-user-name">
+              {message.sender.username}
+              <span className="time">
+                {new Date(message.createdAt).getHours() +
+                  ":" +
+                  new Date(message.createdAt).getMinutes()}
+              </span>
+            </span>
+          </div>
+        )}
+        <div className="message">
+          <span>{message.content}</span>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="chat-box-wrapper">
       <div className="chat-box-top ">
@@ -76,17 +103,14 @@ export default function ChatBox() {
         </div>
 
         {currentCommunityName ? (
-          <button className="call-button">
-            <FaPhone />
-          </button>
-        ) : (
-          <></>
-        )}
-
-        {currentCommunityName ? (
-          <button className="video-call-button">
-            <FaVideo />
-          </button>
+          <>
+            <button className="call-button">
+              <FaPhone />
+            </button>
+            <button className="video-call-button">
+              <FaVideo />
+            </button>
+          </>
         ) : (
           <></>
         )}
@@ -95,26 +119,7 @@ export default function ChatBox() {
       <div className="separator3" />
 
       <div ref={scrollDiv} className="chat-box-page">
-        {messages?.map((message, index) => {
-          return (
-            <div className="message-received-wrapper" key={message._id}>
-              <div className="message-user-name-wrapper">
-                <span className="message-user-name">
-                  {message.sender.username}
-                  <span className="time">
-                    {new Date(message.createdAt).getHours() +
-                      ":" +
-                      new Date(message.createdAt).getMinutes()}
-                  </span>
-                </span>
-              </div>
-
-              <span className="message">
-                <span>{message.content}</span>
-              </span>
-            </div>
-          );
-        })}
+        {messages.map(mapMessages)}
       </div>
 
       <div className="separator4" />

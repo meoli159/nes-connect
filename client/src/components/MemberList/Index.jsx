@@ -5,9 +5,7 @@ import { FaBiohazard } from "react-icons/fa";
 
 function MemberList() {
   const user = useSelector((state) => state.auth?.currentUser);
-  const selectedCommunity = useSelector(
-    (state) => state.messages?.currentCommunity
-  );
+  const selectedCommunity = useSelector((state) => state.messages?.currentCommunity);
   const currentCommunityMember = selectedCommunity?.users;
   const currentCommunityAdmin = selectedCommunity?.communityAdmin;
   const currentCommunity = selectedCommunity.communityName;

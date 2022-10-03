@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchMessagesThunk } from "./message/messageThunk";
 
 const messageSlice = createSlice({
   name: "message",
@@ -9,39 +10,21 @@ const messageSlice = createSlice({
     error: false,
   },
   reducers: {
-    getMessageStart: (state) => {
-      state.isFetching = true;
-    },
     selectCommunity: (state, action) => {
       state.isFetching = false;
       state.currentCommunity = action.payload;
     },
-    // addUser:(state, action) => {
-    //   state.isFetching = false;
-    //   state.currentCommunity = action.payload;
-    // },
     sendMessage: (state, action) => {
-      state.messages = [...state.messages,action.payload];
-      state.isFetching = false;
+      state.messages = [...state.messages, action.payload];
     },
-    getMessageSuccess: (state, action) => {
-      state.messages = action.payload;
-      state.isFetching = false;
-    },
-    getMessageFailed: (state) => {
-      state.isFetching = false;
-      state.error = true;
-    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchMessagesThunk.fulfilled, (state, action) => {
+      state.messages= action.payload;
+    });
   },
 });
 
-export const {
-  getMessageStart,
-  selectCommunity,
-  // addUser,
-  getMessageSuccess,
-  sendMessage,
-  getMessageFailed,
-} = messageSlice.actions;
+export const { selectCommunity, sendMessage } = messageSlice.actions;
 
 export default messageSlice.reducer;
