@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import authService from "../../api/authService";
+import { useDispatch } from "react-redux";
+import { updateUserThunk } from "../../redux/auth/authThunk";
 import "./ChangePassWordModal.css";
 
 function ChangePassWordModal({ closeChangePassWordModal }) {
-  const user = useSelector((state) => state.auth?.currentUser);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -20,11 +19,10 @@ function ChangePassWordModal({ closeChangePassWordModal }) {
     if (password !== confirmPassword) {
       return console.error("Confirm password not matched");
     } else {
-      authService.updateUser(
-        { oldPassword: oldPassword, password: password },
-        user?.accessToken,
-        dispatch
-      );
+      dispatch(updateUserThunk(
+        { oldPassword: oldPassword, password: password }
+
+      ));
       
     }
     handleCloseModal(e);

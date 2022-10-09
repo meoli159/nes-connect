@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCommunity } from "../../redux/messageSlice";
+import { selectCommunity } from "../../redux/message/messageSlice";
 import "./style.css";
 import { fetchCommunityThunk } from "../../redux/community/communityThunk";
 
@@ -16,7 +16,7 @@ export default function ServerChatRoom() {
    
       dispatch(fetchCommunityThunk());
     
-  }, [dispatch, user.accessToken]);
+  }, [dispatch]);
   return (
     <div>
       <div>

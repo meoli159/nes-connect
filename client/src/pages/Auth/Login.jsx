@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../../api/authService";
 import { useDispatch } from "react-redux";
-import "./Auth.css";
 import { loginThunk } from "../../redux/auth/authThunk";
+import "./Auth.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -11,14 +10,16 @@ export default function Login() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const user = {
       email,
       password,
     };
-    dispatch(loginThunk(user)).then(() => navigate("/app"));
+    dispatch(loginThunk(user)).then(() => {
+      navigate("/app");
+    });
   };
 
   return (

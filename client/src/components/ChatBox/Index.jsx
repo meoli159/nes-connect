@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessage } from "../../redux/messageSlice";
+import { sendMessage } from "../../redux/message/messageSlice";
 import messageService from "../../api/messageService";
 import "./style.css";
 import { FaPhone, FaVideo } from "react-icons/fa";
@@ -22,11 +22,7 @@ export default function ChatBox() {
 
   const dispatch = useDispatch();
   const scrollDiv = createRef();
-
-  useEffect(() => {
-    socket.emit("setup", user);
-    socket.on("connected");
-  }, [socket, user]);
+  
 
   const handleChatSubmit = (e) => {
     if (e.key === "Enter" && textChat) {
@@ -43,9 +39,10 @@ export default function ChatBox() {
   useEffect(() => {
     //select chat so that user can join same community
     if (!currentCommunity._id) return;
-    dispatch(fetchMessagesThunk(currentCommunity._id));
-    socket.emit("join chat", currentCommunity._id);
-  }, [currentCommunity, dispatch, socket]);
+    dispatch(fetchMessagesThunk(currentCommunity._id)).then(() => {
+      socket.emit("onCommunityJoin", currentCommunity);
+    });
+  }, [currentCommunity, currentCommunityName, dispatch, socket]);
 
   useEffect(() => {
     const scrollToBottom = (node) => {
@@ -55,7 +52,7 @@ export default function ChatBox() {
   }, [scrollDiv]);
 
   useEffect(() => {
-    socket.on("received-message", (newMessageReceived) => {
+    socket.on("onReceivedMessage", (newMessageReceived) => {
       if (!newMessageReceived.community._id) {
         console.log("no message!");
       } else {

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Routes,
-  Route,
-  Outlet,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, Outlet, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // components
@@ -28,7 +22,11 @@ function App() {
   const user = useSelector((state) => state.auth?.currentUser);
   const location = useLocation();
   const RequireAuth = () => {
-    return user ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;
+    return user ? (
+      <Outlet />
+    ) : (
+      <Navigate to="/login" state={{ from: location }} replace />
+    );
   };
   const SidebarLayout = () => (
     <>
@@ -46,33 +44,30 @@ function App() {
   );
 
   return (
- 
-      <Routes>
-        {/* Public Routes with Navbar */}
-        <Route element={<SidebarLayout />}>
-          <Route path="/about" element={<About />} />
-          <Route index element={<Home />} />
+    <Routes>
+      {/* Public Routes with Navbar */}
+      <Route element={<SidebarLayout />}>
+        <Route path="/about" element={<About />} />
+        <Route index element={<Home />} />
+      </Route>
+
+      {/* Public Routes without Navbar */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/confirmemail" element={<ConfirmEmail />} />
+      <Route path="/confirmpassword" element={<ConfirmPassword />} />
+
+      {/* Protect routes */}
+      <Route element={<RequireAuth />}>
+        <Route exact path="/app" element={<Community />} />
+        <Route path="/profile" element={<Profile />} />
+
+        <Route element={<ProfileLayout />}>
+          <Route path="/profile/:userId" element={<Profile />} />
         </Route>
-
-        {/* Public Routes without Navbar */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/confirmemail" element={<ConfirmEmail />} />
-        <Route path="/confirmpassword" element={<ConfirmPassword />} />
-
-        {/* Protect routes */}
-        <Route element={<RequireAuth />}>
-          <Route exact path="/app" element={<Community />} />
-          <Route path="/profile" element={<Profile />} />
-
-
-          <Route element={<ProfileLayout />}>
-            <Route path="/profile/:userId" element={<Profile />} />
-          </Route>
-        </Route>
-        <Route path="*" element={<NoPageFound />} />
-      </Routes>
-
+      </Route>
+      <Route path="*" element={<NoPageFound />} />
+    </Routes>
   );
 }
 

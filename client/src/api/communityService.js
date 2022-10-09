@@ -5,7 +5,7 @@ import {
   deleteCommunitySuccess,
   pending,
 } from "../redux/community/communitySlice";
-import { selectCommunity } from "../redux/messageSlice";
+import { selectCommunity } from "../redux/message/messageSlice";
 
 export const getCommunityList = async () => {
   const res = await axiosClient.get(`/community`);

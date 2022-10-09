@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchMessagesThunk } from "./message/messageThunk";
+import { fetchMessagesThunk } from "./messageThunk";
 
 const messageSlice = createSlice({
   name: "message",
@@ -19,9 +19,10 @@ const messageSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchMessagesThunk.fulfilled, (state, action) => {
+    builder
+    .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
       state.messages= action.payload;
-    });
+    })
   },
 });
 

@@ -8,28 +8,58 @@ exports.socketConnection = (server) => {
     pingTimeout: 15000,
   });
 
+  let usersData = [];
+
+  const addUser = (userId, socketId) => {
+    !usersData.some((user) => user.userId === userId) &&
+      usersData.push( {userId, socketId} );
+  };
+
+  const removeUser = (socketId) => {
+    usersData = (usersData.filter((user) => user.socketId !== socketId));
+  };
+
   io.on("connection", (socket) => {
-    socket.on("setup", (userData) => {
-      socket.join(userData._id);
-      socket.emit("connected");
+    socket.on("connected", (data) => {
+      addUser(data, socket.id);
+      io.emit("getUsers", usersData);
+      console.log("a user connected: " + data);
     });
 
-    socket.on("join chat", (room) => {
-      socket.join(room);
-      console.log("joined room " + room);
+    socket.on("disconnect", () => {
+      console.log("a user disconnected");
+      removeUser(socket.id);
+      io.emit("getUsers", usersData);
     });
 
-    socket.on("new message", (newMessageReceived) => {
+    socket.on("onCommunityJoin", (room) => {
+      socket.join(room._id);
+      console.log("joined community " + room._id, room.communityName);
+    });
+
+    socket.on("getOnlineCommunityUsers", (room) => {
+      if (!room._id) return;
+      let onlineUsers = [];
+      let offlineUsers = [];
+      room.users.forEach((user) => {
+        const getUserSocket = usersData.some(
+          (userD) => user._id == userD.userId
+        );
+
+        getUserSocket ? onlineUsers.push(user) : offlineUsers.push(user);
+      });
+
+      socket.emit("onlineCommunityUsersReceived", {
+        onlineUsers,
+        offlineUsers,
+      });
+    });
+
+    socket.on("onMessage", (newMessageReceived) => {
       var community = newMessageReceived.community;
       if (!community.users) return console.log("community users not defined");
-
       if (community._id == newMessageReceived.sender._id) return;
-
-      socket.to(community._id).emit("received-message", newMessageReceived);
-    });
-
-    socket.off("setup", () => {
-      socket.leave(userData._id);
+      socket.to(community._id).emit("onReceivedMessage", newMessageReceived);
     });
   });
 };

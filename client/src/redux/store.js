@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice";
 import userReducer from "./userSlice";
 import communityReducer from "./community/communitySlice";
-import messageReducer from "./messageSlice";
+import messageReducer from "./message/messageSlice";
 import {
   persistStore,
   persistReducer,

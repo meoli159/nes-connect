@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, registerThunk } from "./authThunk";
+import { loginThunk, registerThunk, updateUserThunk } from "./authThunk";
 
 const authSlice = createSlice({
   name: "auth",
@@ -20,15 +20,13 @@ const authSlice = createSlice({
       })
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.currentUser = action.payload;
-      });
+      })
+      .addCase(updateUserThunk.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
+      })
   },
 });
 
-export const {
-  updateUsersStart,
-  updateUsersSuccess,
-  updateUsersFailed,
-  logOutSuccess,
-} = authSlice.actions;
+export const { logOutSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

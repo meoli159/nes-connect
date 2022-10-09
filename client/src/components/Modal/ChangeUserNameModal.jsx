@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import authService from "../../api/authService";
+import { updateUserThunk } from "../../redux/auth/authThunk";
 import "./ChangeUserNameModal.css";
 
 function ChangeUserNameModal({ closeChangeUserNameModal }) {
@@ -16,11 +17,7 @@ function ChangeUserNameModal({ closeChangeUserNameModal }) {
 
   const handleUpdateUserName = async (e) => {
     e.preventDefault();
-    authService.updateUser(
-      { username: editUserName },
-      user?.accessToken,
-      dispatch
-    );
+    dispatch(updateUserThunk({username:editUserName}))
     handleCloseModal(e);
   };
   return (

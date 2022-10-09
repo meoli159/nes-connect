@@ -43,7 +43,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({email:email}).select("+password");
 
   if (user && (await user.matchPassword(password))) {
     //Token generate

@@ -1,5 +1,5 @@
 import axiosClient from "./createInstance";
-import { sendMessage } from "../redux/messageSlice";
+import { sendMessage } from "../redux/message/messageSlice";
 
 export const fetchMessages = async (communityId) => {
   const res = await axiosClient.get(`/message/${communityId}`);
@@ -11,7 +11,7 @@ const sendMessages = async (msg, accessToken, socket, dispatch) => {
   const res = await axiosClient.post(`/message`, msg, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
-  socket.emit("new message", res.data);
+  socket.emit("onMessage", res.data);
   dispatch(sendMessage(res.data));
 };
 const messageService = {
