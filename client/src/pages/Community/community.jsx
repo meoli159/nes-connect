@@ -11,9 +11,6 @@ export default function Community() {
   const socket = useContext(SocketContext);
   useEffect(() => {
     socket.emit("connected", user._id);
-    socket.on("getUsers", (users) => {
-      console.log(users);
-    });
   }, [socket, user]);
   return (
     <div className="app-wrapper">

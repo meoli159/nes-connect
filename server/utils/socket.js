@@ -11,12 +11,15 @@ exports.socketConnection = (server) => {
   let usersData = [];
 
   const addUser = (userId, socketId) => {
-    !usersData.some((user) => user.userId === userId) &&
-      usersData.push( {userId, socketId} );
+    !usersData.some((data) => data.userId === userId) &&
+      usersData.push({ userId, socketId });
   };
-
   const removeUser = (socketId) => {
-    usersData = (usersData.filter((user) => user.socketId !== socketId));
+    usersData = usersData.filter((data) => data.socketId !== socketId);
+  };
+  const getUserSocket = (user) => {
+   return usersData.some((data) => user._id == data.userId);
+  
   };
 
   io.on("connection", (socket) => {
@@ -32,6 +35,11 @@ exports.socketConnection = (server) => {
       io.emit("getUsers", usersData);
     });
 
+    // socket.on("onCommunityReceiveNewUser",(user)=>{
+    //   if(!room._id) return;
+    //   const socket = getUserSocket(user)
+    // })
+
     socket.on("onCommunityJoin", (room) => {
       socket.join(room._id);
       console.log("joined community " + room._id, room.communityName);
@@ -42,11 +50,9 @@ exports.socketConnection = (server) => {
       let onlineUsers = [];
       let offlineUsers = [];
       room.users.forEach((user) => {
-        const getUserSocket = usersData.some(
-          (userD) => user._id == userD.userId
-        );
+        const socket = getUserSocket(user);
 
-        getUserSocket ? onlineUsers.push(user) : offlineUsers.push(user);
+        socket ? onlineUsers.push(user) : offlineUsers.push(user);
       });
 
       socket.emit("onlineCommunityUsersReceived", {
