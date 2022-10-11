@@ -5,13 +5,11 @@ const Community = db.community;
 const getCommunity = async (req, res) => {
   try {
     await Community.find({
-      $or: [
-        { communityAdmin: { $eq: req.user._id } },
-        { users: { $elemMatch: { $eq: req.user._id } } },
-      ],
+      users: { $elemMatch: { $eq: req.user._id } },
     })
       .populate("users")
       .populate("communityAdmin")
+      .sort({ createdAt: -1 })
       .then((results) => {
         res.status(200).send(results);
       });
@@ -27,6 +25,7 @@ const createCommunity = (req, res) => {
   const community = new Community({
     communityName: req.body.communityName,
     communityAdmin: req.user,
+    users: req.user,
   });
   community.save((err, community) => {
     if (err) {
@@ -34,9 +33,7 @@ const createCommunity = (req, res) => {
       return;
     } else {
       res.status(200).send({
-        communityId: community._id,
-        communityName: community.communityName,
-        communityAdmin: community.communityAdmin,
+        community,
       });
     }
   });
@@ -57,7 +54,7 @@ const renameCommunity = async (req, res) => {
     )
       .populate("users")
       .populate("communityAdmin");
-      
+
     if (!updatedCommunity)
       return res.status(401).send({ message: "Community Not Found" });
     else {
@@ -81,11 +78,11 @@ const deleteCommunity = async (req, res) => {
 //add user to community
 const addUserToCommunity = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const email = await User.findOne({ email: req.body.email });
     const added = await Community.findByIdAndUpdate(
       req.params.communityId,
       {
-        $addToSet: { users: userId },
+        $push: { users: email },
       },
       {
         new: true,
@@ -93,7 +90,6 @@ const addUserToCommunity = async (req, res) => {
     )
       .populate("users")
       .populate("communityAdmin");
-
     if (!added)
       return res.status(404).send({ message: "Community Not Found!!" });
     else {

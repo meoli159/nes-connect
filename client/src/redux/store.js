@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authSlice";
+import authReducer from "./auth/authSlice";
 import userReducer from "./userSlice";
-import communityReducer from "./communitySlice";
-import messageReducer from "./messageSlice";
+import communityReducer from "./community/communitySlice";
+import messageReducer from "./message/messageSlice";
 import {
   persistStore,
   persistReducer,
@@ -14,7 +14,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { encryptTransform } from "redux-persist-transform-encrypt";
+// import { encryptTransform } from "redux-persist-transform-encrypt";
 
 // const encrypt = encryptTransform({
 //   secretKey: "nes-still-connecting-OKey",
@@ -28,18 +28,12 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist:['auth'],
+  whitelist:["auth"],
   // transforms: [encrypt],
 };
-const authConfig = {
-  key: "auth",
-  version: 1,
-  storage,
-  whitelist:['login'],
-  // transforms: [encrypt],
-};
+
 const rootReducer = combineReducers({
-  auth:persistReducer( authConfig,authReducer),
+  auth:authReducer,
   users: userReducer,
   communities: communityReducer,
   messages: messageReducer,

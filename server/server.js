@@ -1,22 +1,23 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-const path = require("path");
 const cors = require("cors");
+
 //Env file & DB connect
 dotenv.config();
 require("./database/DBconnect");
-const app = express();
 
+const app = express();
 const auth = require("./routes/auth");
 const user = require("./routes/user");
 const message = require("./routes/message");
 const community = require("./routes/community");
+const { socketConnection } = require("./utils/socket");
 
-//Middleware
-app.use(cors());
+app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use("/api/auth", auth);
@@ -41,41 +42,6 @@ app.use("/api/message", message);
 //Port
 const PORT = process.env.PORT || 3333;
 
-const server = app.listen(PORT,
-  console.log("Server is listen to port:", PORT),
-);
+const server = app.listen(PORT, console.log("Server is listen to port:", PORT));
 
-//socket
-const io = require("socket.io")(server, {
-  pingTimeout: 60000,
-  cors: {
-    origin: "http://localhost:3000",
-  },
-});
-
-io.on("connection", (socket) => {
-  // console.log("Io connected");
-
-  socket.on("setup", (userData) => {
-    socket.join(userData._id);
-    socket.emit("connected");
-  });
-
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log("joined room " + room);
-  });
-
-  socket.on("new message", (newMessageReceived) => {
-    var community = newMessageReceived.community;
-    if (!community.users) return console.log("community users not defined");
-
-    if (community._id == newMessageReceived.sender._id) return;
-
-    socket.to(community._id).emit("received-message", newMessageReceived);
-  });
-
-  socket.off("setup", () => {
-    socket.leave(userData._id);
-  });
-});
+socketConnection(server);

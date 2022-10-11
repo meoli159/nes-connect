@@ -1,32 +1,28 @@
 import React, { useEffect, useState, createRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessage } from "../../redux/messageSlice";
+import { sendMessage } from "../../redux/message/messageSlice";
 import messageService from "../../api/messageService";
 import "./style.css";
-import { FaPhone, FaVideo } from 'react-icons/fa';
-
-import io from "socket.io-client";
-const ENDPOINT = "http://localhost:3333";
-var socket, currentChattingWith;
+import { FaPhone, FaVideo } from "react-icons/fa";
+import { useContext } from "react";
+import { SocketContext } from "../../utils/context/SocketContext";
+import { fetchMessagesThunk } from "../../redux/message/messageThunk";
 
 export default function ChatBox() {
-  const user = useSelector((state) => state.auth.login?.currentUser);
-
-  const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
-  const currentCommunityButton = useSelector((state)=> state.messages.currentCommunity?.communityName);
-  const currentCommunityChatInput = useSelector((state)=> state.messages.currentCommunity?.communityName);
+  let lastSenderId = undefined;
+  const user = useSelector((state) => state.auth?.currentUser);
+  const socket = useContext(SocketContext);
+  const currentCommunity = useSelector(
+    (state) => state.messages?.currentCommunity
+  );
+  const currentCommunityName = currentCommunity?.communityName;
 
   const messages = useSelector((state) => state.messages?.messages);
   const [textChat, setTextChat] = useState("");
 
   const dispatch = useDispatch();
   const scrollDiv = createRef();
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connected");
-  }, [user]);
+  
 
   const handleChatSubmit = (e) => {
     if (e.key === "Enter" && textChat) {
@@ -35,7 +31,6 @@ export default function ChatBox() {
         user?.accessToken,
         socket,
         dispatch
-        
       );
       setTextChat("");
     }
@@ -44,15 +39,10 @@ export default function ChatBox() {
   useEffect(() => {
     //select chat so that user can join same community
     if (!currentCommunity._id) return;
-    messageService.fetchMessages(
-      currentCommunity?._id,
-      user?.accessToken,
-      socket,
-      dispatch
-      
-    );
-    currentChattingWith = currentCommunity;
-  }, [currentCommunity, dispatch, user?.accessToken]);
+    dispatch(fetchMessagesThunk(currentCommunity._id)).then(() => {
+      socket.emit("onCommunityJoin", currentCommunity);
+    });
+  }, [currentCommunity, currentCommunityName, dispatch, socket]);
 
   useEffect(() => {
     const scrollToBottom = (node) => {
@@ -62,96 +52,93 @@ export default function ChatBox() {
   }, [scrollDiv]);
 
   useEffect(() => {
-    socket.on("received-message", (newMessageReceived) => {
-      if (
-        !currentChattingWith ||
-        currentChattingWith._id !== newMessageReceived.community._id
-      ) {
+    socket.on("onReceivedMessage", (newMessageReceived) => {
+      if (!newMessageReceived.community._id) {
         console.log("no message!");
       } else {
-        setTimeout(() => {
-          dispatch(sendMessage(newMessageReceived));
-        }, 3000);
+        dispatch(sendMessage(newMessageReceived));
       }
     });
-  }, [dispatch]);
+  }, [dispatch, socket]);
+
+  const mapMessages = (message) => {
+    let showMessageHeader =
+      !lastSenderId || message.sender._id !== lastSenderId;
+    lastSenderId = message.sender._id;
+
+    return (
+      <div className="message-received-wrapper" key={message._id}>
+        {showMessageHeader && (
+          <div className="message-user-name-wrapper">
+            <span className="sender-image img">
+              <img src={message.sender.pic} alt="" />
+            </span>
+            <span className="message-user-name">
+              {message.sender.username}
+              <span className="time">
+                {new Date(message.createdAt).getHours() +
+                  ":" +
+                  new Date(message.createdAt).getMinutes()}
+              </span>
+            </span>
+          </div>
+        )}
+        <div className="message">
+          <span>{message.content}</span>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="chat-box-wrapper">
       <div className="chat-box-top ">
         <div className="chat-box-top-wrapper">
-
           <div className="chat-box-room-name">
             <span>{currentCommunity?.communityName}</span>
           </div>
         </div>
 
-        {currentCommunityButton ? (
-          <button className="call-button">
-            <FaPhone />
-          </button>
-          ) : (
-            <>
-            </>
-          )}
-
-        {currentCommunityButton ? (
-          <button className="video-call-button">
-            <FaVideo />
-          </button>
-          ) : (
-            <>
-            </>
-          )}
-        
+        {currentCommunityName ? (
+          <>
+            <button className="call-button">
+              <FaPhone />
+            </button>
+            <button className="video-call-button">
+              <FaVideo />
+            </button>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="separator3" />
 
       <div ref={scrollDiv} className="chat-box-page">
-        {messages?.map((el,index) => {
-          return (
-            <div className="message-received-wrapper" key={index}>
-              <div className="message-user-name-wrapper">
-                <span className="message-user-name">
-                  {el.sender.username}
-                  <span className="time">
-                    {new Date(el.createdAt).getHours() +
-                    ":" +
-                    new Date(el.createdAt).getMinutes()}
-                  </span>
-                </span>
-              </div>
-
-              <span className="message">
-                <span>{el.content}</span>
-              </span>
-            </div>
-          );
-        })}
+        {messages.map(mapMessages)}
       </div>
 
       <div className="separator4" />
-        <div className="main-room-bottom">
-
-      {currentCommunityChatInput? (
-        <div className="chat-input-container">
-          <div className="chat-input-wrapper">
-            <div className="chat-input-content">
-            <input
-                type="text"
-                className="chat-input-text"
-                value={textChat}
-                onChange={(e) => setTextChat(e.target.value)}
-                onKeyDown={handleChatSubmit}
-                placeholder="Message"
-              />
+      <div className="main-room-bottom">
+        {currentCommunityName ? (
+          <div className="chat-input-container">
+            <div className="chat-input-wrapper">
+              <div className="chat-input-content">
+                <input
+                  type="text"
+                  className="chat-input-text"
+                  value={textChat}
+                  onChange={(e) => setTextChat(e.target.value)}
+                  onKeyDown={handleChatSubmit}
+                  placeholder="Message"
+                />
+              </div>
             </div>
           </div>
-        </div>
-              ) : (
-                <></>
-              )}
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

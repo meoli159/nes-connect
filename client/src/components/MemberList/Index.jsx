@@ -1,75 +1,65 @@
 import { useSelector } from "react-redux";
-import React from "react";
 import "./style.css";
-import { FaBiohazard } from 'react-icons/fa';
+import React, { useEffect, useContext, useState } from "react";
+import { SocketContext } from "../../utils/context/SocketContext";
+import { OnlineCommunityMembers } from "./OnlineCommunityMembers";
+import { OfflineCommunityMembers } from "./OfflineCommunityMembers";
 
 function MemberList() {
-  const currentCommunityMember = useSelector(
-    (state) => state.messages.currentCommunity?.users
+  // const user = useSelector((state) => state.auth?.currentUser);
+  const selectedCommunity = useSelector(
+    (state) => state.messages?.currentCommunity
   );
-  const currentCommunityAdmin = useSelector(
-    (state) => state.messages.currentCommunity?.communityAdmin
-  );
+  const communityId = selectedCommunity?._id;
+  const socket = useContext(SocketContext);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
-  const currentCommunity = useSelector(
-    (state) => state.messages.currentCommunity?.communityName
-  );
+  useEffect(() => {
+    socket.emit("getOnlineCommunityUsers", selectedCommunity);
+    const interval = setInterval(() => {
+      console.log(`ping community ${communityId}`);
+      socket.emit("getOnlineCommunityUsers", selectedCommunity);
+    }, 5000);
 
-  const user = useSelector((state) => state.auth.login?.currentUser);
-  const picture = user.pic;
+    socket.on("onlineCommunityUsersReceived", (users) => {
+      console.log("received onlineCommunityUsersReceived event");
+      console.log(users);
+      setOnlineUsers(users.onlineUsers);
+    });
+
+    return () => {
+      console.log("Clearing Interval for member list");
+      clearInterval(interval);
+      socket.off("onlineCommunityUsersReceived");
+    };
+  }, [communityId, selectedCommunity, socket]);
 
 
   return (
-    <div>
-      <div>
-        {currentCommunity ? (
-          <div>
-            
-            {/* Group Admin display */}
-
-            <div className="member-in-chat-wrapper">
-              <div className="member-image">
-                <img
-                  src={picture}
-                  alt=""
-                />
-                <span className='online-icon'>
-                </span>
-              </div>
-
-              <div className="member-name-wrapper">
-                <span className="host-name">
-                  {currentCommunityAdmin?.username}
-                </span>{" "}
-                <div className="host-name-icon" >
-                  <FaBiohazard
-                  />
-                </div>
-              </div>
+    <>
+      <div className="member-list-wrapper">
+        {selectedCommunity._id ? (
+          <>
+            <div className="online-user-text">
+              <span>Online users</span>
+            </div>
+            <div className="online-user-list">
+              <OnlineCommunityMembers
+                communityMembers={onlineUsers}
+                community={selectedCommunity}
+              />
             </div>
 
-            {/* Member display */}
-            {currentCommunityMember?.map((member) => {
-              return (
-                <div className="member-in-chat-wrapper" key={member._id}>
-                  <div className="member-image img">
-                    <img
-                      src={picture}
-                      alt=""
-                    />
-                    <span className='online-icon'>
-                    </span>
-                  </div>
-                  
-                  <div className="member-name-wrapper">
-                    <span className="member-name">
-                      {member.username}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+            <div className="offline-user-text">
+              <span>Offline users</span>
+            </div>
+            <div className="offline-user-list">
+            <OfflineCommunityMembers
+              onlineUsers={onlineUsers}
+              community={selectedCommunity}
+            />
+            </div>
+          </>
         ) : (
           <div className="no-user-display-wrapper">
             <div className="no-user-display-description-1">
@@ -85,7 +75,7 @@ function MemberList() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
 

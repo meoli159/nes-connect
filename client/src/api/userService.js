@@ -1,30 +1,15 @@
 
-import axios from "axios";
+import axiosClient from "./createInstance";
 import {
     deleteUserFailed,
     deleteUserStart,
     deleteUserSuccess,
-    getUsersFailed,
-    getUsersStart,
-    getUsersSuccess,
   } from "../redux/userSlice";
 
-  const getAllUsers = async (accessToken, dispatch) => {
-    dispatch(getUsersStart());
-    try {
-      const res = await axios.get(`/api/user`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      dispatch(getUsersSuccess(res.data));
-    } catch (error) {
-      dispatch(getUsersFailed());
-    }
-  };
-  
   const deleteUser = async (accessToken, dispatch, id, navigate) => {
     dispatch(deleteUserStart());
     try {
-      const res = await axios.delete(`/api/user/${id}` , {
+      const res = await axiosClient.delete(`/user/${id}` , {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       localStorage.clear();
@@ -37,7 +22,6 @@ import {
   };
 
   const userService = {
-    getAllUsers,
     deleteUser,
   };
   

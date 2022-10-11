@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./Auth.css";
-import authService from "../../api/authService";
+import { registerThunk } from "../../redux/auth/authThunk";
 
 export default function Register() {
   const [username, setUserName] = useState("");
@@ -24,7 +24,7 @@ export default function Register() {
     if (password !== cPassword) {
       return console.error("Confirm password not matched");
     } else {
-      authService.register(user, dispatch, navigate);
+      dispatch(registerThunk(user)).then(() => navigate("/login"));
     }
   };
 

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
-import MemberList from "../MemberList/";
+import MemberList from "../MemberList/Index";
 import "./style.css";
 import EditGroupNameModal from "../Modal/EditGroupNameModal";
 import AddPeopleModal from "../Modal/AddPeopleModal";
@@ -84,7 +84,7 @@ function OtherContent() {
             
       </div>
         
-      {currentCommunityButton ? (
+      {/* {currentCommunityButton ? (
         <div className="online-user-text">
           <span>
             Online users
@@ -95,13 +95,13 @@ function OtherContent() {
              Active now
           </span>
         </div>
-        )}
+        )} */}
         
-        <div className="online-user-list">
+        <div>
           <MemberList />
         </div>
         
-        {currentCommunityButton ? (
+        {/* {currentCommunityButton ? (
         <div className="offline-user-text">
           <span>
             Offline users
@@ -113,7 +113,7 @@ function OtherContent() {
         
         <div className="offline-user-list">
           <OfflineUser />
-        </div>
+        </div> */}
 
     </div>
   );

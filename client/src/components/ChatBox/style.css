@@ -116,13 +116,26 @@
 .message-user-name-wrapper {
     display: inline-flex;
 }
+.sender-image img {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    margin-top: 4px;
+    background-size:cover;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+} 
 
 .message-user-name {
     display: inline-flex;
     align-content: center;
     justify-content: flex-start;
     margin-left: 15px;
-    margin-top: 5px;
+    margin-top: 8px;
     margin-bottom: 5px;
     font-size: 18px;
     font-family: 'Roboto', sans-serif;
@@ -149,9 +162,9 @@ span.message-user-name {
 
 .message {
     display: flex;
-    margin-left: 15px;
-    margin-bottom: 5px;
-    
+    margin-left: 50px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     font-size: 15px;
     font-weight: 400;
 }
