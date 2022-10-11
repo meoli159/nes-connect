@@ -3,9 +3,6 @@ import { useSelector } from "react-redux";
 import "./style.css";
 
 function OfflineUser() {
-  const currentCommunityMember = useSelector(
-    (state) => state.messages.currentCommunity?.users
-  );
 
   const currentCommunity = useSelector(
     (state) => state.messages.currentCommunity?.communityName
@@ -24,9 +21,9 @@ function OfflineUser() {
         {currentCommunity ? (
           <div>
             {/*Offline Member display */}
-            {currentCommunityMember?.map((member) => {
+            {offlineUsers?.map((user) => {
               return (
-                <div className="offline-member-in-chat-wrapper" key={member._id}>
+                <div className="offline-member-in-chat-wrapper" key={user._id}>
                   <div className="offline-member-image img">
                     <img
                       src={picture}
@@ -36,7 +33,7 @@ function OfflineUser() {
 
                   <div className="offline-member-name-wrapper">
                     <span className="offline-member-name">
-                      {member.username}
+                      {user.username}
                     </span>
                   </div>
                 </div>

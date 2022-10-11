@@ -225,7 +225,7 @@ span.server-chat-box-name-2 {
 
 .online-user-list {
   overflow-y: auto;
-  
+  max-height: 65%;
 }
 
 .offline-user-text {

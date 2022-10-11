@@ -14,6 +14,7 @@ function OtherContent() {
   const [openLeaveModal, setOpenLeaveModal] = useState(false);
   const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
   const currentCommunityButton = useSelector((state)=> state.messages.currentCommunity?.communityName);
+
   return (
     <div className="other-content-wrapper">
       <div className="other-content-container-top">

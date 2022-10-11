@@ -18,11 +18,13 @@ function MemberList() {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const picture = user.pic;
 
+
   return (
     <div>
       <div>
         {currentCommunity ? (
           <div>
+            
             {/* Group Admin display */}
 
             <div className="member-in-chat-wrapper">
@@ -58,7 +60,7 @@ function MemberList() {
                     <span className='online-icon'>
                     </span>
                   </div>
-
+                  
                   <div className="member-name-wrapper">
                     <span className="member-name">
                       {member.username}
