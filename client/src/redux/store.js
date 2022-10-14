@@ -3,6 +3,7 @@ import authReducer from "./auth/authSlice";
 import userReducer from "./userSlice";
 import communityReducer from "./community/communitySlice";
 import messageReducer from "./message/messageSlice";
+import communitySidebarReducer from "./communityMemberSidebarSlice"
 import {
   persistStore,
   persistReducer,
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   users: userReducer,
   communities: communityReducer,
   messages: messageReducer,
+  communitySidebar : communitySidebarReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

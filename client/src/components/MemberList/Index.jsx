@@ -1,18 +1,34 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./style.css";
 import React, { useEffect, useContext, useState } from "react";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { OnlineCommunityMembers } from "./OnlineCommunityMembers";
 import { OfflineCommunityMembers } from "./OfflineCommunityMembers";
-
+import {
+  setContextMenuLocation,
+  setSelectedUser,
+  toggleContextMenu,
+} from "../../redux/communityMemberSidebarSlice";
+import { ContextMenu } from "../ContextMenu";
 function MemberList() {
-  // const user = useSelector((state) => state.auth?.currentUser);
+  const communitySidebarState = useSelector((state) => state.communitySidebar);
   const selectedCommunity = useSelector(
     (state) => state.messages?.currentCommunity
   );
   const communityId = selectedCommunity?._id;
   const socket = useContext(SocketContext);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleEventListener = () => dispatch(toggleContextMenu(false));
+    window.addEventListener("click", handleEventListener);
+    window.addEventListener("resize", handleEventListener);
+    return () => {
+      window.removeEventListener("click", handleEventListener);
+      window.removeEventListener("resize", handleEventListener);
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     socket.emit("getOnlineCommunityUsers", selectedCommunity);
@@ -30,6 +46,20 @@ function MemberList() {
     };
   }, [communityId, selectedCommunity, socket]);
 
+  // useEffect(() => {
+  //   const handleResize = () => dispatch(toggleContextMenu(false));
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, [dispatch]);
+
+  const onUserContextMenu = (e, user) => {
+    e.preventDefault();
+    console.log("Open context menu!!!");
+    dispatch(toggleContextMenu(true));
+    dispatch(setContextMenuLocation({ x: e.clientX, y: e.clientY }));
+    dispatch(setSelectedUser(user));
+  };
+
   return (
     <>
       <div className="member-list-wrapper">
@@ -40,6 +70,8 @@ function MemberList() {
             </div>
             <div className="online-user-list">
               <OnlineCommunityMembers
+                onUserContextMenu={onUserContextMenu}
+                onClickUserHandle={setSelectedUser}
                 communityMembers={onlineUsers}
                 community={selectedCommunity}
               />
@@ -50,10 +82,15 @@ function MemberList() {
             </div>
             <div className="offline-user-list">
               <OfflineCommunityMembers
+                onUserContextMenu={onUserContextMenu}
+                onClickUserHandle={setSelectedUser}
                 onlineUsers={onlineUsers}
                 community={selectedCommunity}
               />
             </div>
+            {communitySidebarState.showUserContextMenu && (
+              <ContextMenu point={communitySidebarState.points} />
+            )}
           </>
         ) : (
           <div className="no-user-display-wrapper">
