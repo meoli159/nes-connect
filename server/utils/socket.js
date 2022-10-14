@@ -18,41 +18,33 @@ exports.socketConnection = (server) => {
     usersData = usersData.filter((data) => data.socketId !== socketId);
   };
   const getUserSocket = (user) => {
-   return usersData.some((data) => user._id == data.userId);
-  
+    return usersData.some((data) => user._id == data.userId);
   };
 
   io.on("connection", (socket) => {
     socket.on("connected", (data) => {
       addUser(data, socket.id);
       io.emit("getUsers", usersData);
-      console.log("a user connected: " + data);
+      // console.log("a user connected: " + data);
     });
 
     socket.on("disconnect", () => {
-      console.log("a user disconnected");
+      // console.log("a user disconnected");
       removeUser(socket.id);
       io.emit("getUsers", usersData);
     });
 
-    // socket.on("onCommunityReceiveNewUser",(user)=>{
-    //   if(!room._id) return;
-    //   const socket = getUserSocket(user)
-    // })
-
-    socket.on("onCommunityJoin", (room) => {
-      socket.join(room._id);
-      console.log("joined community " + room._id, room.communityName);
+    socket.on("onCommunityJoin", (community) => {
+      socket.join(community._id);
+      // console.log("joined community " + community._id, community.communityName);
     });
 
-    socket.on("getOnlineCommunityUsers", (room) => {
-      if (!room._id) return;
+    socket.on("getOnlineCommunityUsers", (community) => {
+      if (!community._id) return;
       let onlineUsers = [];
       let offlineUsers = [];
-      room.users.forEach((user) => {
-        const socket = getUserSocket(user);
-
-        socket ? onlineUsers.push(user) : offlineUsers.push(user);
+      community.users.forEach((user) => {
+        getUserSocket(user) ? onlineUsers.push(user) : offlineUsers.push(user);
       });
 
       socket.emit("onlineCommunityUsersReceived", {
@@ -66,6 +58,19 @@ exports.socketConnection = (server) => {
       if (!community.users) return console.log("community users not defined");
       if (community._id == newMessageReceived.sender._id) return;
       socket.to(community._id).emit("onReceivedMessage", newMessageReceived);
+    });
+
+    socket.on("onCommunity", (data) => {
+      if (!data) return;
+      var community = data.community;
+
+      
+      io.to(community._id).emit("onCommunityReceiveNewUser", data);
+      usersData.some((userD) => {
+        if (data.user._id === userD.userId) {
+          userD.socketId && socket.to(userD.socketId).emit("onCommunityAdd", data);
+        }
+      });
     });
   });
 };

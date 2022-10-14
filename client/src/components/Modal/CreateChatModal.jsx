@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createCommunityThunk } from "../../redux/community/communityThunk";
+import { createCommunityThunk, fetchCommunityThunk } from "../../redux/community/communityThunk";
 import "./CreateChatModal.css";
 
 function CreateChatModal({ closeModal }) {
@@ -22,7 +22,9 @@ function CreateChatModal({ closeModal }) {
       user: user,
     };
 
-    dispatch(createCommunityThunk(community));
+    dispatch(createCommunityThunk(community)).then(()=>{
+      dispatch(fetchCommunityThunk())
+    });
     handleCloseModal(e);
   };
 

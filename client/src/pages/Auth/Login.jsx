@@ -17,9 +17,9 @@ export default function Login() {
       email,
       password,
     };
-    dispatch(loginThunk(user)).then(() => {
-      navigate("/app");
-    });
+    dispatch(loginThunk(user)).then(()=>{navigate("/app");})
+    
+    
   };
 
   return (

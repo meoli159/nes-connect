@@ -3,7 +3,6 @@ import {
   fetchingFail,
   renameCommunitySuccess,
   deleteCommunitySuccess,
-  pending,
 } from "../redux/community/communitySlice";
 import { selectCommunity } from "../redux/message/messageSlice";
 
@@ -13,10 +12,8 @@ export const getCommunityList = async () => {
 };
 
 export const createCommunity = async (community) => {
-    const res = await axiosClient.post(`/community`, community);
-    return res.data
-
-
+  const res = await axiosClient.post(`/community`, community);
+  return res.data;
 };
 
 const renameCommunity = async (
@@ -53,30 +50,17 @@ const deleteCommunity = async (communityId, accessToken, dispatch) => {
   }
 };
 
-const addUserToCommunity = async (communityId, user, accessToken, dispatch) => {
-  dispatch(pending());
-  try {
-    const res = await axiosClient.put(
-      `/community/${communityId}/adduser`,
-      user,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
-    dispatch(selectCommunity(res.data));
-  } catch (error) {
-    dispatch(fetchingFail());
-  }
+export const CommunityUserAdd = async (communityId, user) => {
+  const res = await axiosClient.post(`/community/${communityId}/user`, user);
+ 
+  return res.data
 };
 
 const leaveRemoveUserFromCommunity = async () => {};
 
 const chatService = {
-  // getCommunityList,
-  // createCommunity,
   renameCommunity,
   deleteCommunity,
-  addUserToCommunity,
   leaveRemoveUserFromCommunity,
 };
 

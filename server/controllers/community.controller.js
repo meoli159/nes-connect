@@ -93,7 +93,7 @@ const addUserToCommunity = async (req, res) => {
     if (!added)
       return res.status(404).send({ message: "Community Not Found!!" });
     else {
-      res.json(added);
+      res.json({community:added,user:email});
     }
   } catch (error) {
     return res.status(400).send(error.message);

@@ -1,22 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCommunity } from "../../redux/message/messageSlice";
 import "./style.css";
 import { fetchCommunityThunk } from "../../redux/community/communityThunk";
-
+import { SocketContext } from "../../utils/context/SocketContext";
+import { addCommunity } from "../../redux/community/communitySlice";
 export default function ServerChatRoom() {
   const user = useSelector((state) => state.auth?.currentUser);
   const communityList = useSelector((state) => state.communities?.communities);
+  const socket = useContext(SocketContext);
+
   const dispatch = useDispatch();
 
   const handleSelectChat = (community) => {
     dispatch(selectCommunity(community));
   };
+
   useEffect(() => {
-   
-      dispatch(fetchCommunityThunk());
-    
-  }, [dispatch]);
+    dispatch(fetchCommunityThunk());
+  }, [dispatch, socket]);
+ 
   return (
     <div>
       <div>

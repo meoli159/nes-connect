@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
-import communityService from "../../api/communityService";
+import { CommunityUserAdd } from "../../api/communityService";
+import { selectCommunity } from "../../redux/message/messageSlice";
+import { SocketContext } from "../../utils/context/SocketContext";
+
 import "./AddPeopleModal.css";
 
 function AddPeopleModal({ closeAddModal }) {
-  const user = useSelector((state) => state.auth.currentUser);
+  const socket = useContext(SocketContext);
+
   const currentCommunity = useSelector(
     (state) => state.messages?.currentCommunity
   );
@@ -19,14 +24,10 @@ function AddPeopleModal({ closeAddModal }) {
 
   const handleAddUser = (e) => {
     e.preventDefault();
-
-    communityService.addUserToCommunity(
-      currentCommunity?._id,
-      { email: addUser },
-      user?.accessToken,
-      dispatch
+    CommunityUserAdd(currentCommunity?._id, { email: addUser }, socket).then((res) => {
+        socket.emit("onCommunity", res);
+      }
     );
-
     handleCloseModal(e);
   };
 

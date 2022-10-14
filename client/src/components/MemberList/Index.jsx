@@ -17,23 +17,18 @@ function MemberList() {
   useEffect(() => {
     socket.emit("getOnlineCommunityUsers", selectedCommunity);
     const interval = setInterval(() => {
-      console.log(`ping community ${communityId}`);
       socket.emit("getOnlineCommunityUsers", selectedCommunity);
     }, 5000);
 
     socket.on("onlineCommunityUsersReceived", (users) => {
-      console.log("received onlineCommunityUsersReceived event");
-      console.log(users);
       setOnlineUsers(users.onlineUsers);
     });
 
     return () => {
-      console.log("Clearing Interval for member list");
       clearInterval(interval);
       socket.off("onlineCommunityUsersReceived");
     };
   }, [communityId, selectedCommunity, socket]);
-
 
   return (
     <>
@@ -54,10 +49,10 @@ function MemberList() {
               <span>Offline users</span>
             </div>
             <div className="offline-user-list">
-            <OfflineCommunityMembers
-              onlineUsers={onlineUsers}
-              community={selectedCommunity}
-            />
+              <OfflineCommunityMembers
+                onlineUsers={onlineUsers}
+                community={selectedCommunity}
+              />
             </div>
           </>
         ) : (
