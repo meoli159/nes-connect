@@ -26,6 +26,8 @@ import UserProfile from "./components/UserProfile/UserProfile";
 import ProfileSidebar from "./components/ProfileSidebar";
 import ConfirmEmail from "./pages/Auth/ConfirmEmail";
 import ConfirmPassword from "./pages/Auth/ConfirmPassword";
+import Stream from "./pages/Stream";
+import AutoLink from "./components/StreamContext/AutoLink";
 
 function App() {
   const user = useSelector((state) => state.auth.login?.currentUser);
@@ -63,6 +65,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/confirmemail" element={<ConfirmEmail />} />
           <Route path="/confirmpassword" element={<ConfirmPassword />} />
+          <Route path="/stream" element={<AutoLink />} />
+          <Route path="/stream/:streamID" element={<Stream />} />
 
           {/* Protect routes */}
           <Route element={<RequireAuth />}>
