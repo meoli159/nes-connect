@@ -48,12 +48,17 @@ const login = async (req, res) => {
   if (user && (await user.matchPassword(password))) {
     //Token generate
     const accessToken = generateAccessToken(user);
+    res.cookie("token",accessToken,{
+      httpOnly: true,
+      secure: false,
+      path: "/",
+      sameSite: "strict",
+    })
     res.status(200).json({
       _id: user._id,
       username: user.username,
       email: user.email,
       pic: user.pic,
-      accessToken,
     });
   } else {
     res.status(404).send({ message: "Invalid Email or Password!" });
@@ -74,7 +79,6 @@ const updateUser = async (req, res) => {
           return res.status(400).send({message:"Please enter correct old password"});
         } 
           user.password = password || user.password;
-          console.log(passwordValid)
       }
     }
     
@@ -93,6 +97,7 @@ const updateUser = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  res.clearCookie("token");
   res.status(200).json("Logged out!");
 };
 

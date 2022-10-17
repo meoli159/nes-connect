@@ -1,4 +1,5 @@
 const db = require("../models");
+const User = require("../models/user");
 const { verifyToken } = require("./authJwt");
 const Community = db.community;
 
@@ -12,6 +13,7 @@ isCommunityAdmin = async (req, res, next) => {
       if (req.user._id == community.communityAdmin._id) {
         next();
       } else {
+       
         return res
           .status(403)
           .send({ message: "You Are NOT Allow To Do That!!" });
@@ -22,6 +24,7 @@ isCommunityAdmin = async (req, res, next) => {
 
 checkCommunityAdminOrSameUser = (req, res, next) => {
   verifyToken(req, res, () => {
+    console.log(req.params)
     if (req.user._id === req.params.userId) {
       next();
     } else if (req.user._id !== req.params.userId) {
@@ -34,9 +37,31 @@ checkCommunityAdminOrSameUser = (req, res, next) => {
   });
 };
 
+checkDuplicateMember = async (req, res, next) => {
+  verifyToken(req, res, async () => {
+    const community = await Community.findById(req.params.communityId);
+    if (!community) return res.status(403).send({message:"No Community found"});;
+    const member = await User.findOne({ email: req.body.email });
+    if (!member) return res.status(403).send({message:"No user found"});
+
+    const inCommunity = community.users.find((user) => {
+      const communityUser = JSON.stringify(user);
+      const memberId = JSON.stringify(member._id);
+      return communityUser === memberId;
+    });
+
+    if (inCommunity) {
+      return res.status(403).send({ message: "User already in community!!!" });
+    } else {
+      next();
+    }
+  });
+};
+
 const checkCommunity = {
   isCommunityAdmin,
   checkCommunityAdminOrSameUser,
+  checkDuplicateMember,
 };
 
 module.exports = checkCommunity;

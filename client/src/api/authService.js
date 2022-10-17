@@ -13,7 +13,7 @@ export const login = async (user) => {
   return res.data;
 };
 
-export const updateUser = async (user, accessToken, dispatch) => {
+export const updateUser = async (user) => {
   const res = await axiosClient.put(`/auth`, user);
   return res.data;
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, createRef } from "react";
+import { formatRelative } from 'date-fns'
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../../redux/message/messageSlice";
 import messageService from "../../api/messageService";
@@ -9,8 +10,7 @@ import { SocketContext } from "../../utils/context/SocketContext";
 import { fetchMessagesThunk } from "../../redux/message/messageThunk";
 
 export default function ChatBox() {
-  let lastSenderId = undefined;
-  const user = useSelector((state) => state.auth?.currentUser);
+  let lastSenderId = null;
   const socket = useContext(SocketContext);
   const currentCommunity = useSelector(
     (state) => state.messages?.currentCommunity
@@ -28,7 +28,6 @@ export default function ChatBox() {
     if (e.key === "Enter" && textChat) {
       messageService.sendMessages(
         { content: textChat, communityId: currentCommunity._id },
-        user?.accessToken,
         socket,
         dispatch
       );
@@ -76,9 +75,7 @@ export default function ChatBox() {
             <span className="message-user-name">
               {message.sender.username}
               <span className="time">
-                {new Date(message.createdAt).getHours() +
-                  ":" +
-                  new Date(message.createdAt).getMinutes()}
+              {formatRelative(new Date(message.createdAt), new Date())}
               </span>
             </span>
           </div>

@@ -7,15 +7,12 @@ export const fetchMessages = async (communityId) => {
   return res.data;
 };
 
-const sendMessages = async (msg, accessToken, socket, dispatch) => {
-  const res = await axiosClient.post(`/message`, msg, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
+const sendMessages = async (msg, socket, dispatch) => {
+  const res = await axiosClient.post(`/message`, msg);
   socket.emit("onMessage", res.data);
   dispatch(sendMessage(res.data));
 };
 const messageService = {
-  // fetchMessages,
   sendMessages,
 };
 
