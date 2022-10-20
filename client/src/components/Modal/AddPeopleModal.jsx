@@ -15,8 +15,6 @@ function AddPeopleModal({ closeAddModal }) {
   );
   const [addUser, setAddUser] = useState("");
 
-  const dispatch = useDispatch();
-
   const handleCloseModal = (e) => {
     e.preventDefault();
     closeAddModal(false);
@@ -24,8 +22,11 @@ function AddPeopleModal({ closeAddModal }) {
 
   const handleAddUser = (e) => {
     e.preventDefault();
-    communityUserAdd(currentCommunity?._id, { email: addUser }, socket).then((res) => {
-        socket.emit("onCommunity", res);
+    communityUserAdd(currentCommunity?._id, { email: addUser }).then((res) => {
+      console.log("onCommunity") 
+      console.log(res)  
+      socket.emit("onCommunity", res);
+        
       }
     );
     handleCloseModal(e);

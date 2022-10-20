@@ -1,8 +1,7 @@
 import React, { useEffect, useState, createRef } from "react";
-import { formatRelative } from 'date-fns'
+import { formatRelative } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessage } from "../../redux/message/messageSlice";
-import messageService from "../../api/messageService";
+import { sendMessages } from "../../api/messageService";
 import "./style.css";
 import { FaPhone, FaVideo } from "react-icons/fa";
 import { useContext } from "react";
@@ -22,11 +21,10 @@ export default function ChatBox() {
 
   const dispatch = useDispatch();
   const scrollDiv = createRef();
-  
 
   const handleChatSubmit = (e) => {
     if (e.key === "Enter" && textChat) {
-      messageService.sendMessages(
+      sendMessages(
         { content: textChat, communityId: currentCommunity._id },
         socket,
         dispatch
@@ -38,9 +36,10 @@ export default function ChatBox() {
   useEffect(() => {
     //select chat so that user can join same community
     if (!currentCommunity._id) return;
-    dispatch(fetchMessagesThunk(currentCommunity._id)).then(() => {
-      socket.emit("onCommunityJoin", currentCommunity);
-    });
+    socket.emit("onCommunityJoin", currentCommunity);
+    dispatch(fetchMessagesThunk(currentCommunity._id))
+   return ()=>{
+    socket.emit("onCommunityLeave", currentCommunity);   }
   }, [currentCommunity, currentCommunityName, dispatch, socket]);
 
   useEffect(() => {
@@ -49,16 +48,6 @@ export default function ChatBox() {
     };
     scrollToBottom(scrollDiv.current);
   }, [scrollDiv]);
-
-  useEffect(() => {
-    socket.on("onReceivedMessage", (newMessageReceived) => {
-      if (!newMessageReceived.community._id) {
-        console.log("no message!");
-      } else {
-        dispatch(sendMessage(newMessageReceived));
-      }
-    });
-  }, [dispatch, socket]);
 
   const mapMessages = (message) => {
     let showMessageHeader =
@@ -75,7 +64,7 @@ export default function ChatBox() {
             <span className="message-user-name">
               {message.sender.username}
               <span className="time">
-              {formatRelative(new Date(message.createdAt), new Date())}
+                {formatRelative(new Date(message.createdAt), new Date())}
               </span>
             </span>
           </div>

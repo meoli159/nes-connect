@@ -16,35 +16,15 @@ export const createCommunity = async (community) => {
   return res.data;
 };
 
-const renameCommunity = async (
-  communityId,
-  communityName,
-  accessToken,
-  dispatch
-) => {
-  try {
-    const res = await axiosClient.put(
-      `/community/${communityId}`,
-      communityName,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
-    dispatch(renameCommunitySuccess(res.data));
-    dispatch(selectCommunity(res.data));
-  } catch (error) {
-    dispatch(fetchingFail());
-  }
+export const renameCommunity = async (communityId, communityName, dispatch) => {
+  const res = await axiosClient.put(`/community/${communityId}`, communityName);
+  dispatch(renameCommunitySuccess(res.data));
+  dispatch(selectCommunity(res.data));
 };
 
-export const deleteCommunity = async (communityId, dispatch) => {
-  try {
-    await axiosClient.delete(`/community/${communityId}`);
-    dispatch(deleteCommunitySuccess(communityId));
-    dispatch(selectCommunity(communityId));
-  } catch (error) {
-    dispatch(fetchingFail());
-  }
+export const deleteCommunity = async (communityId) => {
+  const res = await axiosClient.delete(`/community/${communityId}`);
+  return res.data;
 };
 
 export const communityUserAdd = async (communityId, user) => {
@@ -54,26 +34,15 @@ export const communityUserAdd = async (communityId, user) => {
 };
 
 export const removeUserFromCommunity = async (communityId, userId) => {
-  try {
-    const res = await axiosClient.delete(`/community/${communityId}/user/${userId}`);
-  } catch (error) {
-    console.log(error);
- 
-  }
-};
-
-export const transferCommunityAdmin = async (
-  communityId,
-  newCommunityAdmin
-) => {
-  const res = await axiosClient.put(
-    `/community/${communityId}/user`,
-    newCommunityAdmin
+  const res = await axiosClient.delete(
+    `/community/${communityId}/user/${userId}`
   );
   return res.data;
 };
-const chatService = {
-  renameCommunity,
-};
 
-export default chatService;
+export const transferCommunityAdmin = async (communityId, userId) => {
+  const res = await axiosClient.put(`/community/${communityId}/user`, {
+    userId,
+  });
+  return res.data;
+};

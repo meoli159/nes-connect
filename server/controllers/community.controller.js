@@ -68,8 +68,9 @@ const renameCommunity = async (req, res) => {
 //delete community
 const deleteCommunity = async (req, res) => {
   try {
-    await Community.findByIdAndDelete(req.params.communityId);
-    return res.status(200).send({ message: "Delete Successfully" });
+    const deleted = await Community.findByIdAndDelete(req.params.communityId);
+
+    return res.json(deleted);
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -127,13 +128,13 @@ const removeUserFromCommunity = async (req, res) => {
 
 //transfer community admin
 const transferCommunityAdmin = async (req, res) => {
-  const { newCommunityAdmin } = req.body;
+  const { userId } = req.body;
   const { communityId } = req.params;
-  const email = await User.findOne({ email: newCommunityAdmin });
+  const newCommunityAdmin = await User.findById(userId);
   const updatedCommunity = await Community.findByIdAndUpdate(
     communityId,
     {
-      communityAdmin: email,
+      communityAdmin: newCommunityAdmin,
     },
     { new: true }
   )

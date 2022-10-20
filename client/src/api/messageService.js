@@ -7,13 +7,9 @@ export const fetchMessages = async (communityId) => {
   return res.data;
 };
 
-const sendMessages = async (msg, socket, dispatch) => {
+export const sendMessages = async (msg, socket, dispatch) => {
   const res = await axiosClient.post(`/message`, msg);
   socket.emit("onMessage", res.data);
   dispatch(sendMessage(res.data));
 };
-const messageService = {
-  sendMessages,
-};
 
-export default messageService;

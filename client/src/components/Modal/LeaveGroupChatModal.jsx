@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {removeUserFromCommunity,deleteCommunity} from "../../api/communityService"
+import { deleteCommunitySuccess } from "../../redux/community/communitySlice";
+import { selectCommunity } from "../../redux/message/messageSlice";
 import "./LeaveGroupChatModal.css";
 
 function LeaveGroupChatModal({ closeLeaveModal }) {
@@ -13,9 +15,13 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
     e.preventDefault();
     closeLeaveModal(false)
   }
+
   const handleDeleteCommunity = (e)=>{
     e.preventDefault();
-    deleteCommunity(currentCommunity?._id,dispatch)
+    deleteCommunity(currentCommunity?._id).then((res)=>{
+      dispatch(deleteCommunitySuccess(res))
+      dispatch(selectCommunity(res._id))
+    })
     handleCloseModal(e)
   }
 

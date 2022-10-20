@@ -38,6 +38,24 @@ exports.socketConnection = (server) => {
       socket.join(community._id);
       // console.log("joined community " + community._id, community.communityName);
     });
+    socket.on("onCommunityLeave", (community) => {
+      socket.leave(community._id);
+      // console.log("leaved community " + community._id, community.communityName);
+    });
+
+    socket.on("community.delete", () => {});
+
+    socket.on("community.user.leave", (community) => {
+      io.to(community._id).emit("onLeaveCommunity", community);
+    });
+
+    socket.on("community.communityAdmin.update", (community) => {
+      if (!community) return;
+      io.to(community._id).emit("onCommunityAdminUpdate", community);
+      usersData.some((userD) => {
+        socket.to(userD.socketId).emit("onCommunityAdminUpdate", community);
+      });
+    });
 
     socket.on("getOnlineCommunityUsers", (community) => {
       if (!community._id) return;
@@ -64,12 +82,17 @@ exports.socketConnection = (server) => {
       if (!data) return;
       var community = data.community;
 
-      
       io.to(community._id).emit("onCommunityReceiveNewUser", data);
-      usersData.some((userD) => {
-        if (data.user._id === userD.userId) {
-          userD.socketId && socket.to(userD.socketId).emit("onCommunityAdd", data);
+      usersData.some((userD) => {      
+        if (userD.userId === data.user._id) {
+          return socket.to(userD.socketId).emit("onCommunityAdd", data);
         }
+        community.users.forEach((user)=>{
+          if(userD.userId == user._id) 
+          {socket.to(userD.socketId).emit("onCommunityReceiveNewUser", data);}
+        })
+       
+        
       });
     });
   });
