@@ -54,8 +54,8 @@ function App() {
       {/* Public Routes without Navbar */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/confirmemail" element={<ConfirmEmail />} />
-      <Route path="/confirmpassword" element={<ConfirmPassword />} />
+      <Route path="/forgotpassword" element={<ConfirmEmail />} />
+      <Route path="/resetpassword/:userId/:forgotPasswordToken" element={<ConfirmPassword />} />
 
       {/* Protect routes */}
       <Route element={<RequireAuth />}>

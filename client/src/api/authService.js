@@ -23,3 +23,15 @@ export const logout = async (dispatch, id) => {
   dispatch(logOutSuccess());
 };
 
+export const forgotPassword = async (email) => {
+return  await axiosClient.post(`/auth/forgotpassword`, email);
+
+};
+
+export const resetPassword = async (userId,forgotPasswordToken,password) => {
+   const res = await axiosClient.post(`/auth/resetpassword/${userId}/${forgotPasswordToken}`,password);
+   console.log(res) 
+   return res.data
+};
+
+

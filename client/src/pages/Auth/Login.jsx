@@ -45,7 +45,7 @@ export default function Login() {
 
         <div className="forgot-password-wrapper">
           Forgot your password?
-          <Link to="/confirmemail" style={{ textDecoration: "none" }}>
+          <Link to="/forgotpassword" style={{ textDecoration: "none" }}>
             Click here!
           </Link>
         </div>

@@ -1,9 +1,5 @@
 import axiosClient from "./createInstance";
-import {
-  fetchingFail,
-  renameCommunitySuccess,
-  deleteCommunitySuccess,
-} from "../redux/community/communitySlice";
+import { renameCommunitySuccess } from "../redux/community/communitySlice";
 import { selectCommunity } from "../redux/message/messageSlice";
 
 export const getCommunityList = async () => {
