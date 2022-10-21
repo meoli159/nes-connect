@@ -14,7 +14,7 @@ const message = require("./routes/message");
 const community = require("./routes/community");
 const { socketConnection } = require("./utils/socket");
 
-app.use(cors({ origin: ["https://nes-connect.netlify.app","http://localhost:3000",], credentials: true }));
+app.use(cors({ origin: ["https://nes-connect.netlify.app","https://nes-connect.netlify.app/","http://localhost:3000",], credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
