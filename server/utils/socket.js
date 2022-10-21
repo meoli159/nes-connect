@@ -1,7 +1,7 @@
 exports.socketConnection = (server) => {
   const io = require("socket.io")(server, {
     cors: {
-      origin: ["http://localhost:3000","https://nes-connect.netlify.app"],
+      origin: ["https://nes-connect.netlify.app","http://localhost:3000"],
       credentials: true,
     },
     pingInterval: 10000,
