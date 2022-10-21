@@ -52,9 +52,9 @@ const login = async (req, res) => {
     const accessToken = generateAccessToken(user);
     res.cookie("token", accessToken, {
       httpOnly: true,
-      secure: false,
-      path: "/",
-      sameSite: "strict",
+      secure: true, 
+      path:"/", 
+      sameSite: "none",
     });
     res.status(200).json({
       _id: user._id,
