@@ -1,12 +1,11 @@
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
-import MemberList from "../MemberList/Index";
+import MemberList from "../MemberList";
 import "./style.css";
 import EditGroupNameModal from "../Modal/EditGroupNameModal";
 import AddPeopleModal from "../Modal/AddPeopleModal";
 import LeaveGroupChatModal from "../Modal/LeaveGroupChatModal";
 import { FaPen, FaUserPlus, FaSignOutAlt } from 'react-icons/fa';
-import OfflineUser from "../OfflineUser";
 
 function OtherContent() {
   const [openEditModal, setOpenEditModal] = useState(false);
