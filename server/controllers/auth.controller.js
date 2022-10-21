@@ -121,7 +121,8 @@ const forgotPassword = async (req, res) => {
     email: user.email,
   };
   const forgotPasswordToken = jwt.sign(payload, secret, { expiresIn: "15m" });
-  const emailTemplate = resetPasswordTemplate(email,user._id,forgotPasswordToken);
+  const gmail = process.env.GMAIL
+  const emailTemplate = resetPasswordTemplate(email,user._id,forgotPasswordToken,gmail);
   sendMail(emailTemplate)
 };
 

@@ -1,6 +1,6 @@
-let resetPasswordTemplate = (email, userId, forgotPasswordToken) => {
+let resetPasswordTemplate = (email, userId, forgotPasswordToken,gmail) => {
   const emailTemplate = {
-    from: "noreply@gmail.com",
+    from: `"Nes-Connect" < ${gmail} >`,
     to: email,
     subject: "Password reset for " + email,
     text:
