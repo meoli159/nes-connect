@@ -1,16 +1,16 @@
 import "./style.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import io from "socket.io-client";
 import Peer from "peerjs";
 import { useParams } from "react-router-dom";
-import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import { SocketContext } from "../../utils/context/SocketContext";
 /*
 import io from "socket.io-client";
 const ENDPOINT = "http://localhost:3333";
 var socket;*/
 
 const StreamContext = () => {
-  var socketRef = useRef();
+  const socketRef = useContext(SocketContext);
   const params = useParams();
   const [mess, setMess] = useState([]);
   const [message, setMessage] = useState("");
@@ -24,14 +24,14 @@ const StreamContext = () => {
   const [mystream, setmystream] = useState(null);
 
   const messagesEnd = useRef();
-  socketRef.current = io.connect("http://localhost:3333");
+  //socketRef.current = io.connect("http://localhost:3333");
 
   useEffect(() => {
     peer = new Peer();
 
     peer.on("open", (peerId) => {
       myId = peerId;
-      socketRef.current.emit("join-stream", {
+      socketRef.emit("join-stream", {
         streamId: streamId,
         userId: myId,
       });
@@ -50,7 +50,7 @@ const StreamContext = () => {
         createVideo({ id: myId, stream: stream });
         setmystream(stream);
 
-        socketRef.current.on("new-user-connect", (userId) => {
+        socketRef.on("new-user-connect", (userId) => {
           console.log("New user connected: ", userId);
           setId(userId);
           connectToNewUser(userId, stream);
@@ -65,13 +65,13 @@ const StreamContext = () => {
           });
         });
 
-        socketRef.current.on("user-disconnected", (userId) => {
+        socketRef.on("user-disconnected", (userId) => {
           console.log("user-disconnected ", userId);
           removeVideo(userId);
         });
       });
 
-      socketRef.current.on("sendDataServer", (dataGot) => {
+      socketRef.on("sendDataServer", (dataGot) => {
         setMess((oldMsgs) => [...oldMsgs, dataGot.data]);
         scrollToBottom();
       });

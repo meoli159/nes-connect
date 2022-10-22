@@ -1477,6 +1477,27 @@
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
+"@liveblocks/client@0.18.5", "@liveblocks/client@^0.18.5":
+  version "0.18.5"
+  resolved "https://registry.yarnpkg.com/@liveblocks/client/-/client-0.18.5.tgz#8e453c4a5da6bf2c558e5604b3b37fc75e924395"
+  integrity sha512-P2yk5m1b4QtBAqlljZcqeXdBHiJ2y5CUjWAYo9SfmRIAYD9ztB9rX6M6+/5sAHka6Apb11RTlyLzrIaANBooDQ==
+  dependencies:
+    "@liveblocks/core" "0.18.5"
+
+"@liveblocks/core@0.18.5":
+  version "0.18.5"
+  resolved "https://registry.yarnpkg.com/@liveblocks/core/-/core-0.18.5.tgz#230d27e51123747ac677c8a197466601fbc12845"
+  integrity sha512-nTOQOPlzUidrC3qQAJTDP0aMxS/ThyagcqMADvZIAubzv3qY7d3+OhKO+FphGsUuNgIflgq12cpLyb3bJW2vTA==
+
+"@liveblocks/react@^0.18.5":
+  version "0.18.5"
+  resolved "https://registry.yarnpkg.com/@liveblocks/react/-/react-0.18.5.tgz#cdb2f73cca6fe492937eeb8f8c6c9854e3d932da"
+  integrity sha512-xlEBRCK6uVLC4d41BOCpROeDoeD/ONHt/rXtN41GIGSrybhxELcsIz1hpA5LKVfJRjNp7E7Uwf/7AG9htin8aw==
+  dependencies:
+    "@liveblocks/client" "0.18.5"
+    "@liveblocks/core" "0.18.5"
+    use-sync-external-store "^1.2.0"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -8720,7 +8741,7 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-use-sync-external-store@^1.0.0:
+use-sync-external-store@^1.0.0, use-sync-external-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==

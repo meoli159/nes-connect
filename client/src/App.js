@@ -19,6 +19,7 @@ import ConfirmEmail from "./pages/Auth/ConfirmEmail";
 import ConfirmPassword from "./pages/Auth/ConfirmPassword";
 import Stream from "./pages/Stream";
 import AutoLink from "./components/StreamContext/AutoLink";
+import LiveBlocks from "./pages/LiveBlocks/index";
 
 function App() {
   const user = useSelector((state) => state.auth?.currentUser);
@@ -60,6 +61,7 @@ function App() {
       <Route path="/confirmpassword" element={<ConfirmPassword />} />
       <Route path="/stream" element={<AutoLink />} />
       <Route path="/stream/:streamID" element={<Stream />} />
+      <Route path="/draw" element={<LiveBlocks />} />
 
       {/* Protect routes */}
       <Route element={<RequireAuth />}>
