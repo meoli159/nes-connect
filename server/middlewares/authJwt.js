@@ -1,12 +1,11 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user");
 
-
-verifyToken = (req, res, next) => {
-  const token = req.header("Authorization");
+module.exports.verifyToken = (req, res, next) => {
+  // const token = req.header("Authorization");
+  const token = req.cookies.token
   if (token) {
-    const accessToken = token.split(" ")[1];
-    jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
+    // const accessToken = token.split(" ")[1];
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
         return res.status(403).json({message:"Invalid Token" });
       }
@@ -90,11 +89,4 @@ verifyToken = (req, res, next) => {
 //     }
 //   });
 // };
-const authJwt = {
-  verifyToken,
-  // isAdmin,
-  // isModerator,
-  // verifyTokenAndAdminAuth,
-};
 
-module.exports = authJwt;

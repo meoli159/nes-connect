@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import communityService from "../../api/communityService"
+import {removeUserFromCommunity,deleteCommunity} from "../../api/communityService"
+import { deleteCommunitySuccess } from "../../redux/community/communitySlice";
+import { selectCommunity } from "../../redux/message/messageSlice";
 import "./LeaveGroupChatModal.css";
 
 function LeaveGroupChatModal({ closeLeaveModal }) {
@@ -13,12 +15,22 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
     e.preventDefault();
     closeLeaveModal(false)
   }
+
   const handleDeleteCommunity = (e)=>{
     e.preventDefault();
-    communityService.deleteCommunity(currentCommunity?._id,user?.accessToken,dispatch)
+    deleteCommunity(currentCommunity?._id).then((res)=>{
+      dispatch(deleteCommunitySuccess(res))
+      dispatch(selectCommunity(res._id))
+    })
     handleCloseModal(e)
   }
 
+  const handleLeaveCommunity = (e)=>{
+    e.preventDefault();
+    removeUserFromCommunity(currentCommunity?._id,user._id)
+    
+    handleCloseModal(e)
+  }
   return (
     <div className="modal-leave-background">
       {communityAdmin._id === user._id ? (
@@ -63,7 +75,7 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
           </div>
           <div className="footer">
             <button className="cancel-leave-chat-modal"onClick={handleCloseModal}>Cancel</button>
-            <button className="continue-leave-chat-modal">Leave</button>
+            <button className="continue-leave-chat-modal"onClick={handleLeaveCommunity}>Leave</button>
           </div>
         </form>
       )}

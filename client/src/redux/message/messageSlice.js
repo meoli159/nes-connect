@@ -11,7 +11,6 @@ const messageSlice = createSlice({
   },
   reducers: {
     selectCommunity: (state, action) => {
-      state.isFetching = false;
       state.currentCommunity = action.payload;
     },
     sendMessage: (state, action) => {
