@@ -1,36 +1,34 @@
 import "./style.css";
 import React, { useEffect, useRef, useState, useContext } from "react";
-import io from "socket.io-client";
 import Peer from "peerjs";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../utils/context/SocketContext";
-/*
-import io from "socket.io-client";
-const ENDPOINT = "http://localhost:3333";
-var socket;*/
+import { useSelector } from "react-redux";
 
 const StreamContext = () => {
-  const socketRef = useContext(SocketContext);
+  const user = useSelector((state) => state.auth?.currentUser);
   const params = useParams();
   const [mess, setMess] = useState([]);
   const [message, setMessage] = useState("");
   const streamId = params.streamID;
   var myId = "";
   var peer;
+  const callList = [];
   var videoContainer = {};
   const [id, setId] = useState();
-
+  const [currentPeer, setPeer] = useState(null);
   const [mystream, setmystream] = useState(null);
-
+  
   const messagesEnd = useRef();
-  //socketRef.current = io.connect("http://localhost:3333");
 
+  const socket = useContext(SocketContext);
+  peer = new Peer(user._id);
+  
   useEffect(() => {
-    peer = new Peer();
 
     peer.on("open", (peerId) => {
       myId = peerId;
-      socketRef.emit("join-stream", {
+      socket.emit("join-stream", {
         streamId: streamId,
         userId: myId,
       });
@@ -45,11 +43,11 @@ const StreamContext = () => {
         video: true,
         audio: true,
       }).then((stream) => {
-        //userVideo.current.srcObject = stream;
         createVideo({ id: myId, stream: stream });
+        console.log(peerId);
         setmystream(stream);
 
-        socketRef.on("new-user-connect", (userId) => {
+        socket.on("new-user-connect", (userId) => {
           console.log("New user connected: ", userId);
           setId(userId);
           connectToNewUser(userId, stream);
@@ -60,22 +58,29 @@ const StreamContext = () => {
           console.log("call");
           call.on("stream", (userVideoStream) => {
             console.log(call.metadata.id);
-            createVideo({ id: call.metadata.id, stream: userVideoStream });
+            if (!callList[call.peer]) {
+              createVideo({ id: call.metadata.id, stream: userVideoStream });
+              callList[call.peer] = call;
+            }
           });
+          setPeer(call);
         });
 
-        socketRef.on("user-disconnected", (userId) => {
+        socket.on("user-disconnected", (userId) => {
           console.log("user-disconnected ", userId);
           removeVideo(userId);
+          console.log(callList.length);
         });
       });
 
-      socketRef.on("sendDataServer", (dataGot) => {
+      socket.on("sendDataServer", (dataGot) => {
         setMess((oldMsgs) => [...oldMsgs, dataGot.data]);
         scrollToBottom();
       });
     });
   }, []);
+
+  console.log(currentPeer);
 
   function createVideo(createVideo) {
     if (!videoContainer[createVideo.id]) {
@@ -93,18 +98,17 @@ const StreamContext = () => {
             100 / totalUsers + "%";
         }
       }
-    } else {
-      //document.getElementById(createVideo.id)?.srcObject = createVideo.stream;
-      console.log("createVideo");
     }
   }
 
   const connectToNewUser = (userId, stream) => {
+    console.log(stream);
     var call = peer.call(userId, stream, { metadata: { id: myId } });
-    console.log(call);
     call.on("stream", (userVideoStream) => {
-      console.log("connect");
-      createVideo({ id: userId, stream: userVideoStream });
+      if (!callList[userId]) {
+        createVideo({ id: userId, stream: userVideoStream });
+        callList[userId] = call;
+      }
     });
     call.on("close", () => {
       console.log("closing new user", userId);
@@ -113,10 +117,12 @@ const StreamContext = () => {
     call.on("error", () => {
       console.log("peer error ------");
     });
+    setPeer(call);
   };
 
   const removeVideo = (id) => {
     delete videoContainer[id];
+    delete callList[id];
     const video = document.getElementById(id);
     if (video) video.remove();
   };
@@ -127,7 +133,7 @@ const StreamContext = () => {
         content: message,
         id: id,
       };
-      socketRef.current.emit("sendDataClient", msg);
+      socket.emit("sendDataClient", msg);
 
       setMessage("");
     }
@@ -207,7 +213,18 @@ const StreamContext = () => {
         audio: false,
       })
       .then(function (stream) {
-        createVideo({ id: myId, stream: stream });
+        const screenTrack = stream.getVideoTracks()[0];
+        console.log(currentPeer);
+        let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+          return s.track.kind === screenTrack.kind;
+        });
+        sender.replaceTrack(screenTrack);
+        screenTrack.onended = () => {
+          let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+            return s.track.kind === screenTrack.kind;
+          });
+          sender.replaceTrack(mystream.getVideoTracks()[0]);
+        };
       });
   };
 
@@ -218,7 +235,7 @@ const StreamContext = () => {
           <div id="video-grid"></div>
         </div>
 
-        <div className="box-chat" hidden>
+        <div className="box-chat">
           <div className="box-chat_message">
             {renderMess}
             <div
