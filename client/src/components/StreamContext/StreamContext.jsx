@@ -17,7 +17,6 @@ const StreamContext = () => {
   const streamId = params.streamID;
   var myId = "";
   var peer;
-  var myVideoStream;
   var videoContainer = {};
   const [id, setId] = useState();
 
@@ -81,23 +80,13 @@ const StreamContext = () => {
   function createVideo(createVideo) {
     if (!videoContainer[createVideo.id]) {
       const videoContainer = document.getElementById("video-grid");
-      if (myId === createVideo.id) {
-        console.log("My video");
-        myVideoStream = document.createElement("video");
-        myVideoStream.srcObject = createVideo.stream;
-        myVideoStream.id = createVideo.id;
-        myVideoStream.autoplay = true;
-        //myVideoStream.muted = true;
-        videoContainer.appendChild(myVideoStream);
-      } else {
-        const video = document.createElement("video");
-        video.srcObject = createVideo.stream;
-        video.id = createVideo.id;
-        video.autoplay = true;
-        videoContainer.appendChild(video);
-      }
+      const video = document.createElement("video");
+      video.srcObject = createVideo.stream;
+      video.id = createVideo.id;
+      video.autoplay = true;
+      videoContainer.appendChild(video);
       let totalUsers = document.getElementsByTagName("video").length;
-      //console.log(totalUsers);
+      console.log(totalUsers);
       if (totalUsers > 1) {
         for (let index = 0; index < totalUsers; index++) {
           document.getElementsByTagName("video")[index].style.width =
@@ -114,6 +103,7 @@ const StreamContext = () => {
     var call = peer.call(userId, stream, { metadata: { id: myId } });
     console.log(call);
     call.on("stream", (userVideoStream) => {
+      console.log("connect");
       createVideo({ id: userId, stream: userVideoStream });
     });
     call.on("close", () => {
@@ -228,7 +218,7 @@ const StreamContext = () => {
           <div id="video-grid"></div>
         </div>
 
-        <div className="box-chat">
+        <div className="box-chat" hidden>
           <div className="box-chat_message">
             {renderMess}
             <div

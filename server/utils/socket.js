@@ -1,7 +1,7 @@
 exports.socketConnection = (server) => {
   const io = require("socket.io")(server, {
     cors: {
-      origin: ["https://nes-connect.netlify.app","http://localhost:3000"],
+      origin: ["https://nes-connect.netlify.app", "http://localhost:3000"],
       credentials: true,
     },
     pingInterval: 10000,
@@ -43,7 +43,7 @@ exports.socketConnection = (server) => {
       // console.log("leaved community " + community._id, community.communityName);
     });
 
-    socket.on("community.delete", () => {});
+    socket.on("community.delete", () => { });
 
     socket.on("community.user.leave", (community) => {
       io.to(community._id).emit("onLeaveCommunity", community);
@@ -83,16 +83,15 @@ exports.socketConnection = (server) => {
       var community = data.community;
 
       io.to(community._id).emit("onCommunityReceiveNewUser", data);
-      usersData.some((userD) => {      
+      usersData.some((userD) => {
         if (userD.userId === data.user._id) {
           return socket.to(userD.socketId).emit("onCommunityAdd", data);
         }
-        community.users.forEach((user)=>{
-          if(userD.userId == user._id) 
-          {socket.to(userD.socketId).emit("onCommunityReceiveNewUser", data);}
+        community.users.forEach((user) => {
+          if (userD.userId == user._id) { socket.to(userD.socketId).emit("onCommunityReceiveNewUser", data); }
         })
-       
-        
+
+
       });
     });
 
@@ -104,20 +103,20 @@ exports.socketConnection = (server) => {
         socket.to(stream.streamId).emit('user-disconnected', stream.userId);
       });
     });
-  
+
     socket.on('newUserStart', (data) => {
       socket.to(data.to).emit('newUserStart', { sender: data.sender });
     });
-  
+
     socket.on("sending signal", payload => {
       io.to(payload.streamID).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
     });
-  
+
     socket.on("returning signal", payload => {
       io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
     });
-  
-    socket.on("sendDataClient", function(data) {
+
+    socket.on("sendDataClient", function (data) {
       console.log(data)
       io.emit("sendDataServer", { data });
     })

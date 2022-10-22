@@ -7,6 +7,7 @@ import { FaPhone, FaVideo } from "react-icons/fa";
 import { useContext } from "react";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { fetchMessagesThunk } from "../../redux/message/messageThunk";
+import AutoLink from "../StreamContext/AutoLink";
 
 export default function ChatBox() {
   let lastSenderId = null;
@@ -92,6 +93,7 @@ export default function ChatBox() {
             </button>
             <button className="video-call-button">
               <FaVideo />
+              <AutoLink/>
             </button>
           </>
         ) : (
