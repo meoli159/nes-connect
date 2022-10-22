@@ -101,9 +101,6 @@ export default function ChatBox() {
 
         {currentCommunityName ? (
           <>
-            <button className="call-button">
-              <FaPhone />
-            </button>
             <button className="video-call-button">
               <FaVideo />
             </button>
