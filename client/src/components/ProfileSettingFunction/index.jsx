@@ -12,7 +12,7 @@ function ProfileSettingFunction() {
 
           <div className='setting-user-profile'>
             <button className='setting-user-profile-button'>
-              Setting user profile
+              Manage profile
             </button>
           </div> 
            
@@ -22,7 +22,7 @@ function ProfileSettingFunction() {
 
           <div className='setting-user-profile-1'>
             <button className='setting-user-profile-button-1'>
-              Manage users
+              Setting 1
             </button>
           </div>  
           

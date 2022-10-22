@@ -16,6 +16,10 @@ const CommunitySchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    pic:{
+      type: String,
+      default:"https://icon-library.com/images/coffee-icon/coffee-icon-4.jpg",
+  },
   },
   {
     timestamps: true,

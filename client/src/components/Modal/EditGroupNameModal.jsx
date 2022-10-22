@@ -5,7 +5,7 @@ import communityService from "../../api/communityService";
 import "./EditGroupNameModal.css";
 
 function EditGroupNameModal({ closeEditModal }) {
-  const user = useSelector((state) => state.auth.login?.currentUser);
+  const user = useSelector((state) => state.auth?.currentUser);
   const currentCommunity = useSelector(
     (state) => state.messages?.currentCommunity
   );

@@ -1,4 +1,9 @@
-.member-in-chat-wrapper {
+.member-list-wrapper {
+    width: 100%;
+    height: 88vh;
+}
+
+.member-in-chat-wrapper-on {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -14,7 +19,30 @@
     border-radius: 10px;
 }
 
-.member-in-chat-wrapper:hover {
+.member-in-chat-wrapper-on:hover {
+    transform: scale(1.1);  
+    transition: 0.5s;
+    background: #424549;
+}
+
+.member-in-chat-wrapper-off {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    height: 35px;
+    width: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: transparent;
+    cursor: pointer;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+.member-in-chat-wrapper-off:hover {
     transform: scale(1.1);  
     transition: 0.5s;
     background: #424549;

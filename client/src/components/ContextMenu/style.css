@@ -1,0 +1,11 @@
+.ContextMenu {
+  border-radius: 8px;
+  box-sizing: border-box;
+  position: fixed;
+  width: 200px;
+  background-color: #1a1a1a;
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+  z-index: 99;
+}

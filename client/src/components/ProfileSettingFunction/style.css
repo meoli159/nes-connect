@@ -1,17 +1,16 @@
 .setting-function-wrapper {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     position: relative;
-    width: 60%;
+    width: 50%;
     height: 35px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 40%;
+    margin-left: 50%;
     background: transparent;
     border-radius: 5px; 
     background: #36393e;
-    
 }
 
 .setting-function-wrapper:hover { 
@@ -23,10 +22,9 @@
 .setting-user-profile {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     font-size: 15px;
     font-weight: bolder;
-    margin-left: 10px;
 }
 
 .setting-user-profile-button {
@@ -44,15 +42,14 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 60%;
+    width: 50%;
     height: 35px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 40%;
+    margin-left: 50%;
     background: transparent;
     border-radius: 5px; 
     background: #36393e;
-    
 }
 
 .setting-function-wrapper-1:hover { 
@@ -64,10 +61,9 @@
 .setting-user-profile-1 {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     font-size: 15px;
     font-weight: bolder;
-    margin-left: 10px;
 }
 
 .setting-user-profile-button-1 {
@@ -81,8 +77,8 @@
 }
 
 .separator8 {
-    width: 60%;
-    margin-left: 40%;
+    width: 50%;
+    margin-left: 50%;
     border-bottom: 1px solid;
     border-color: #99AAB5;
 }

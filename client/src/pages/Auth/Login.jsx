@@ -1,24 +1,25 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../../api/authService";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { loginThunk } from "../../redux/auth/authThunk";
 import "./Auth.css";
 
 export default function Login() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleSubmit =  (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+
     const user = {
       email,
       password,
     };
-    authService.login(user, dispatch, navigate);
+    dispatch(loginThunk(user)).then(()=>{navigate("/app");})
+    
+    
   };
 
   return (
@@ -44,8 +45,7 @@ export default function Login() {
 
         <div className="forgot-password-wrapper">
           Forgot your password?
-          <Link to="/confirmemail"  
-          style={{ textDecoration: 'none' }}>
+          <Link to="/confirmemail" style={{ textDecoration: "none" }}>
             Click here!
           </Link>
         </div>
@@ -63,9 +63,7 @@ export default function Login() {
 
         <div className="authRegister">
           Not a member?
-          <Link to="/register">
-            Register now!
-          </Link>
+          <Link to="/register">Register now!</Link>
         </div>
       </form>
     </div>

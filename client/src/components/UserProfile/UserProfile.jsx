@@ -8,14 +8,14 @@ import { FaTimes } from 'react-icons/fa';
 
 
 export default function UserProfile() {
-  const user = useSelector((state) => state.auth.login?.currentUser);
+  const user = useSelector((state) => state.auth?.currentUser);
   const email = user.email;
   
  
   const [openChangeUserNameModal, setOpenChangeUserNameModal] = useState(false);
   const [openChangePassWordModal, setOpenChangePassWordModal] = useState(false);
 
-  const [file, setFile] = React.useState(null);
+  const [file, setFile] = useState(null);
     
   const fileHandler = (e) => {
       setFile(e.target.files[0])
@@ -24,21 +24,22 @@ export default function UserProfile() {
   return (
     <div className="profile-form">
 
-    <div className='back-to-chat-box-wrapper'>
-      <Link to='/app' style={{ color: '#FFF' }}>
-        <div className='back-to-chat-box-button'> 
-          <FaTimes className='back-to-chat-box'/>   
-        </div>  
-      </Link>
-    </div>
-
     <div className="profile-form-wrapper">
+
+    <div className='back-to-chat-box-wrapper'>
+              <Link to='/app' style={{ color: '#FFF' }}>
+            <div className='back-to-chat-box-button'> 
+              <FaTimes className='back-to-chat-box'/>   
+            </div>  
+              </Link>
+        </div>
 
       <div className='profile-form-content'>
 
         {/* User image */}
 
         <div>
+
           <div className='profile-user-image img'>
             <img 
             src={file? URL.createObjectURL(file) : user?.pic} 
@@ -118,7 +119,7 @@ export default function UserProfile() {
       </div>
 
     </div>  
-
+    
   </div>
 
   )

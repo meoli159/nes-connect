@@ -1,12 +1,5 @@
-import "./App.css";
 import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Outlet,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Outlet, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 // components
@@ -20,9 +13,7 @@ import Register from "./pages/Auth/Register";
 import Profile from "./pages/Profile/Profile";
 import About from "./pages/About/About";
 import Community from "./pages/Community/Community";
-import Admin from "./pages/Admin/Admin";
 import NoPageFound from "./pages/404/NoPageFound";
-import UserProfile from "./components/UserProfile/UserProfile";
 import ProfileSidebar from "./components/ProfileSidebar";
 import ConfirmEmail from "./pages/Auth/ConfirmEmail";
 import ConfirmPassword from "./pages/Auth/ConfirmPassword";
@@ -30,10 +21,14 @@ import Stream from "./pages/Stream";
 import AutoLink from "./components/StreamContext/AutoLink";
 
 function App() {
-  const user = useSelector((state) => state.auth.login?.currentUser);
-
+  const user = useSelector((state) => state.auth?.currentUser);
+  const location = useLocation();
   const RequireAuth = () => {
-    return user ? <Outlet /> : <Navigate to="/login" replace />;
+    return user ? (
+      <Outlet />
+    ) : (
+      <Navigate to="/login" state={{ from: location }} replace />
+    );
   };
   const SidebarLayout = () => (
     <>
@@ -48,41 +43,35 @@ function App() {
       <ProfileSidebar />
       <Outlet />
     </>
-  )
+  );
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* Public Routes with Navbar */}
-          <Route element={<SidebarLayout />}>
-            <Route path="/about" element={<About />} />
-            <Route index element={<Home />} />
-          </Route>
+    <Routes>
+      {/* Public Routes with Navbar */}
+      <Route element={<SidebarLayout />}>
+        <Route path="/about" element={<About />} />
+        <Route index element={<Home />} />
+      </Route>
 
-          {/* Public Routes without Navbar */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/confirmemail" element={<ConfirmEmail />} />
-          <Route path="/confirmpassword" element={<ConfirmPassword />} />
-          <Route path="/stream" element={<AutoLink />} />
-          <Route path="/stream/:streamID" element={<Stream />} />
+      {/* Public Routes without Navbar */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/confirmemail" element={<ConfirmEmail />} />
+      <Route path="/confirmpassword" element={<ConfirmPassword />} />
+      <Route path="/stream" element={<AutoLink />} />
+      <Route path="/stream/:streamID" element={<Stream />} />
 
-          {/* Protect routes */}
-          <Route element={<RequireAuth />}>
-            <Route exact path="/app" element={<Community />}/>           
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/admin" element={<Admin />} />
+      {/* Protect routes */}
+      <Route element={<RequireAuth />}>
+        <Route exact path="/app" element={<Community />} />
+        <Route path="/profile" element={<Profile />} />
 
-            <Route element={<ProfileLayout />}>
-              <Route path="/profile/:userId" element={<Profile />} />
-            </Route>  
-
-          </Route>
-          <Route path="*" element={<NoPageFound/>}/>
-        </Routes>
-      </BrowserRouter>
-    </div>
+        <Route element={<ProfileLayout />}>
+          <Route path="/profile/:userId" element={<Profile />} />
+        </Route>
+      </Route>
+      <Route path="*" element={<NoPageFound />} />
+    </Routes>
   );
 }
 

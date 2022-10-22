@@ -7,7 +7,7 @@ import "./Navbar.css";
 
 
 export default function Navigation() {
-  const user = useSelector((state) => state.auth.login?.currentUser); 
+  const user = useSelector((state) => state.auth?.currentUser); 
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const handleClick = () => setClick(!click);
