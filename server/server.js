@@ -15,7 +15,20 @@ const community = require("./routes/community");
 const { socketConnection } = require("./utils/socket");
 
 app.set("trust proxy", 1);
-app.use(cors({ origin: ["http://localhost:3000","https://nesconnect.xyz"], credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://nesconnect.xyz","https://www.nesconnect.tech","https://nesconnect.tech"],
+    credentials: true,
+    allowedHeaders: [
+      "Content-Type",
+      "Accept",
+      "Origin",
+      "X-Requested-With",
+      "Authorization",
+      "Set-Cookie",
+    ],
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
