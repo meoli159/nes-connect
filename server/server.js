@@ -14,6 +14,7 @@ const message = require("./routes/message");
 const community = require("./routes/community");
 const { socketConnection } = require("./utils/socket");
 
+app.set("trust proxy", 1);
 app.use(cors({ origin: ["http://localhost:3000","https://nesconnect.xyz"], credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
