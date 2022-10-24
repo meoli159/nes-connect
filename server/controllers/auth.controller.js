@@ -52,7 +52,9 @@ const login = async (req, res) => {
     const accessToken = generateAccessToken(user);
     res.cookie("token", accessToken, {
       httpOnly: true,
-      secure: true,  
+      secure: true, 
+      path:"/",
+      domain:"http://www.nesconnect.xyz", 
       sameSite: "none",
     });
     res.status(200).json({
