@@ -54,7 +54,7 @@ const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false, 
       path:"/",
-      domain:"nesconnect.xyz",
+      domain:"https://nesconnect.xyz",
       sameSite: "lax",
     });
     res.status(200).json({
