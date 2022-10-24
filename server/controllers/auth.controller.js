@@ -53,8 +53,8 @@ const login = async (req, res) => {
     res.cookie("token", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false, 
-      Domain:"nesconnect.xyz",
-      sameSite: "none",
+      domain:".nesconnect.xyz",
+      sameSite: "strict",
     });
     res.status(200).json({
       _id: user._id,
