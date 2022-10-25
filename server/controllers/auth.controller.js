@@ -51,7 +51,7 @@ const login = async (req, res) => {
     //Token generate
     const accessToken = generateAccessToken(user);
     res.cookie("token", accessToken, {
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV === "production" ? false :true, 
       secure: process.env.NODE_ENV === "production" ? true : false, 
       sameSite: "none",
       domain:"nesconnect.xyz",
