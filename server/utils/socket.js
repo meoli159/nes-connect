@@ -112,5 +112,10 @@ exports.socketConnection = (server) => {
     socket.on("share-screen", function (data) {
       io.emit('screen-received', data);
     })
+
+    //////////////////////////////////
+    socket.on("canvas-data", (data) => {
+      socket.broadcast.emit("canvas-data", data); 
+    })
   });
 };
