@@ -1,59 +1,73 @@
-import React from 'react';
-import Board from './Board';
-import './style.css'
+import React from "react";
+import Board from "./Board";
+import "./style.css";
 
-class Container extends React.Component
-{
-    constructor(props) {
-        super(props);
+class Container extends React.Component {
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            color: "#000000",
-            size: "5"
-        }
-    }
+    this.state = {
+      color: "#000000",
+      size: "5",
+    };
+  }
 
-    changeColor(params) {
-        this.setState({
-            color: params.target.value
-        })
-    }
+  changeColor(params) {
+    this.setState({
+      color: params.target.value,
+    });
+  }
 
-    changeSize(params) {
-        this.setState({
-            size: params.target.value
-        })
-    }
+  changeSize(params) {
+    this.setState({
+      size: params.target.value,
+    });
+  }
 
-    render() {
+  clearCanvas() {
+    var canvas = document.querySelector("#board");
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
-        return (
-            <div className="container">
-                <div className="tools-section">
-                    <div className="color-picker-container">
-                        Select Brush Color : &nbsp; 
-                        <input type="color" value={this.state.color} onChange={this.changeColor.bind(this)}/>
-                    </div>
+  render() {
+    return (
+      <div className="container">
+        <div className="tools-section">
+          <div className="color-picker-container">
+            Select Brush Color : &nbsp;
+            <input
+              type="color"
+              value={this.state.color}
+              onChange={this.changeColor.bind(this)}
+            />
+          </div>
 
-                    <div className="brushsize-container">
-                        Select Brush Size : &nbsp; 
-                        <select value={this.state.size} onChange={this.changeSize.bind(this)}>
-                            <option> 5 </option>
-                            <option> 10 </option>
-                            <option> 15 </option>
-                            <option> 20 </option>
-                            <option> 25 </option>
-                            <option> 30 </option>
-                        </select>
-                    </div>
-                </div>
+          <div className="brushsize-container">
+            Select Brush Size : &nbsp;
+            <select
+              value={this.state.size}
+              onChange={this.changeSize.bind(this)}
+            >
+              <option> 5 </option>
+              <option> 10 </option>
+              <option> 15 </option>
+              <option> 20 </option>
+              <option> 25 </option>
+              <option> 30 </option>
+            </select>
+          </div>
 
-                <div className="board-container">
-                    <Board color={this.state.color} size={this.state.size}></Board>
-                </div>
-            </div>
-        )
-    }
+          <button onClick={() => this.clearCanvas()}>Clear</button>
+        </div>
+
+        <div className="board-container">
+          <Board color={this.state.color} size={this.state.size}></Board>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default Container
+export default Container;

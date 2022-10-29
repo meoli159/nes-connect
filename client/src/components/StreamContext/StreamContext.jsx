@@ -74,13 +74,12 @@ const StreamContext = () => {
       });
 
       socket.on("sendDataServer", (dataGot) => {
+        console.log(dataGot);
         setMess((oldMsgs) => [...oldMsgs, dataGot.data]);
         scrollToBottom();
       });
     });
   }, []);
-
-  console.log(currentPeer);
 
   function createVideo(createVideo) {
     if (!videoContainer[createVideo.id]) {
@@ -134,7 +133,7 @@ const StreamContext = () => {
         content: message,
         id: id,
       };
-      socket.emit("sendDataClient", msg);
+      socket.emit("sendDataClient", {msg: msg, streamId: streamId});
 
       setMessage("");
     }
@@ -143,9 +142,9 @@ const StreamContext = () => {
   const renderMess = mess.map((m, index) => (
     <div
       key={index}
-      className={`${m.id === id ? "your-message" : "other-people"} chat-item`}
+      className={`${m.msg.id === id ? "your-message" : "other-people"} chat-item`}
     >
-      {m.content}
+      {m.msg.content}
     </div>
   ));
 
