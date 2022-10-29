@@ -105,6 +105,7 @@ const StreamContext = () => {
     console.log(stream);
     var call = peer.call(userId, stream, { metadata: { id: myId } });
     call.on("stream", (userVideoStream) => {
+      console.log("stream");
       if (!callList[userId]) {
         createVideo({ id: userId, stream: userVideoStream });
         callList[userId] = call;
@@ -166,6 +167,7 @@ const StreamContext = () => {
     const enabled = mystream.getVideoTracks()[0].enabled;
     if (enabled) {
       mystream.getVideoTracks()[0].enabled = false;
+      mystream.getVideoTracks()[0].stop();
       setPlayVideo();
     } else {
       setStopVideo();
@@ -228,6 +230,10 @@ const StreamContext = () => {
       });
   };
 
+  const openInNewTab = url => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="stream">
       <div className="stream-container">
@@ -278,6 +284,12 @@ const StreamContext = () => {
             onClick={shareScreen}
           >
             <span>Share Screen</span>
+          </div>
+          <div
+            className="stream_controls_button"
+            onClick={() => openInNewTab('http://localhost:3000/whiteboard')}
+          >
+            <span>White Board</span>
           </div>
         </div>
       </div>

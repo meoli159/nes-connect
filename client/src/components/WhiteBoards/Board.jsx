@@ -1,16 +1,42 @@
 import React from "react";
+import { io } from "socket.io-client";
 
 class Board extends React.Component {
   timeout;
-  
+  socket = io.connect("http://localhost:3333");
+
+  ctx;
+  isDrawing = false;
 
   constructor(props) {
     super(props);
 
+    this.socket.on("canvas-data", (data) => {
+      var root = this;
+      var interval = setInterval(function () {
+        if (root.isDrawing) return;
+        root.isDrawing = true;
+        clearInterval(interval);
+        var image = new Image();
+        var canvas = document.querySelector("#board");
+        var ctx = canvas.getContext("2d");
+        image.onload = function () {
+          ctx.drawImage(image, 0, 0);
+
+          root.isDrawing = false;
+        };
+        image.src = data;
+      }, 200);
+    });
   }
 
   componentDidMount() {
     this.drawOnCanvas();
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.ctx.strokeStyle = newProps.color;
+    this.ctx.lineWidth = newProps.size;
   }
 
   drawOnCanvas() {
@@ -71,7 +97,8 @@ class Board extends React.Component {
 
       if (root.timeout != undefined) clearTimeout(root.timeout);
       root.timeout = setTimeout(function () {
-        
+        var base64ImageData = canvas.toDataURL("image/png");
+        root.socket.emit("canvas-data", base64ImageData);
       }, 1000);
     };
   }
