@@ -106,7 +106,7 @@ exports.socketConnection = (server) => {
 
     socket.on("sendDataClient", function (data) {
       console.log(data)
-      io.emit("sendDataServer", { data });
+      io.to(data.streamId).emit("sendDataServer", { data });
     })
 
     socket.on("share-screen", function (data) {
