@@ -17,6 +17,10 @@ import NoPageFound from "./pages/404/NoPageFound";
 import ProfileSidebar from "./components/ProfileSidebar";
 import ConfirmEmail from "./pages/Auth/ConfirmEmail";
 import ConfirmPassword from "./pages/Auth/ConfirmPassword";
+import Stream from "./pages/Stream";
+import AutoLink from "./components/StreamContext/AutoLink";
+import LiveBlocks from "./pages/LiveBlocks/index";
+import WhiteBoards from "./components/WhiteBoards/Container";
 
 function App() {
   const user = useSelector((state) => state.auth?.currentUser);
@@ -54,8 +58,12 @@ function App() {
       {/* Public Routes without Navbar */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/confirmemail" element={<ConfirmEmail />} />
-      <Route path="/confirmpassword" element={<ConfirmPassword />} />
+      <Route path="/forgotpassword" element={<ConfirmEmail />} />
+      <Route path="/resetpassword/:userId/:forgotPasswordToken" element={<ConfirmPassword />} />
+      <Route path="/stream" element={<AutoLink />} />
+      <Route path="/stream/:streamID" element={<Stream />} />
+      <Route path="/liveblock" element={<LiveBlocks />} />
+      <Route path="/whiteboard" element={<WhiteBoards />} />
 
       {/* Protect routes */}
       <Route element={<RequireAuth />}>

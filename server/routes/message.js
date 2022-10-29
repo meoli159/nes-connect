@@ -1,7 +1,7 @@
 const {fetchAllMessages, createMessage} = require("../controllers/message.controller");
-const { authJwt } = require("../middlewares");
+const { verifyToken } = require("../middlewares/authJwt");
 const router = require('express').Router();
 
-router.get("/:communityId",authJwt.verifyToken,fetchAllMessages);
-router.post("/",authJwt.verifyToken,createMessage);
+router.get("/:communityId",verifyToken,fetchAllMessages);
+router.post("/",verifyToken,createMessage);
 module.exports = router;

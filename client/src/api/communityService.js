@@ -1,9 +1,5 @@
 import axiosClient from "./createInstance";
-import {
-  fetchingFail,
-  renameCommunitySuccess,
-  deleteCommunitySuccess,
-} from "../redux/community/communitySlice";
+import { renameCommunitySuccess } from "../redux/community/communitySlice";
 import { selectCommunity } from "../redux/message/messageSlice";
 
 export const getCommunityList = async () => {
@@ -16,52 +12,33 @@ export const createCommunity = async (community) => {
   return res.data;
 };
 
-const renameCommunity = async (
-  communityId,
-  communityName,
-  accessToken,
-  dispatch
-) => {
-  try {
-    const res = await axiosClient.put(
-      `/community/${communityId}`,
-      communityName,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
-    dispatch(renameCommunitySuccess(res.data));
-    dispatch(selectCommunity(res.data));
-  } catch (error) {
-    dispatch(fetchingFail());
-  }
+export const renameCommunity = async (communityId, communityName, dispatch) => {
+  const res = await axiosClient.put(`/community/${communityId}`, communityName);
+  dispatch(renameCommunitySuccess(res.data));
+  dispatch(selectCommunity(res.data));
 };
 
-const deleteCommunity = async (communityId, accessToken, dispatch) => {
-  try {
-    await axiosClient.delete(`/community/${communityId}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    dispatch(deleteCommunitySuccess(communityId));
-    dispatch(selectCommunity(communityId));
-    getCommunityList(accessToken, dispatch);
-  } catch (error) {
-    dispatch(fetchingFail());
-  }
+export const deleteCommunity = async (communityId) => {
+  const res = await axiosClient.delete(`/community/${communityId}`);
+  return res.data;
 };
 
-export const CommunityUserAdd = async (communityId, user) => {
+export const communityUserAdd = async (communityId, user) => {
   const res = await axiosClient.post(`/community/${communityId}/user`, user);
- 
-  return res.data
+
+  return res.data;
 };
 
-const leaveRemoveUserFromCommunity = async () => {};
-
-const chatService = {
-  renameCommunity,
-  deleteCommunity,
-  leaveRemoveUserFromCommunity,
+export const removeUserFromCommunity = async (communityId, userId) => {
+  const res = await axiosClient.delete(
+    `/community/${communityId}/user/${userId}`
+  );
+  return res.data;
 };
 
-export default chatService;
+export const transferCommunityAdmin = async (communityId, userId) => {
+  const res = await axiosClient.put(`/community/${communityId}/user`, {
+    userId,
+  });
+  return res.data;
+};

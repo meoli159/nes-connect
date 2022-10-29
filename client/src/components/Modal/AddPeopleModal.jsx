@@ -1,8 +1,6 @@
 import React, { useState, useContext } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
-import { CommunityUserAdd } from "../../api/communityService";
-import { selectCommunity } from "../../redux/message/messageSlice";
+import { useSelector } from "react-redux";
+import { communityUserAdd } from "../../api/communityService";
 import { SocketContext } from "../../utils/context/SocketContext";
 
 import "./AddPeopleModal.css";
@@ -15,8 +13,6 @@ function AddPeopleModal({ closeAddModal }) {
   );
   const [addUser, setAddUser] = useState("");
 
-  const dispatch = useDispatch();
-
   const handleCloseModal = (e) => {
     e.preventDefault();
     closeAddModal(false);
@@ -24,10 +20,11 @@ function AddPeopleModal({ closeAddModal }) {
 
   const handleAddUser = (e) => {
     e.preventDefault();
-    CommunityUserAdd(currentCommunity?._id, { email: addUser }, socket).then((res) => {
-        socket.emit("onCommunity", res);
-      }
-    );
+    communityUserAdd(currentCommunity?._id, { email: addUser }).then((res) => {
+      console.log("onCommunity");
+      console.log(res);
+      socket.emit("onCommunity", res);
+    });
     handleCloseModal(e);
   };
 

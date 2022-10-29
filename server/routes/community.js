@@ -1,14 +1,16 @@
-const {getCommunity,createCommunity,renameCommunity,deleteCommunity,addUserToCommunity, removeUserFromCommunity} = require("../controllers/community.controller");
-const { authJwt } = require("../middlewares");
+const {getCommunity,createCommunity,renameCommunity,deleteCommunity,addUserToCommunity, removeUserFromCommunity, transferCommunityAdmin} = require("../controllers/community.controller");
+
+const { verifyToken } = require("../middlewares/authJwt");
+
 const { checkCommunity } = require("../middlewares");
 const router = require('express').Router();
 
-router.get("/",authJwt.verifyToken,getCommunity)
-router.post("/",authJwt.verifyToken, createCommunity)
-router.put("/:communityId",authJwt.verifyToken,checkCommunity.isCommunityAdmin,renameCommunity);
-router.delete("/:communityId",authJwt.verifyToken,checkCommunity.isCommunityAdmin,deleteCommunity);
+router.get("/",verifyToken,getCommunity)
+router.post("/",verifyToken, createCommunity)
+router.put("/:communityId",checkCommunity.isCommunityAdmin,renameCommunity);
+router.delete("/:communityId",checkCommunity.isCommunityAdmin,deleteCommunity);
 
-router.post("/:communityId/user",authJwt.verifyToken,checkCommunity.isCommunityAdmin,addUserToCommunity);
-router.put("/:communityId/removeuser",authJwt.verifyToken,checkCommunity.checkCommunityAdminOrSameUser,removeUserFromCommunity);
-
+router.post("/:communityId/user",checkCommunity.checkDuplicateMember,addUserToCommunity);
+router.delete("/:communityId/user/:userId",checkCommunity.checkCommunityAdminOrSameUser,removeUserFromCommunity);
+router.put("/:communityId/user",checkCommunity.isCommunityAdmin,transferCommunityAdmin)
 module.exports = router;

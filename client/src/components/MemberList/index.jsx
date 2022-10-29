@@ -46,12 +46,6 @@ function MemberList() {
     };
   }, [communityId, selectedCommunity, socket]);
 
-  // useEffect(() => {
-  //   const handleResize = () => dispatch(toggleContextMenu(false));
-  //   window.addEventListener("resize", handleResize);
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, [dispatch]);
-
   const onUserContextMenu = (e, user) => {
     e.preventDefault();
     console.log("Open context menu!!!");

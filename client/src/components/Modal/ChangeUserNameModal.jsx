@@ -1,12 +1,9 @@
-import React from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import authService from "../../api/authService";
+import { useDispatch} from "react-redux";
 import { updateUserThunk } from "../../redux/auth/authThunk";
 import "./ChangeUserNameModal.css";
 
 function ChangeUserNameModal({ closeChangeUserNameModal }) {
-  const user = useSelector((state) => state.auth?.currentUser);
   const [editUserName, setEditUserName] = useState("");
 
   const dispatch = useDispatch();

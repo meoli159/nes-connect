@@ -4,9 +4,7 @@ import { selectCommunity } from "../../redux/message/messageSlice";
 import "./style.css";
 import { fetchCommunityThunk } from "../../redux/community/communityThunk";
 import { SocketContext } from "../../utils/context/SocketContext";
-import { addCommunity } from "../../redux/community/communitySlice";
 export default function ServerChatRoom() {
-  const user = useSelector((state) => state.auth?.currentUser);
   const communityList = useSelector((state) => state.communities?.communities);
   const socket = useContext(SocketContext);
 

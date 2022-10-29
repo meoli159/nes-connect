@@ -68,8 +68,9 @@ const renameCommunity = async (req, res) => {
 //delete community
 const deleteCommunity = async (req, res) => {
   try {
-    await Community.findByIdAndDelete(req.params.communityId);
-    return res.status(200).send({ message: "Delete Successfully" });
+    const deleted = await Community.findByIdAndDelete(req.params.communityId);
+
+    return res.json(deleted);
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -93,7 +94,7 @@ const addUserToCommunity = async (req, res) => {
     if (!added)
       return res.status(404).send({ message: "Community Not Found!!" });
     else {
-      res.json({community:added,user:email});
+      res.json({ community: added, user: email });
     }
   } catch (error) {
     return res.status(400).send(error.message);
@@ -103,7 +104,7 @@ const addUserToCommunity = async (req, res) => {
 //remove user from community
 const removeUserFromCommunity = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const removed = await Community.findByIdAndUpdate(
       req.params.communityId,
       {
@@ -125,6 +126,27 @@ const removeUserFromCommunity = async (req, res) => {
   }
 };
 
+//transfer community admin
+const transferCommunityAdmin = async (req, res) => {
+  const { userId } = req.body;
+  const { communityId } = req.params;
+  const newCommunityAdmin = await User.findById(userId);
+  const updatedCommunity = await Community.findByIdAndUpdate(
+    communityId,
+    {
+      communityAdmin: newCommunityAdmin,
+    },
+    { new: true }
+  )
+    .populate("users")
+    .populate("communityAdmin");
+
+  if (!updatedCommunity)
+    return res.status(401).send({ message: "Community Not Found" });
+  else {
+    res.json(updatedCommunity);
+  }
+};
 module.exports = {
   getCommunity,
   createCommunity,
@@ -132,4 +154,5 @@ module.exports = {
   deleteCommunity,
   addUserToCommunity,
   removeUserFromCommunity,
+  transferCommunityAdmin,
 };

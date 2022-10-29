@@ -1,9 +1,9 @@
-const { authJwt } = require("../middlewares");
+const { verifyToken } = require("../middlewares/authJwt");
 const { searchUser, deleteUser } = require("../controllers/user.controller");
 const router = require("express").Router();
 
-router.get("/", authJwt.verifyToken, searchUser);
+router.get("/", verifyToken, searchUser);
 
-router.delete("/:userId", authJwt.verifyToken, deleteUser);
+router.delete("/:userId",verifyToken, deleteUser);
 
 module.exports = router;
