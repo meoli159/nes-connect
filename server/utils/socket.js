@@ -115,7 +115,7 @@ exports.socketConnection = (server) => {
 
     //////////////////////////////////
     socket.on("canvas-data", (data) => {
-      socket.broadcast.emit("canvas-data", data); 
+      socket.to(data.canvasId).emit("canvas-data", data.image); 
     })
   });
 };
