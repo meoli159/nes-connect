@@ -27,7 +27,7 @@ const StreamContext = () => {
   useEffect(() => {
 
     peer.on("open", (peerId) => {
-      myId = peerId;
+      peerId = myId;
       setId(myId);
       socket.emit("join-stream", {
         streamId: streamId,
@@ -81,7 +81,7 @@ const StreamContext = () => {
     });
   }, []);
 
-  function createVideo(createVideo) {
+  const createVideo= (createVideo) => {
     if (!videoContainer[createVideo.id]) {
       const videoContainer = document.getElementById("video-grid");
       const video = document.createElement("video");

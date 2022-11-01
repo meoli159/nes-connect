@@ -52,7 +52,7 @@ const login = async (req, res) => {
     const accessToken = generateAccessToken(user);
     res.cookie("token", accessToken, {
       httpOnly: process.env.NODE_ENV === "production" ? false :true, 
-      secure: process.env.NODE_ENV === "production" ? false : true, 
+      secure: process.env.NODE_ENV === "production" ? true : false, 
       sameSite: "none",
       maxAge: 30 * ( 1000 * 60 * 60 * 24)
     });
