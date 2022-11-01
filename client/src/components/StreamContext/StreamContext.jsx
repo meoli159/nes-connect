@@ -4,7 +4,8 @@ import Peer from "peerjs";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { useSelector } from "react-redux";
-
+const callList = [];
+var videoContainer = {};
 const StreamContext = () => {
   const user = useSelector((state) => state.auth?.currentUser);
   const params = useParams();
@@ -13,19 +14,63 @@ const StreamContext = () => {
   const streamId = params.streamID;
   var myId = "";
   var peer;
-  const callList = [];
-  var videoContainer = {};
+
   const [id, setId] = useState();
   const [currentPeer, setPeer] = useState(null);
   const [mystream, setmystream] = useState(null);
-  
+
   const messagesEnd = useRef();
 
   const socket = useContext(SocketContext);
   peer = new Peer(user._id);
-  
-  useEffect(() => {
 
+  useEffect(() => {
+    const createVideo = (createVideo) => {
+      if (!videoContainer[createVideo.id]) {
+        const videoContainer = document.getElementById("video-grid");
+        const video = document.createElement("video");
+        video.srcObject = createVideo.stream;
+        video.id = createVideo.id;
+        video.autoplay = true;
+        videoContainer.appendChild(video);
+        let totalUsers = document.getElementsByTagName("video").length;
+        console.log(totalUsers);
+        if (totalUsers > 1) {
+          for (let index = 0; index < totalUsers; index++) {
+            document.getElementsByTagName("video")[index].style.width =
+              100 / totalUsers + "%";
+          }
+        }
+      }
+    };
+
+    const connectToNewUser = (userId, stream) => {
+      console.log(stream);
+      var call = peer.call(userId, stream, { metadata: { id: myId } });
+      call.on("stream", (userVideoStream) => {
+        console.log("stream");
+        if (!callList[userId]) {
+          createVideo({ id: userId, stream: userVideoStream });
+          callList[userId] = call;
+        }
+      });
+      call.on("close", () => {
+        console.log("closing new user", userId);
+        removeVideo(userId);
+      });
+      call.on("error", () => {
+        console.log("peer error ------");
+      });
+      setPeer(call);
+    };
+
+    const removeVideo = (id) => {
+      delete videoContainer[id];
+      delete callList[id];
+      const video = document.getElementById(id);
+      if (video) video.remove();
+    };
+    //////////
     peer.on("open", (peerId) => {
       peerId = myId;
       setId(myId);
@@ -79,53 +124,7 @@ const StreamContext = () => {
         scrollToBottom();
       });
     });
-  }, []);
-
-  const createVideo= (createVideo) => {
-    if (!videoContainer[createVideo.id]) {
-      const videoContainer = document.getElementById("video-grid");
-      const video = document.createElement("video");
-      video.srcObject = createVideo.stream;
-      video.id = createVideo.id;
-      video.autoplay = true;
-      videoContainer.appendChild(video);
-      let totalUsers = document.getElementsByTagName("video").length;
-      console.log(totalUsers);
-      if (totalUsers > 1) {
-        for (let index = 0; index < totalUsers; index++) {
-          document.getElementsByTagName("video")[index].style.width =
-            100 / totalUsers + "%";
-        }
-      }
-    }
-  }
-
-  const connectToNewUser = (userId, stream) => {
-    console.log(stream);
-    var call = peer.call(userId, stream, { metadata: { id: myId } });
-    call.on("stream", (userVideoStream) => {
-      console.log("stream");
-      if (!callList[userId]) {
-        createVideo({ id: userId, stream: userVideoStream });
-        callList[userId] = call;
-      }
-    });
-    call.on("close", () => {
-      console.log("closing new user", userId);
-      removeVideo(userId);
-    });
-    call.on("error", () => {
-      console.log("peer error ------");
-    });
-    setPeer(call);
-  };
-
-  const removeVideo = (id) => {
-    delete videoContainer[id];
-    delete callList[id];
-    const video = document.getElementById(id);
-    if (video) video.remove();
-  };
+  }, [myId, peer, socket, streamId]);
 
   const sendMessage = () => {
     if (message !== null) {
@@ -133,7 +132,7 @@ const StreamContext = () => {
         content: message,
         id: id,
       };
-      socket.emit("sendDataClient", {msg: msg, streamId: streamId});
+      socket.emit("sendDataClient", { msg: msg, streamId: streamId });
       console.log(id);
       setMessage("");
     }
@@ -142,7 +141,9 @@ const StreamContext = () => {
   const renderMess = mess.map((m, index) => (
     <div
       key={index}
-      className={`${m.msg.id === id ? "your-message" : "other-people"} chat-item`}
+      className={`${
+        m.msg.id === id ? "your-message" : "other-people"
+      } chat-item`}
     >
       {m.msg.content}
     </div>
@@ -221,16 +222,18 @@ const StreamContext = () => {
         });
         sender.replaceTrack(screenTrack);
         screenTrack.onended = () => {
-          let sender = currentPeer.peerConnection.getSenders().find(function (s) {
-            return s.track.kind === screenTrack.kind;
-          });
+          let sender = currentPeer.peerConnection
+            .getSenders()
+            .find(function (s) {
+              return s.track.kind === screenTrack.kind;
+            });
           sender.replaceTrack(mystream.getVideoTracks()[0]);
         };
       });
   };
 
-  const openInNewTab = url => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -286,7 +289,7 @@ const StreamContext = () => {
           </div>
           <div
             className="stream_controls_button"
-            onClick={() => openInNewTab('/whiteboard/' + streamId + '-canvas')}
+            onClick={() => openInNewTab("/whiteboard/" + streamId + "-canvas")}
           >
             <span>White Board</span>
           </div>
