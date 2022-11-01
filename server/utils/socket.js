@@ -1,7 +1,7 @@
 exports.socketConnection = (server) => {
   const io = require("socket.io")(server, {
     cors: {
-      origin: ["http://localhost:3000","https://nesconnect.xyz","https://www.nesconnect.tech","https://nesconnect.tech"],
+      origin: ["http://localhost:3000","https://nesconnect.xyz"],
       credentials: true,
     },
     pingInterval: 10000,
@@ -43,7 +43,7 @@ exports.socketConnection = (server) => {
       // console.log("leaved community " + community._id, community.communityName);
     });
 
-    socket.on("community.delete", () => {});
+    socket.on("community.delete", () => { });
 
     socket.on("community.user.leave", (community) => {
       io.to(community._id).emit("onLeaveCommunity", community);
@@ -83,17 +83,39 @@ exports.socketConnection = (server) => {
       var community = data.community;
 
       io.to(community._id).emit("onCommunityReceiveNewUser", data);
-      usersData.some((userD) => {      
+      usersData.some((userD) => {
         if (userD.userId === data.user._id) {
           return socket.to(userD.socketId).emit("onCommunityAdd", data);
         }
-        community.users.forEach((user)=>{
-          if(userD.userId == user._id) 
-          {socket.to(userD.socketId).emit("onCommunityReceiveNewUser", data);}
+        community.users.forEach((user) => {
+          if (userD.userId == user._id) { socket.to(userD.socketId).emit("onCommunityReceiveNewUser", data); }
         })
-       
-        
+
+
       });
     });
+
+    ////////////////////////////////
+    socket.on("join-stream", stream => {
+      socket.join(stream.streamId);
+      socket.to(stream.streamId).emit('new-user-connect', stream.userId);
+      socket.on('disconnect', () => {
+        socket.to(stream.streamId).emit('user-disconnected', stream.userId);
+      });
+    });
+
+    socket.on("sendDataClient", function (data) {
+      console.log(data)
+      io.to(data.streamId).emit("sendDataServer", { data });
+    })
+
+    socket.on("share-screen", function (data) {
+      io.emit('screen-received', data);
+    })
+
+    //////////////////////////////////
+    socket.on("canvas-data", (data) => {
+      socket.to(data.canvasId).emit("canvas-data", data.image); 
+    })
   });
 };

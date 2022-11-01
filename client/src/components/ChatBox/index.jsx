@@ -7,8 +7,10 @@ import { FaPhone, FaVideo } from "react-icons/fa";
 import { useContext } from "react";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { fetchMessagesThunk } from "../../redux/message/messageThunk";
+import { useNavigate } from "react-router-dom";
 
 export default function ChatBox() {
+  const navigate = useNavigate();
   let lastSenderId = null;
   const socket = useContext(SocketContext);
   const currentCommunity = useSelector(
@@ -37,9 +39,10 @@ export default function ChatBox() {
     //select chat so that user can join same community
     if (!currentCommunity._id) return;
     socket.emit("onCommunityJoin", currentCommunity);
-    dispatch(fetchMessagesThunk(currentCommunity._id))
-   return ()=>{
-    socket.emit("onCommunityLeave", currentCommunity);   }
+    dispatch(fetchMessagesThunk(currentCommunity._id));
+    return () => {
+      socket.emit("onCommunityLeave", currentCommunity);
+    };
   }, [currentCommunity, currentCommunityName, dispatch, socket]);
 
   useEffect(() => {
@@ -90,7 +93,7 @@ export default function ChatBox() {
             <button className="call-button">
               <FaPhone />
             </button>
-            <button className="video-call-button">
+            <button className="video-call-button" onClick={() => { navigate(`/stream`) }}>
               <FaVideo />
             </button>
           </>

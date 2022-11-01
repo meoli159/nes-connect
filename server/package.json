@@ -24,7 +24,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.4",
     "nodemailer": "^6.8.0",
-    "socket.io": "^4.5.2"
+    "socket.io": "^4.5.2",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "concurrently": "^7.2.2",
