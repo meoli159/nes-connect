@@ -34,7 +34,7 @@ function MemberList() {
     socket.emit("getOnlineCommunityUsers", selectedCommunity);
     const interval = setInterval(() => {
       socket.emit("getOnlineCommunityUsers", selectedCommunity);
-    }, 5000);
+    }, 2000);
 
     socket.on("onlineCommunityUsersReceived", (users) => {
       setOnlineUsers(users.onlineUsers);
@@ -48,7 +48,6 @@ function MemberList() {
 
   const onUserContextMenu = (e, user) => {
     e.preventDefault();
-    console.log("Open context menu!!!");
     dispatch(toggleContextMenu(true));
     dispatch(setContextMenuLocation({ x: e.clientX, y: e.clientY }));
     dispatch(setSelectedUser(user));

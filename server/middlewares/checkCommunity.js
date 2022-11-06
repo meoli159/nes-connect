@@ -21,11 +21,14 @@ isCommunityAdmin = async (req, res, next) => {
   });
 };
 
-checkCommunityAdminOrSameUser = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user._id === req.params.userId) {
+checkCommunityAdminOrSameUser = async(req, res, next) => {
+  verifyToken(req, res,async () => {
+    const user = await User.findById({ _id: req.params.userId });
+    let convertedUser = JSON.parse(JSON.stringify(user))
+    console.log(convertedUser)
+    if (req.user._id === convertedUser._id) {
       next();
-    } else if (req.user._id !== req.params.userId) {
+    } else if (req.user._id !== convertedUser._id) {
       checkCommunity.isCommunityAdmin(req, res, next);
     } else {
       return res

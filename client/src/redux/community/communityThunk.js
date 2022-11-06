@@ -30,7 +30,7 @@ export const transferCommunityAdminThunk = createAsyncThunk(
 export const removeUserFromCommunityThunk = createAsyncThunk(
   "community/removeUser",
   async (data) => {
-   
-    return await removeUserFromCommunityAPI(data);
+    console.log(data.user)
+    return await removeUserFromCommunityAPI(data.communityId,data.user);
   }
 );

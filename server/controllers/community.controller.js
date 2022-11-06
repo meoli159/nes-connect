@@ -104,11 +104,12 @@ const addUserToCommunity = async (req, res) => {
 //remove user from community
 const removeUserFromCommunity = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const {userId,communityId} = req.params
+    const user = await User.findById(userId);
     const removed = await Community.findByIdAndUpdate(
-      req.params.communityId,
+      communityId,
       {
-        $pull: { users: userId },
+        $pull: { users:user._id},
       },
       {
         new: true,
@@ -116,10 +117,11 @@ const removeUserFromCommunity = async (req, res) => {
     )
       .populate("users")
       .populate("communityAdmin");
+      
     if (!removed)
       return res.status(404).send({ message: "Community Not Found!!" });
     else {
-      res.json(removed);
+      res.json({ community: removed, user: user });
     }
   } catch (error) {
     return res.status(400).send(error.message);
@@ -129,10 +131,9 @@ const removeUserFromCommunity = async (req, res) => {
 //transfer community admin
 const transferCommunityAdmin = async (req, res) => {
   const { userId } = req.body;
-  const { communityId } = req.params;
   const newCommunityAdmin = await User.findById(userId);
   const updatedCommunity = await Community.findByIdAndUpdate(
-    communityId,
+    req.params.communityId,
     {
       communityAdmin: newCommunityAdmin,
     },

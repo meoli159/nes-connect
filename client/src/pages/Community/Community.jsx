@@ -7,6 +7,7 @@ import { SocketContext } from "../../utils/context/SocketContext";
 
 import {
   addCommunity,
+  removeCommunity,
   updateCommunity,
 } from "../../redux/community/communitySlice";
 import { selectCommunity, sendMessage } from "../../redux/message/messageSlice";
@@ -31,14 +32,17 @@ export default function Community() {
       }
     });
     socket.on("onCommunityAdd", (payload) => {
-      console.log("onCommunityAdd");
-      console.log(payload);
+      console.log("onCommunityAdd")
       dispatch(addCommunity(payload.community));
     });
 
+    socket.on("onCommunityDeleted",(payload)=>{
+      console.log("onCommunityDeleted")
+      dispatch(removeCommunity(payload))
+      dispatch(selectCommunity([null]));
+    })
     socket.on("onCommunityReceiveNewUser", (payload) => {
-      console.log("onCommunityReceiveNewUser");
-      console.log(payload.community);
+      console.log("onCommunityReceiveNewUser")
       dispatch(updateCommunity(payload.community));
       if (payload.community._id === currentCommunity._id) {
         dispatch(selectCommunity(payload.community));
@@ -46,19 +50,24 @@ export default function Community() {
     });
 
     socket.on("onCommunityAdminUpdate", (payload) => {
-      console.log("on Community Admin Update");
-      console.log(payload);
       dispatch(updateCommunity(payload));
       if (payload._id === currentCommunity._id) {
         dispatch(selectCommunity(payload));
       }
     });
+    
+    socket.on("onCommunityRemove", (payload) => {
+      console.log("onCommunityRemove")
+      dispatch(removeCommunity(payload.community));
+      dispatch(selectCommunity([null]));
+    });
 
-    socket.on("onLeaveCommunity", (payload) => {
-      console.log("onLeaveCommunity");
-      console.log(payload);
-      dispatch(updateCommunity(payload));
-      dispatch(selectCommunity(payload));
+    socket.on("onCommunityUserRemoved", (payload) => {
+      console.log("onCommunityUserRemoved")
+      dispatch(updateCommunity(payload.community));
+      if (payload.community._id === currentCommunity._id) {
+        dispatch(selectCommunity(payload.community));
+      }
     });
 
     return () => {
@@ -66,8 +75,10 @@ export default function Community() {
       socket.off("onCommunityAdd");
       socket.off("onCommunityReceiveNewUser");
       socket.off("onCommunityAdminUpdate");
+      socket.off("onCommunityRemove");
+      socket.off("onCommunityUserRemoved");
     };
-  }, [currentCommunity._id, dispatch, socket, user]);
+  }, [currentCommunity, dispatch, socket, user]);
 
   return (
     <div className="app-wrapper">
