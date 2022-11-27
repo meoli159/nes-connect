@@ -104,21 +104,18 @@ exports.socketConnection = (server) => {
       });
     });
 
-    socket.on('newUserStart', (data) => {
-      socket.to(data.to).emit('newUserStart', { sender: data.sender });
-    });
-
-    socket.on("sending signal", payload => {
-      io.to(payload.streamID).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
-    });
-
-    socket.on("returning signal", payload => {
-      io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
-    });
-
     socket.on("sendDataClient", function (data) {
       console.log(data)
-      io.emit("sendDataServer", { data });
+      io.to(data.streamId).emit("sendDataServer", { data });
+    })
+
+    socket.on("share-screen", function (data) {
+      io.emit('screen-received', data);
+    })
+
+    //////////////////////////////////
+    socket.on("canvas-data", (data) => {
+      socket.broadcast.emit("canvas-data", data); 
     })
   });
 };

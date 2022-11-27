@@ -1,11 +1,15 @@
-.stream {
-    display: flex;
+.stream-wrapper {
     flex-direction: column;
+    display: flex;
+    max-width: 100%;
+    height: 100vh;
 }
 
 .stream-container {
     display: flex;
     flex-direction: row-reverse;
+    max-width: 100%;
+    height: 100vh;
 }
 
 .stream-video-wrapper {
@@ -13,8 +17,8 @@
     flex-direction: column;
     align-content: center;
     background-color: #000;
-    height: 100vh;
-    width: 100%;
+    height: 95vh;
+    width: 80%;
 }
 
 #video-grid {
@@ -34,11 +38,14 @@ video {
 }
 
 .stream_controls {
+    width: 100%;
+    height: 5vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #1c1e20;
-    color: #d2d2d2;
     padding: 5px;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .stream_controls_block {
@@ -53,38 +60,76 @@ video {
     justify-content: center;
     align-items: center;
     min-width: 80px;
-    transition: all 0.3s ease-in-out;
     border-radius: 10px;
     margin: 5px;
+    color: grey;
+}
+
+.stream_controls_button:hover {
+    transition: 0.5s;
+    transition-delay: 0.2s;
+    transform: scale(1.2);
+    color: whitesmoke;
 }
 
 .box-chat_message {
-    min-height: 60vh;
-    max-height: 60vh;
+    min-height: 90vh;
+    max-height: 90vh;
     overflow-y: auto;
-
 }
 
 .box-chat {
-    right: -100vw;
-    width: 50vh;
-    margin: 0 auto;
-    margin-top: 100px;
+    width: 20%;
+    height: 90vh;
+    max-height: 90vh;
     box-shadow: 0 0 10px 0 black;
-    border-radius: 1em;
+}
+
+.box-chat_message {
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: 400;
 }
 
 .send-box {
     width: 100%;
-    padding: 1em;
+    height: 5vh;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    color: whitesmoke;
 }
 
 textarea {
-    width: 80%;
-    margin: 0;
-    padding: 0.5em;
-    background: #ebf5ff;
-    border-radius: 2em;
     display: flex;
-    float: left;
+    background: none;
+    border: none;
+    color: black;
+    font-family: "roboto", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    outline: none;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.send-message-btn {
+    width: 20%;
+    height: 5vh;
+    margin-right: 5px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: lightseagreen;
+}
+
+.send-message-btn:hover {
+    transition: 0.5s;
+    transition-delay: 0.2s;
+    background-color: gray;
 }

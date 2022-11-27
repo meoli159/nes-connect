@@ -19,7 +19,6 @@ import ConfirmEmail from "./pages/Auth/ConfirmEmail";
 import ConfirmPassword from "./pages/Auth/ConfirmPassword";
 import Stream from "./pages/Stream";
 import AutoLink from "./components/StreamContext/AutoLink";
-import LiveBlocks from "./pages/LiveBlocks/index";
 import WhiteBoards from "./components/WhiteBoards/Container";
 
 function App() {
@@ -62,7 +61,6 @@ function App() {
       <Route path="/resetpassword/:userId/:forgotPasswordToken" element={<ConfirmPassword />} />
       <Route path="/stream" element={<AutoLink />} />
       <Route path="/stream/:streamID" element={<Stream />} />
-      <Route path="/liveblock" element={<LiveBlocks />} />
       <Route path="/whiteboard" element={<WhiteBoards />} />
 
       {/* Protect routes */}
