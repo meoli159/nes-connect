@@ -51,10 +51,10 @@ const login = async (req, res) => {
     //Token generate
     const accessToken = generateAccessToken(user);
     res.cookie("token", accessToken, {
-      httpOnly: true,
-      secure: true, 
-      path:"/", 
-      sameSite: "none",
+      httpOnly: process.env.NODE_ENV === "production" ? false : true, 
+      secure: process.env.NODE_ENV === "production" ? true : false, 
+      sameSite: "strict",
+      maxAge: 30 * ( 1000 * 60 * 60 * 24)
     });
     res.status(200).json({
       _id: user._id,

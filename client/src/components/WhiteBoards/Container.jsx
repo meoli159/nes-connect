@@ -1,8 +1,14 @@
 import React from "react";
-import Board from "./Board";
+import { io } from "socket.io-client";
+import Board from "./Canvas";
 import "./style.css";
 
 class Container extends React.Component {
+  pencil;
+  socket = io(process.env.REACT_APP_WEBSOCKET_URL, {
+    withCredentials: true,
+  });
+
   constructor(props) {
     super(props);
 
@@ -29,6 +35,28 @@ class Container extends React.Component {
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    var base64ImageData = canvas.toDataURL("image/png");
+    this.socket.emit("canvas-data", base64ImageData);
+  }
+
+  useEraser() {
+    this.pencil = {
+      color: this.state.color,
+      size: this.state.size,
+    }
+    this.setState({
+      color: "white",
+      size: 20,
+    });
+  }
+
+  usePencil() {
+    if (this.pencil != null) {
+      this.setState({
+        color: this.pencil.color,
+        size: this.pencil.size,
+      });
+    }
   }
 
   render() {
@@ -60,6 +88,8 @@ class Container extends React.Component {
           </div>
 
           <button onClick={() => this.clearCanvas()}>Clear</button>
+          <button onClick={() => this.useEraser()}>eraser</button>
+          <button onClick={() => this.usePencil()}>Pencil</button>
         </div>
 
         <div className="board-container">

@@ -102,7 +102,7 @@ export default function ChatBox() {
       <div className="separator3" />
 
       <div ref={scrollDiv} className="chat-box-page">
-        {messages.map(mapMessages)}
+        {currentCommunityName ?  (messages.map(mapMessages)):(null)}
       </div>
 
       <div className="separator4" />

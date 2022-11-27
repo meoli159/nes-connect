@@ -33,6 +33,7 @@ export const removeUserFromCommunity = async (communityId, userId) => {
   const res = await axiosClient.delete(
     `/community/${communityId}/user/${userId}`
   );
+
   return res.data;
 };
 

@@ -61,7 +61,7 @@ function App() {
       <Route path="/resetpassword/:userId/:forgotPasswordToken" element={<ConfirmPassword />} />
       <Route path="/stream" element={<AutoLink />} />
       <Route path="/stream/:streamID" element={<Stream />} />
-      <Route path="/whiteboard" element={<WhiteBoards />} />
+      <Route path="/whiteboard/:canvasId" element={<WhiteBoards />} />
 
       {/* Protect routes */}
       <Route element={<RequireAuth />}>

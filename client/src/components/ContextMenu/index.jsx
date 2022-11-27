@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import "./style.css";
-import { transferCommunityAdminThunk } from "../../redux/community/communityThunk";
+import {
+  removeUserFromCommunityThunk,
+  transferCommunityAdminThunk,
+} from "../../redux/community/communityThunk";
 import { selectCommunity } from "../../redux/message/messageSlice";
 
 export function ContextMenu({ point }) {
@@ -18,24 +21,26 @@ export function ContextMenu({ point }) {
   );
 
   const kickUser = () => {
-    console.log(`Kicking User: ${selectedUser?._id}`);
-    console.log(selectedUser);
-    if (!selectedUser) return;
+    let data = {
+      communityId: currentCommunity._id,
+      user: selectedUser._id,
+    };
+    if (!currentCommunity||!selectedUser) return;
+    dispatch(removeUserFromCommunityThunk(data)).then((res) => {
+      socket.emit("community.user.remove", res.payload);
+    });
   };
 
   const transferAdmin = () => {
-    const data = {
+    let data = {
       communityId: currentCommunity._id,
       userId: selectedUser._id,
     };
-    console.log(`Transfering Group Owner to ${selectedUser?._id}`);
-    if (!selectedUser) return;
-    if (!currentCommunity) return;
-    dispatch(transferCommunityAdminThunk(data)).then((res)=>{
+    if (!currentCommunity||!selectedUser) return;
+    dispatch(transferCommunityAdminThunk(data)).then((res) => {
       socket.emit("community.communityAdmin.update", res.payload);
-      dispatch(selectCommunity(res.payload))
+      dispatch(selectCommunity(res.payload));
     });
-    
   };
   return (
     <>

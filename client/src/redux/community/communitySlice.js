@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { selectCommunity } from "../message/messageSlice";
-import { createCommunityThunk, fetchCommunityThunk, transferCommunityAdminThunk } from "./communityThunk";
+import { createCommunityThunk, fetchCommunityThunk, removeUserFromCommunityThunk, transferCommunityAdminThunk } from "./communityThunk";
 
 const communitySlice = createSlice({
   name: "CommunityList",
@@ -10,8 +10,8 @@ const communitySlice = createSlice({
     error: false,
   },
   reducers: {
-    addCommunity: (sate, action) => {
-      sate.communities.unshift(action.payload);
+    addCommunity: (state, action) => {
+      state.communities.unshift(action.payload);
     },
     updateCommunity: (state, action) => {
       const updatedCommunity = action.payload;
@@ -33,10 +33,10 @@ const communitySlice = createSlice({
         return communityL;
       });
     },
-    deleteCommunitySuccess: (state, action) => {
+    removeCommunity: (state, action) => {
       state.communities = [
         ...state.communities.filter(
-          (community) => community._id !== action.payload._id
+          (c) => c._id !== action.payload._id
         ),
       ];
     },
@@ -52,6 +52,9 @@ const communitySlice = createSlice({
       .addCase(transferCommunityAdminThunk.fulfilled,selectCommunity.fulfilled,(state,action)=>{
         console.log(state)
       })
+      .addCase(removeUserFromCommunityThunk.fulfilled,selectCommunity.fulfilled,(state,action)=>{
+        console.log(state)
+      })
   },
 });
 
@@ -59,7 +62,7 @@ export const {
   addCommunity,
   updateCommunity,
   renameCommunitySuccess,
-  deleteCommunitySuccess,
+  removeCommunity,
 } = communitySlice.actions;
 
 export default communitySlice.reducer;

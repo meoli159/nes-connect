@@ -29,6 +29,7 @@ const StreamContext = () => {
 
     peer.on("open", (peerId) => {
       myId = peerId;
+      setId(myId);
       socket.emit("join-stream", {
         streamId: streamId,
         userId: myId,
@@ -50,7 +51,6 @@ const StreamContext = () => {
 
         socket.on("new-user-connect", (userId) => {
           console.log("New user connected: ", userId);
-          setId(userId);
           connectToNewUser(userId, stream);
         });
 
@@ -135,7 +135,7 @@ const StreamContext = () => {
         id: id,
       };
       socket.emit("sendDataClient", {msg: msg, streamId: streamId});
-
+      console.log(id);
       setMessage("");
     }
   };
@@ -290,7 +290,7 @@ const StreamContext = () => {
           </div>
           <div
             className="stream_controls_button"
-            onClick={() => openInNewTab('http://localhost:3000/whiteboard')}
+            onClick={() => openInNewTab('/whiteboard/' + streamId + '-canvas')}
           >
             <span>White Board</span>
           </div>
