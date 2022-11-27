@@ -26,11 +26,11 @@ const communitySlice = createSlice({
     },
 
     renameCommunitySuccess: (state, action) => {
-      const communityL = state.communities.map((community) => {
+      state.communities.map((community) => {
         if (community._id === action.payload._id) {
           community.communityName = action.payload.communityName;
         }
-        return communityL;
+        return community;
       });
     },
     removeCommunity: (state, action) => {
