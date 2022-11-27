@@ -23,7 +23,7 @@ const StreamContext = () => {
 
   const socket = useContext(SocketContext);
   peer = new Peer(user._id);
-
+  console.log("peer: " + peer);
   useEffect(() => {
     const createVideo = (createVideo) => {
       if (!videoContainer[createVideo.id]) {
@@ -72,6 +72,7 @@ const StreamContext = () => {
     };
     //////////
     peer.on("open", (peerId) => {
+      console.log("peerId: " + peerId);
       peerId = myId;
       setId(myId);
       socket.emit("join-stream", {

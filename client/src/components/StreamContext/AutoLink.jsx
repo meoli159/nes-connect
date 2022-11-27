@@ -7,9 +7,7 @@ const AutoLink = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-
     navigate(`/stream/${id}`);
-    console.log(id);
   }, [id, navigate]);
 
 };
