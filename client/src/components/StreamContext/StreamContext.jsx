@@ -6,6 +6,8 @@ import { SocketContext } from "../../utils/context/SocketContext";
 import { useSelector } from "react-redux";
 import { FaPaperPlane } from "react-icons/fa";
 
+const callList = [];
+var videoContainer = {};
 const StreamContext = () => {
   const user = useSelector((state) => state.auth?.currentUser);
   const params = useParams();
@@ -14,21 +16,107 @@ const StreamContext = () => {
   const streamId = params.streamID;
   var myId = "";
   var peer;
-  const callList = [];
-  var videoContainer = {};
+
+  const iceServers = {
+    'iceServers': [
+    {url:'stun:stun01.sipphone.com'},
+     {url:'stun:stun.ekiga.net'},
+    {url:'stun:stun.fwdnet.net'},
+    {url:'stun:stun.ideasip.com'},
+    {url:'stun:stun.iptel.org'},
+    {url:'stun:stun.rixtelecom.se'},
+    {url:'stun:stun.schlund.de'},
+    {url:'stun:stun.l.google.com:19302'},
+    {url:'stun:stun1.l.google.com:19302'},
+    {url:'stun:stun2.l.google.com:19302'},
+    {url:'stun:stun3.l.google.com:19302'},
+    {url:'stun:stun4.l.google.com:19302'},
+    {url:'stun:stunserver.org'},
+    {url:'stun:stun.softjoys.com'},
+    {url:'stun:stun.voiparound.com'},
+    {url:'stun:stun.voipbuster.com'},
+    {url:'stun:stun.voipstunt.com'},
+    {url:'stun:stun.voxgratia.org'},
+    {url:'stun:stun.xten.com'},
+    {
+      url: 'turn:numb.viagenie.ca',
+      credential: 'muazkh',
+      username: 'webrtc@live.com'
+    },
+    {
+      url: 'turn:192.158.29.39:3478?transport=udp',
+      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      username: '28224511:1379330808'
+    },
+    {
+      url: 'turn:192.158.29.39:3478?transport=tcp',
+      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      username: '28224511:1379330808'
+  }]};
+
   const [id, setId] = useState();
   const [currentPeer, setPeer] = useState(null);
   const [mystream, setmystream] = useState(null);
-  
+
   const messagesEnd = useRef();
 
   const socket = useContext(SocketContext);
-  peer = new Peer(user._id);
-  
+  peer = new Peer(user._id,
+    {
+    config: iceServers
+    });
+  console.log("peer: " + peer);
+  console.log("peer: " + user._id);
   useEffect(() => {
+    const createVideo = (createVideo) => {
+      if (!videoContainer[createVideo.id]) {
+        const videoContainer = document.getElementById("video-grid");
+        const video = document.createElement("video");
+        video.srcObject = createVideo.stream;
+        video.id = createVideo.id;
+        video.autoplay = true;
+        videoContainer.appendChild(video);
+        let totalUsers = document.getElementsByTagName("video").length;
+        console.log(totalUsers);
+        if (totalUsers > 1) {
+          for (let index = 0; index < totalUsers; index++) {
+            document.getElementsByTagName("video")[index].style.width =
+              100 / totalUsers + "%";
+          }
+        }
+      }
+    };
 
+    const connectToNewUser = (userId, stream) => {
+      console.log(stream);
+      var call = peer.call(userId, stream, { metadata: { id: myId } });
+      call.on("stream", (userVideoStream) => {
+        console.log("stream");
+        if (!callList[userId]) {
+          createVideo({ id: userId, stream: userVideoStream });
+          callList[userId] = call;
+        }
+      });
+      call.on("close", () => {
+        console.log("closing new user", userId);
+        removeVideo(userId);
+      });
+      call.on("error", () => {
+        console.log("peer error ------");
+      });
+      setPeer(call);
+    };
+
+    const removeVideo = (id) => {
+      delete videoContainer[id];
+      delete callList[id];
+      const video = document.getElementById(id);
+      if (video) video.remove();
+    };
+    //////////
     peer.on("open", (peerId) => {
-      myId = peerId;
+      console.log("peerId: " + peerId);
+      peerId = myId;
       setId(myId);
       socket.emit("join-stream", {
         streamId: streamId,
@@ -80,53 +168,7 @@ const StreamContext = () => {
         scrollToBottom();
       });
     });
-  }, []);
-
-  function createVideo(createVideo) {
-    if (!videoContainer[createVideo.id]) {
-      const videoContainer = document.getElementById("video-grid");
-      const video = document.createElement("video");
-      video.srcObject = createVideo.stream;
-      video.id = createVideo.id;
-      video.autoplay = true;
-      videoContainer.appendChild(video);
-      let totalUsers = document.getElementsByTagName("video").length;
-      console.log(totalUsers);
-      if (totalUsers > 1) {
-        for (let index = 0; index < totalUsers; index++) {
-          document.getElementsByTagName("video")[index].style.width =
-            100 / totalUsers + "%";
-        }
-      }
-    }
-  }
-
-  const connectToNewUser = (userId, stream) => {
-    console.log(stream);
-    var call = peer.call(userId, stream, { metadata: { id: myId } });
-    call.on("stream", (userVideoStream) => {
-      console.log("stream");
-      if (!callList[userId]) {
-        createVideo({ id: userId, stream: userVideoStream });
-        callList[userId] = call;
-      }
-    });
-    call.on("close", () => {
-      console.log("closing new user", userId);
-      removeVideo(userId);
-    });
-    call.on("error", () => {
-      console.log("peer error ------");
-    });
-    setPeer(call);
-  };
-
-  const removeVideo = (id) => {
-    delete videoContainer[id];
-    delete callList[id];
-    const video = document.getElementById(id);
-    if (video) video.remove();
-  };
+  }, [myId, peer, socket, streamId]);
 
   const sendMessage = () => {
     if (message !== null) {
@@ -134,7 +176,7 @@ const StreamContext = () => {
         content: message,
         id: id,
       };
-      socket.emit("sendDataClient", {msg: msg, streamId: streamId});
+      socket.emit("sendDataClient", { msg: msg, streamId: streamId });
       console.log(id);
       setMessage("");
     }
@@ -143,7 +185,9 @@ const StreamContext = () => {
   const renderMess = mess.map((m, index) => (
     <div
       key={index}
-      className={`${m.msg.id === id ? "your-message" : "other-people"} chat-item`}
+      className={`${
+        m.msg.id === id ? "your-message" : "other-people"
+      } chat-item`}
     >
       {m.msg.content}
     </div>
@@ -222,16 +266,18 @@ const StreamContext = () => {
         });
         sender.replaceTrack(screenTrack);
         screenTrack.onended = () => {
-          let sender = currentPeer.peerConnection.getSenders().find(function (s) {
-            return s.track.kind === screenTrack.kind;
-          });
+          let sender = currentPeer.peerConnection
+            .getSenders()
+            .find(function (s) {
+              return s.track.kind === screenTrack.kind;
+            });
           sender.replaceTrack(mystream.getVideoTracks()[0]);
         };
       });
   };
 
-  const openInNewTab = url => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -290,7 +336,7 @@ const StreamContext = () => {
           </div>
           <div
             className="stream_controls_button"
-            onClick={() => openInNewTab('/whiteboard/' + streamId + '-canvas')}
+            onClick={() => openInNewTab("/whiteboard/" + streamId + "-canvas")}
           >
             <span>White Board</span>
           </div>
