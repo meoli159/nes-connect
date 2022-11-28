@@ -77,7 +77,7 @@ const StreamContext = () => {
     //////////
     peer.on("open", (peerId) => {
       console.log("peerId: " + peerId);
-      peerId = myId;
+      myId = peerId;
       setId(myId);
       socket.emit("join-stream", {
         streamId: streamId,
