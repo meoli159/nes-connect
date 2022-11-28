@@ -1,6 +1,4 @@
 const db = require("../models");
-const User = db.user;
-const Community = db.community;
 const Message = db.message;
 
 const fetchAllMessages = async (req, res) => {

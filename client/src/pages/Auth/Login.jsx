@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginThunk } from "../../redux/auth/authThunk";
 import "./Auth.css";
+import { login } from "../../api/authService";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [error,setError] = useState("")
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = (e) => {
@@ -17,8 +17,11 @@ export default function Login() {
       email,
       password,
     };
-    dispatch(loginThunk(user)).then(()=>{navigate("/app");})
-    
+   
+    login(user,dispatch).then(()=>{navigate("/app");})
+    .catch(error =>{
+     setError(error.response.data.message)
+    })
     
   };
 
@@ -26,7 +29,7 @@ export default function Login() {
     <div id="Auth" className="Auth">
       <form className="authForm" onSubmit={handleSubmit}>
         <h2>Welcome</h2>
-
+       {error ? (<h3 className="alert">{error}</h3>):(null)}
         <input
           className="authInput"
           placeholder="Email..."
@@ -53,14 +56,6 @@ export default function Login() {
         <button className="auth-btn" type="submit">
           Login
         </button>
-        <p className="text">OR LOGIN USING</p>
-
-        <div className="alt-login">
-          <div className="facebook"></div>
-          <div className="google"></div>
-          <div className="twitter"></div>
-        </div>
-
         <div className="authRegister">
           Not a member?
           <Link to="/register">Register now!</Link>
