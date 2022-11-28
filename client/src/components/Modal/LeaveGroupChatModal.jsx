@@ -1,14 +1,18 @@
 import React from "react";
+import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {removeUserFromCommunity,deleteCommunity} from "../../api/communityService"
-import { deleteCommunitySuccess } from "../../redux/community/communitySlice";
+import {deleteCommunity} from "../../api/communityService"
+import {removeCommunity } from "../../redux/community/communitySlice";
+import { removeUserFromCommunityThunk } from "../../redux/community/communityThunk";
 import { selectCommunity } from "../../redux/message/messageSlice";
+import { SocketContext } from "../../utils/context/SocketContext";
 import "./LeaveGroupChatModal.css";
 
 function LeaveGroupChatModal({ closeLeaveModal }) {
   const communityAdmin = useSelector((state) => state.messages.currentCommunity?.communityAdmin);
   const currentCommunity = useSelector((state) => state.messages?.currentCommunity);
-  const user = useSelector((state) => state.auth.currentUser);
+  const user = useSelector((state) => state.auth?.currentUser);
+  const socket = useContext(SocketContext)
   const dispatch = useDispatch()
 
   const handleCloseModal = (e)=>{
@@ -19,15 +23,25 @@ function LeaveGroupChatModal({ closeLeaveModal }) {
   const handleDeleteCommunity = (e)=>{
     e.preventDefault();
     deleteCommunity(currentCommunity?._id).then((res)=>{
-      dispatch(deleteCommunitySuccess(res))
-      dispatch(selectCommunity(res._id))
+      console.log("community.delete")
+      socket.emit("community.delete",res)
     })
     handleCloseModal(e)
   }
 
   const handleLeaveCommunity = (e)=>{
     e.preventDefault();
-    removeUserFromCommunity(currentCommunity?._id,user._id)
+    let data = {
+      communityId: currentCommunity._id,
+      user: user._id,
+    };
+    if(!currentCommunity || !user) return;
+    dispatch(removeUserFromCommunityThunk(data)).then((res) => {
+      console.log("community.user.remove")
+      socket.emit("community.user.remove", res.payload);
+      dispatch(removeCommunity(res.payload.community))
+      dispatch(selectCommunity([null]))
+    });
     
     handleCloseModal(e)
   }

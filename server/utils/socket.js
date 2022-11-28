@@ -1,7 +1,7 @@
 exports.socketConnection = (server) => {
   const io = require("socket.io")(server, {
     cors: {
-      origin: ["http://localhost:3000","https://nesconnect.xyz"],
+      origin: ["http://localhost:3000", "https://nesconnect.xyz"],
       credentials: true,
     },
     pingInterval: 10000,
@@ -43,20 +43,6 @@ exports.socketConnection = (server) => {
       // console.log("leaved community " + community._id, community.communityName);
     });
 
-    socket.on("community.delete", () => { });
-
-    socket.on("community.user.leave", (community) => {
-      io.to(community._id).emit("onLeaveCommunity", community);
-    });
-
-    socket.on("community.communityAdmin.update", (community) => {
-      if (!community) return;
-      io.to(community._id).emit("onCommunityAdminUpdate", community);
-      usersData.some((userD) => {
-        socket.to(userD.socketId).emit("onCommunityAdminUpdate", community);
-      });
-    });
-
     socket.on("getOnlineCommunityUsers", (community) => {
       if (!community._id) return;
       let onlineUsers = [];
@@ -80,7 +66,7 @@ exports.socketConnection = (server) => {
 
     socket.on("onCommunity", (data) => {
       if (!data) return;
-      var community = data.community;
+      let community = data.community;
 
       io.to(community._id).emit("onCommunityReceiveNewUser", data);
       usersData.some((userD) => {
@@ -88,34 +74,74 @@ exports.socketConnection = (server) => {
           return socket.to(userD.socketId).emit("onCommunityAdd", data);
         }
         community.users.forEach((user) => {
-          if (userD.userId == user._id) { socket.to(userD.socketId).emit("onCommunityReceiveNewUser", data); }
-        })
-
-
+          if (userD.userId == user._id) {
+            socket.to(userD.socketId).emit("onCommunityReceiveNewUser", data);
+          }
+        });
       });
     });
 
-    ////////////////////////////////
-    socket.on("join-stream", stream => {
+    socket.on("community.delete", (community) => {
+      if (!community) return;
+      io.to(community._id).emit("onCommunityDeleted", community);
+
+      usersData.some((userD) => {
+        community.users.forEach((user) => {
+          if (userD.userId == user._id) {
+            socket
+              .to(userD.socketId)
+              .emit("onCommunityDeleted", community);
+          }
+        });
+      });
+    });
+
+    socket.on("community.user.remove", (data) => {
+      if (!data) return;
+      let community = data.community;
+      io.to(community._id).emit("onCommunityUserRemoved", data);
+      usersData.some((userD) => {
+        if (userD.userId === data.user._id) {
+          socket.to(userD.socketId).emit("onCommunityRemove", data);
+          socket.leave(community._id);
+        }
+        community.users.forEach((user) => {
+          if (userD.userId == user._id) {
+            socket.to(userD.socketId).emit("onCommunityUserRemoved", data);
+          }
+        });
+      });
+    });
+
+    socket.on("community.communityAdmin.update", (community) => {
+      if (!community) return;
+      io.to(community._id).emit("onCommunityAdminUpdate", community);
+      usersData.some((userD) => {
+        socket.to(userD.socketId).emit("onCommunityAdminUpdate", community);
+      });
+    });
+
+    //-------- Video Call --------//
+    socket.on("join-stream", (stream) => {
       socket.join(stream.streamId);
-      socket.to(stream.streamId).emit('new-user-connect', stream.userId);
-      socket.on('disconnect', () => {
-        socket.to(stream.streamId).emit('user-disconnected', stream.userId);
+      socket.to(stream.streamId).emit("new-user-connect", stream.userId);
+      socket.on("disconnect", () => {
+        socket.to(stream.streamId).emit("user-disconnected", stream.userId);
       });
     });
 
     socket.on("sendDataClient", function (data) {
-      console.log(data)
+      console.log(data);
       io.to(data.streamId).emit("sendDataServer", { data });
-    })
+    });
 
     socket.on("share-screen", function (data) {
-      io.emit('screen-received', data);
-    })
+      io.emit("screen-received", data);
+    });
 
-    //////////////////////////////////
+    //-------- WhiteBoard --------//
     socket.on("canvas-data", (data) => {
-      socket.to(data.canvasId).emit("canvas-data", data.image); 
-    })
+      socket.to(data.canvasId).emit("canvas-data", data.image);
+    });
   });
 };

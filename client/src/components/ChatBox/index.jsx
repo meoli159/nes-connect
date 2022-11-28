@@ -3,7 +3,7 @@ import { formatRelative } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessages } from "../../api/messageService";
 import "./style.css";
-import { FaPhone, FaVideo } from "react-icons/fa";
+import { FaVideo } from "react-icons/fa";
 import { useContext } from "react";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { fetchMessagesThunk } from "../../redux/message/messageThunk";
@@ -90,9 +90,6 @@ export default function ChatBox() {
 
         {currentCommunityName ? (
           <>
-            <button className="call-button">
-              <FaPhone />
-            </button>
             <button className="video-call-button" onClick={() => { navigate(`/stream`) }}>
               <FaVideo />
             </button>
@@ -105,7 +102,7 @@ export default function ChatBox() {
       <div className="separator3" />
 
       <div ref={scrollDiv} className="chat-box-page">
-        {messages.map(mapMessages)}
+        {currentCommunityName ?  (messages.map(mapMessages)):(null)}
       </div>
 
       <div className="separator4" />

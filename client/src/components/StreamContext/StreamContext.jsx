@@ -4,6 +4,8 @@ import Peer from "peerjs";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { useSelector } from "react-redux";
+import { FaPaperPlane } from "react-icons/fa";
+
 const callList = [];
 var videoContainer = {};
 const StreamContext = () => {
@@ -16,39 +18,40 @@ const StreamContext = () => {
   var peer;
 
   const iceServers = {
-    'iceServers': [{url:'stun:stun01.sipphone.com'},
-  {url:'stun:stun.ekiga.net'},
-  {url:'stun:stun.fwdnet.net'},
-  {url:'stun:stun.ideasip.com'},
-  {url:'stun:stun.iptel.org'},
-  {url:'stun:stun.rixtelecom.se'},
-  {url:'stun:stun.schlund.de'},
-  {url:'stun:stun.l.google.com:19302'},
-  {url:'stun:stun1.l.google.com:19302'},
-  {url:'stun:stun2.l.google.com:19302'},
-  {url:'stun:stun3.l.google.com:19302'},
-  {url:'stun:stun4.l.google.com:19302'},
-  {url:'stun:stunserver.org'},
-  {url:'stun:stun.softjoys.com'},
-  {url:'stun:stun.voiparound.com'},
-  {url:'stun:stun.voipbuster.com'},
-  {url:'stun:stun.voipstunt.com'},
-  {url:'stun:stun.voxgratia.org'},
-  {url:'stun:stun.xten.com'},
-  {
-    url: 'turn:numb.viagenie.ca',
-    credential: 'muazkh',
-    username: 'webrtc@live.com'
-  },
-  {
-    url: 'turn:192.158.29.39:3478?transport=udp',
-    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-    username: '28224511:1379330808'
-  },
-  {
-    url: 'turn:192.158.29.39:3478?transport=tcp',
-    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-    username: '28224511:1379330808'
+    'iceServers': [
+    {url:'stun:stun01.sipphone.com'},
+     {url:'stun:stun.ekiga.net'},
+    {url:'stun:stun.fwdnet.net'},
+    {url:'stun:stun.ideasip.com'},
+    {url:'stun:stun.iptel.org'},
+    {url:'stun:stun.rixtelecom.se'},
+    {url:'stun:stun.schlund.de'},
+    {url:'stun:stun.l.google.com:19302'},
+    {url:'stun:stun1.l.google.com:19302'},
+    {url:'stun:stun2.l.google.com:19302'},
+    {url:'stun:stun3.l.google.com:19302'},
+    {url:'stun:stun4.l.google.com:19302'},
+    {url:'stun:stunserver.org'},
+    {url:'stun:stun.softjoys.com'},
+    {url:'stun:stun.voiparound.com'},
+    {url:'stun:stun.voipbuster.com'},
+    {url:'stun:stun.voipstunt.com'},
+    {url:'stun:stun.voxgratia.org'},
+    {url:'stun:stun.xten.com'},
+    {
+      url: 'turn:numb.viagenie.ca',
+      credential: 'muazkh',
+      username: 'webrtc@live.com'
+    },
+    {
+      url: 'turn:192.158.29.39:3478?transport=udp',
+      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      username: '28224511:1379330808'
+    },
+    {
+      url: 'turn:192.158.29.39:3478?transport=tcp',
+      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      username: '28224511:1379330808'
   }]};
 
   const [id, setId] = useState();
@@ -278,17 +281,13 @@ const StreamContext = () => {
   };
 
   return (
-    <div className="stream">
+    <div className="stream-wrapper">
       <div className="stream-container">
-        <div className="stream-video-wrapper">
-          <div id="video-grid"></div>
-        </div>
-
+       
         <div className="box-chat">
           <div className="box-chat_message">
             {renderMess}
             <div
-              style={{ float: "left", clear: "both" }}
               ref={messagesEnd}
             ></div>
           </div>
@@ -298,11 +297,18 @@ const StreamContext = () => {
               value={message}
               onKeyDown={onEnterPress}
               onChange={handleChange}
-              placeholder="Nhập tin nhắn ..."
+              placeholder="Send a message to everyone"
             />
-            <button onClick={sendMessage}>Send</button>
+            <button className="send-message-btn" onClick={sendMessage}>
+              <FaPaperPlane/>
+            </button>
           </div>
         </div>
+
+        <div className="stream-video-wrapper">
+          <div id="video-grid"></div>
+        </div>
+
       </div>
 
       <div className="stream_controls">
