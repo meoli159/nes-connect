@@ -67,7 +67,7 @@ const StreamContext = () => {
 
     peer = new Peer(
       {
-        host: "nesconnect.xyz",
+        host: "www.nesconnect.xyz",
         debug: true,
         path: "/stream",
         secure: true,
