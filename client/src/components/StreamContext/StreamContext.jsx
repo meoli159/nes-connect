@@ -3,29 +3,76 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import Peer from "peerjs";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../utils/context/SocketContext";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import { FaPaperPlane } from "react-icons/fa";
 
 const StreamContext = () => {
-  const user = useSelector((state) => state.auth?.currentUser);
-  const params = useParams();
+  //const user = useSelector((state) => state.auth?.currentUser);
   const [mess, setMess] = useState([]);
   const [message, setMessage] = useState("");
+  const params = useParams();
   const streamId = params.streamID;
-  var myId = "";
-  var peer;
-  const callList = [];
-  var videoContainer = {};
+
   const [id, setId] = useState();
   const [currentPeer, setPeer] = useState(null);
   const [mystream, setmystream] = useState(null);
   
   const messagesEnd = useRef();
+  
 
   const socket = useContext(SocketContext);
-  peer = new Peer(user._id);
   
   useEffect(() => {
+    var peer;
+    const callList = [];
+    var myId = "";
+    var videoContainer = {};
+
+    const iceServers = {
+      'iceServers': [
+        {url:'stun:stun01.sipphone.com'},
+        {url:'stun:stun.ekiga.net'},
+        {url:'stun:stun.fwdnet.net'},
+        {url:'stun:stun.ideasip.com'},
+        {url:'stun:stun.iptel.org'},
+        {url:'stun:stun.rixtelecom.se'},
+        {url:'stun:stun.schlund.de'},
+        {url:'stun:stun.l.google.com:19302'},
+        {url:'stun:stun1.l.google.com:19302'},
+        {url:'stun:stun2.l.google.com:19302'},
+        {url:'stun:stun3.l.google.com:19302'},
+        {url:'stun:stun4.l.google.com:19302'},
+        {url:'stun:stunserver.org'},
+        {url:'stun:stun.softjoys.com'},
+        {url:'stun:stun.voiparound.com'},
+        {url:'stun:stun.voipbuster.com'},
+        {url:'stun:stun.voipstunt.com'},
+        {url:'stun:stun.voxgratia.org'},
+        {url:'stun:stun.xten.com'},
+        {
+          url: 'turn:numb.viagenie.ca',
+          credential: 'muazkh',
+          username: 'webrtc@live.com'
+        },
+        {
+          url: 'turn:192.158.29.39:3478?transport=udp',
+          credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+          username: '28224511:1379330808'
+        },
+        {
+          url: 'turn:192.158.29.39:3478?transport=tcp',
+          credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+          username: '28224511:1379330808'
+        }]};
+
+    peer = new Peer(
+      {
+        host: 'localhost',
+        port: 9000,
+        debug: true,
+        path: "/stream",
+        config: iceServers
+      });
 
     peer.on("open", (peerId) => {
       myId = peerId;
@@ -58,7 +105,7 @@ const StreamContext = () => {
           call.answer(stream);
           console.log("call");
           call.on("stream", (userVideoStream) => {
-            console.log(call.metadata.id);
+            console.log("userId: " + call.metadata.id);
             if (!callList[call.peer]) {
               createVideo({ id: call.metadata.id, stream: userVideoStream });
               callList[call.peer] = call;
@@ -73,60 +120,59 @@ const StreamContext = () => {
           console.log(callList.length);
         });
       });
-
       socket.on("sendDataServer", (dataGot) => {
         console.log(dataGot);
         setMess((oldMsgs) => [...oldMsgs, dataGot.data]);
         scrollToBottom();
       });
     });
-  }, []);
 
-  function createVideo(createVideo) {
-    if (!videoContainer[createVideo.id]) {
-      const videoContainer = document.getElementById("video-grid");
-      const video = document.createElement("video");
-      video.srcObject = createVideo.stream;
-      video.id = createVideo.id;
-      video.autoplay = true;
-      videoContainer.appendChild(video);
-      let totalUsers = document.getElementsByTagName("video").length;
-      console.log(totalUsers);
-      if (totalUsers > 1) {
-        for (let index = 0; index < totalUsers; index++) {
-          document.getElementsByTagName("video")[index].style.width =
-            100 / totalUsers + "%";
+    function createVideo(createVideo) {
+      if (!videoContainer[createVideo.id]) {
+        const videoContainer = document.getElementById("video-grid");
+        const video = document.createElement("video");
+        video.srcObject = createVideo.stream;
+        video.id = createVideo.id;
+        video.autoplay = true;
+        videoContainer.appendChild(video);
+        let totalUsers = document.getElementsByTagName("video").length;
+        console.log(totalUsers);
+        if (totalUsers > 1) {
+          for (let index = 0; index < totalUsers; index++) {
+            document.getElementsByTagName("video")[index].style.width =
+              100 / totalUsers + "%";
+          }
         }
       }
     }
-  }
 
-  const connectToNewUser = (userId, stream) => {
-    console.log(stream);
-    var call = peer.call(userId, stream, { metadata: { id: myId } });
-    call.on("stream", (userVideoStream) => {
-      console.log("stream");
-      if (!callList[userId]) {
-        createVideo({ id: userId, stream: userVideoStream });
-        callList[userId] = call;
-      }
-    });
-    call.on("close", () => {
-      console.log("closing new user", userId);
-      removeVideo(userId);
-    });
-    call.on("error", () => {
-      console.log("peer error ------");
-    });
-    setPeer(call);
-  };
+    const connectToNewUser = (userId, stream) => {
+      console.log(stream);
+      var call = peer.call(userId, stream, { metadata: { id: myId } });
+      call.on("stream", (userVideoStream) => {
+        console.log("stream");
+        if (!callList[userId]) {
+          createVideo({ id: userId, stream: userVideoStream });
+          callList[userId] = call;
+        }
+      });
+      call.on("close", () => {
+        console.log("closing new user", userId);
+        removeVideo(userId);
+      });
+      call.on("error", () => {
+        console.log("peer error ------");
+      });
+      setPeer(call);
+    };
 
-  const removeVideo = (id) => {
-    delete videoContainer[id];
-    delete callList[id];
-    const video = document.getElementById(id);
-    if (video) video.remove();
-  };
+    const removeVideo = (id) => {
+      delete videoContainer[id];
+      delete callList[id];
+      const video = document.getElementById(id);
+      if (video) video.remove();
+    };
+  }, [streamId, socket]);
 
   const sendMessage = () => {
     if (message !== null) {

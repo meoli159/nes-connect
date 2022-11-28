@@ -1,16 +1,14 @@
 import { v1 as uuid } from "uuid";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AutoLink = () => {
-  const id = uuid();
   const navigate = useNavigate();
-
+  
   useEffect(() => {
-
+    const id = uuid();
     navigate(`/stream/${id}`);
-    console.log(id);
-  }, []);
+  }, [navigate]);
 
 };
 
