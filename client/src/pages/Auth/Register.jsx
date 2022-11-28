@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import "./Auth.css";
-import { registerThunk } from "../../redux/auth/authThunk";
+import { register } from "../../api/authService";
 
 export default function Register() {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -21,18 +20,21 @@ export default function Register() {
       password,
     };
 
-    if (password !== cPassword) {
-      return console.error("Confirm password not matched");
-    } else {
-      dispatch(registerThunk(user)).then(() => navigate("/login"));
-    }
+    if (password !== cPassword)
+      return setError("Confirm password not matched");
+
+    register(user)
+      .then(() => navigate("/login"))
+      .catch(error=> {
+        setError(error.response.data.message);
+      });
   };
 
   return (
     <div id="Auth" className="Auth">
       <form className="authForm" onSubmit={handleSubmit}>
         <h2>Welcome</h2>
-
+        {error ? (<h3 className="alert">{error}</h3>):(null)}
         <input
           className="authInput"
           placeholder="User name..."

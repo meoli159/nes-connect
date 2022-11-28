@@ -1,16 +1,17 @@
 import axiosClient from "./createInstance";
 import {
+  loginSuccess,
   logOutSuccess,
 } from "../redux/auth/authSlice";
 
-export const register = (user) => {
-  const res = axiosClient.post(`/auth/register`, user);
+export const register = async (user) => {
+  const res = await axiosClient.post(`/auth/register`, user);
   return res.data;
 };
 
-export const login = async (user) => {
+export const login = async (user,dispatch) => {
   const res = await axiosClient.post(`/auth/login`, user);
-  return res.data;
+  dispatch(loginSuccess(res.data))
 };
 
 export const updateUser = async (user) => {

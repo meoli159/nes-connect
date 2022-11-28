@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import "./style.css";
 import Modal from "../Modal/CreateChatModal";
-import JoinGroupChatModal from "../Modal/JoinGroupChatModal";
-import { FaPlus, FaSignInAlt } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 export function ServerAddButton() {
 
   const [openModal, setOpenModal] = useState(false);
-  const [openJoinModal, setOpenJoinModal] = useState(false)
+  //const [openJoinModal, setOpenJoinModal] = useState(false)
      
         return (
 
@@ -25,11 +24,11 @@ export function ServerAddButton() {
 
                     {openModal && <Modal closeModal={setOpenModal}/>}
 
-                    <button className="join-group-chat-button" onClick={() => {setOpenJoinModal(true)}}>
+                    {/* <button className="join-group-chat-button" onClick={() => {setOpenJoinModal(true)}}>
                       <FaSignInAlt />
                     </button>
 
-                    {openJoinModal && <JoinGroupChatModal closeJoinModal={setOpenJoinModal}/>}
+                    {openJoinModal && <JoinGroupChatModal closeJoinModal={setOpenJoinModal}/>} */}
 
                 </div>
            

@@ -1,32 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, registerThunk, updateUserThunk } from "./authThunk";
+import { updateUserThunk } from "./authThunk";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     currentUser: null,
-    isFetching: false,
-    error: false,
+    pending: false,
+    errorMessage: null,
   },
   reducers: {
     logOutSuccess: (state) => {
       state.currentUser = null;
     },
+    loginSuccess:(state,action) =>{
+      state.currentUser = action.payload;    
+    },
+    registerSuccess:(state)=>{
+      state.errorMessage = null;
+    },
+    pending:(state)=>{
+    state.errorMessage = null;
+    },
+    rejected: (state,action)=>{
+      state.errorMessage = action.payload;
+    },
+
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginThunk.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-      })
-      .addCase(registerThunk.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-      })
       .addCase(updateUserThunk.fulfilled, (state, action) => {
         state.currentUser = action.payload;
       })
   },
 });
 
-export const { logOutSuccess } = authSlice.actions;
+export const { logOutSuccess,loginSuccess,registerSuccess,rejected,pending} = authSlice.actions;
 
 export default authSlice.reducer;

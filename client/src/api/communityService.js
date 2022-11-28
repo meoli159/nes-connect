@@ -30,16 +30,11 @@ export const communityUserAdd = async (communityId, user) => {
 };
 
 export const removeUserFromCommunity = async (communityId, userId) => {
-  const res = await axiosClient.delete(
-    `/community/${communityId}/user/${userId}`
-  );
-
+  const res = await axiosClient.delete(`/community/${communityId}/user/${userId}`);
   return res.data;
 };
 
 export const transferCommunityAdmin = async (communityId, userId) => {
-  const res = await axiosClient.put(`/community/${communityId}/user`, {
-    userId,
-  });
+  const res = await axiosClient.put(`/community/${communityId}/user`, {userId});
   return res.data;
 };
