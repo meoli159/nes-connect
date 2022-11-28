@@ -69,7 +69,7 @@ const StreamContext = () => {
       {
         host: "peer2nesconnect.herokuapp.com",
         debug: true,
-        path: "/",
+        path: "/stream",
         secure: true,
         config: iceServers
       });
