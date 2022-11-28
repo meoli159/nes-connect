@@ -18,10 +18,9 @@ const StreamContext = () => {
   const [mystream, setmystream] = useState(null);
 
   const messagesEnd = useRef();
-  
 
   const socket = useContext(SocketContext);
-  
+
   useEffect(() => {
     var peer;
     const callList = [];
@@ -29,18 +28,36 @@ const StreamContext = () => {
     var videoContainer = {};
 
     const iceServers = {
-      'iceServers': [
-        {url:'stun:stun.l.google.com:19302'}
-        ]};
+      iceServers: [
+        { url: "stun:stun01.sipphone.com" },
+        { url: "stun:stun.ekiga.net" },
+        { url: "stun:stun.fwdnet.net" },
+        { url: "stun:stun.ideasip.com" },
+        { url: "stun:stun.iptel.org" },
+        { url: "stun:stun.rixtelecom.se" },
+        { url: "stun:stun.schlund.de" },
+        { url: "stun:stun.l.google.com:19302" },
+        { url: "stun:stun1.l.google.com:19302" },
+        { url: "stun:stun2.l.google.com:19302" },
+        { url: "stun:stun3.l.google.com:19302" },
+        { url: "stun:stun4.l.google.com:19302" },
+        { url: "stun:stunserver.org" },
+        { url: "stun:stun.softjoys.com" },
+        { url: "stun:stun.voiparound.com" },
+        { url: "stun:stun.voipbuster.com" },
+        { url: "stun:stun.voipstunt.com" },
+        { url: "stun:stun.voxgratia.org" },
+        { url: "stun:stun.xten.com" },
+      ],
+    };
 
-    peer = new Peer(
-      {
-        host: "peer2nesconnect.herokuapp.com",
-        debug: true,
-        path: "/stream",
-        secure: true,
-        config: iceServers
-      });
+    peer = new Peer({
+      host: "peer2nesconnect.herokuapp.com",
+      debug: true,
+      path: "/stream",
+      secure: true,
+      config: iceServers,
+    });
 
     //////////
     peer.on("open", (peerId) => {
@@ -257,13 +274,10 @@ const StreamContext = () => {
   return (
     <div className="stream-wrapper">
       <div className="stream-container">
-       
         <div className="box-chat">
           <div className="box-chat_message">
             {renderMess}
-            <div
-              ref={messagesEnd}
-            ></div>
+            <div ref={messagesEnd}></div>
           </div>
 
           <div className="send-box">
@@ -274,7 +288,7 @@ const StreamContext = () => {
               placeholder="Send a message to everyone"
             />
             <button className="send-message-btn" onClick={sendMessage}>
-              <FaPaperPlane/>
+              <FaPaperPlane />
             </button>
           </div>
         </div>
@@ -282,7 +296,6 @@ const StreamContext = () => {
         <div className="stream-video-wrapper">
           <div id="video-grid"></div>
         </div>
-
       </div>
 
       <div className="stream_controls">
