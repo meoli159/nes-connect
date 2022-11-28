@@ -6,8 +6,6 @@ import { SocketContext } from "../../utils/context/SocketContext";
 //import { useSelector } from "react-redux";
 import { FaPaperPlane } from "react-icons/fa";
 
-const callList = [];
-var videoContainer = {};
 const StreamContext = () => {
   //const user = useSelector((state) => state.auth?.currentUser);
   const [mess, setMess] = useState([]);
@@ -76,12 +74,6 @@ const StreamContext = () => {
         config: iceServers
       });
 
-    const removeVideo = (id) => {
-      delete videoContainer[id];
-      delete callList[id];
-      const video = document.getElementById(id);
-      if (video) video.remove();
-    };
     //////////
     peer.on("open", (peerId) => {
       console.log("peerId: " + peerId);
