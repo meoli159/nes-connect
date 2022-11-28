@@ -5,7 +5,7 @@ let resetPasswordTemplate = (email, userId, forgotPasswordToken,gmail) => {
     subject: "Password reset for " + email,
     text:
       "Password Reset Link: " +
-      "https://nes-connect.netlify.app" +
+      "https://nesconnect.xyz" +
       `/resetpassword` +
       `/${userId}/${forgotPasswordToken}`,
   };

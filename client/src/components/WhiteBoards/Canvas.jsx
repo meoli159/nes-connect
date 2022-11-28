@@ -13,6 +13,11 @@ const Canvas = (props) => {
   const canvasId = params.canvasId;
 
   useEffect(() => {
+    var sendCanvas = function (canvas) {
+      var base64ImageData = canvas.toDataURL("image/png");
+      socket.emit("canvas-data", { image: base64ImageData, canvasId: canvasId });
+    };
+
     if (!isInitial) initialCanvas();
     socket.emit("join-stream", {
       streamId: canvasId,
@@ -68,7 +73,7 @@ const Canvas = (props) => {
     socket.on("canvas-data", (data) => {
       receiveCanvas(data, canvasRef.current);
     });
-  }, [props.size, props.color]);
+  }, [props.size, props.color, isInitial, socket, canvasId, user._id]);
 
   const initialCanvas = () => {
     var canvas = document.querySelector("#board");
@@ -83,10 +88,7 @@ const Canvas = (props) => {
     setIsInitial(true);
   };
 
-  var sendCanvas = function (canvas) {
-    var base64ImageData = canvas.toDataURL("image/png");
-    socket.emit("canvas-data", { image: base64ImageData, canvasId: canvasId });
-  };
+
 
   var receiveCanvas = function (data, canvas) {
     var image = new Image();

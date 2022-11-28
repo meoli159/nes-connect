@@ -6,6 +6,8 @@ import { SocketContext } from "../../utils/context/SocketContext";
 //import { useSelector } from "react-redux";
 import { FaPaperPlane } from "react-icons/fa";
 
+const callList = [];
+var videoContainer = {};
 const StreamContext = () => {
   //const user = useSelector((state) => state.auth?.currentUser);
   const [mess, setMess] = useState([]);
@@ -16,7 +18,7 @@ const StreamContext = () => {
   const [id, setId] = useState();
   const [currentPeer, setPeer] = useState(null);
   const [mystream, setmystream] = useState(null);
-  
+
   const messagesEnd = useRef();
   
 
@@ -74,8 +76,16 @@ const StreamContext = () => {
         config: iceServers
       });
 
+    const removeVideo = (id) => {
+      delete videoContainer[id];
+      delete callList[id];
+      const video = document.getElementById(id);
+      if (video) video.remove();
+    };
+    //////////
     peer.on("open", (peerId) => {
-      myId = peerId;
+      console.log("peerId: " + peerId);
+      peerId = myId;
       setId(myId);
       socket.emit("join-stream", {
         streamId: streamId,
@@ -180,7 +190,7 @@ const StreamContext = () => {
         content: message,
         id: id,
       };
-      socket.emit("sendDataClient", {msg: msg, streamId: streamId});
+      socket.emit("sendDataClient", { msg: msg, streamId: streamId });
       console.log(id);
       setMessage("");
     }
@@ -189,7 +199,9 @@ const StreamContext = () => {
   const renderMess = mess.map((m, index) => (
     <div
       key={index}
-      className={`${m.msg.id === id ? "your-message" : "other-people"} chat-item`}
+      className={`${
+        m.msg.id === id ? "your-message" : "other-people"
+      } chat-item`}
     >
       {m.msg.content}
     </div>
@@ -268,16 +280,18 @@ const StreamContext = () => {
         });
         sender.replaceTrack(screenTrack);
         screenTrack.onended = () => {
-          let sender = currentPeer.peerConnection.getSenders().find(function (s) {
-            return s.track.kind === screenTrack.kind;
-          });
+          let sender = currentPeer.peerConnection
+            .getSenders()
+            .find(function (s) {
+              return s.track.kind === screenTrack.kind;
+            });
           sender.replaceTrack(mystream.getVideoTracks()[0]);
         };
       });
   };
 
-  const openInNewTab = url => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -336,7 +350,7 @@ const StreamContext = () => {
           </div>
           <div
             className="stream_controls_button"
-            onClick={() => openInNewTab('/whiteboard/' + streamId + '-canvas')}
+            onClick={() => openInNewTab("/whiteboard/" + streamId + "-canvas")}
           >
             <span>White Board</span>
           </div>
