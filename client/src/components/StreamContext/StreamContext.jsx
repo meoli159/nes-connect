@@ -47,22 +47,7 @@ const StreamContext = () => {
         { url: "stun:stun.voipbuster.com" },
         { url: "stun:stun.voipstunt.com" },
         { url: "stun:stun.voxgratia.org" },
-        { url: "stun:stun.xten.com" },
-        {
-          url: "turn:numb.viagenie.ca",
-          credential: "muazkh",
-          username: "webrtc@live.com",
-        },
-        {
-          url: "turn:192.158.29.39:3478?transport=udp",
-          credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-          username: "28224511:1379330808",
-        },
-        {
-          url: "turn:192.158.29.39:3478?transport=tcp",
-          credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-          username: "28224511:1379330808",
-        },
+        { url: "stun:stun.xten.com" }
       ],
     };
 
@@ -217,7 +202,7 @@ const StreamContext = () => {
     const enabled = mystream.getVideoTracks()[0].enabled;
     if (enabled) {
       mystream.getVideoTracks()[0].enabled = false;
-      mystream.getVideoTracks()[0].stop();
+      console.log(mystream.getVideoTracks()[0]);
       setPlayVideo();
     } else {
       setStopVideo();
