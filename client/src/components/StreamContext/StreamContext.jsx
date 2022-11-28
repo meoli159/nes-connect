@@ -68,6 +68,7 @@ const StreamContext = () => {
     peer = new Peer(
       {
         host: 'www.nesconnect.xyz',
+        port: 9000,
         debug: true,
         path: "/stream",
         config: iceServers
