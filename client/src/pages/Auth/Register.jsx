@@ -70,14 +70,6 @@ export default function Register() {
         <button className="auth-btn" type="submit">
           Register
         </button>
-        <p className="text">OR LOGIN USING</p>
-
-        <div className="alt-login">
-          <div className="facebook"></div>
-          <div className="google"></div>
-          <div className="twitter"></div>
-        </div>
-
         <div className="authLogin">
           Already a member?<Link to="/login">Join now!</Link>
         </div>
