@@ -3,7 +3,16 @@
   box-sizing: border-box;
   font-family: 'Raleway', sans-serif;
 }
-
+.alert {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 80%;
+  padding: 10px;
+  background-color: #ff1100;
+  color: white;
+}
 .Auth {
   display: flex;
   align-items: center;
@@ -94,18 +103,6 @@
 .alt-login div:hover {
     transform: scale(1.25);
     transition: 0.5s;
-}
-
-.google {
-  background-image: url("../../assets/images/google.gif");
-}
-
-.facebook {
-  background-image: url("../../assets/images/facebook.gif");
-}
-
-.twitter {
-  background-image: url("../../assets/images/twitter.gif");
 }
 
 .authInput {

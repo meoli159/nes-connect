@@ -15,6 +15,8 @@ function MemberList() {
   const selectedCommunity = useSelector(
     (state) => state.messages?.currentCommunity
   );
+  const currentUser = useSelector((state) => state.auth?.currentUser);
+  const communityAdmin = selectedCommunity?.communityAdmin
   const communityId = selectedCommunity?._id;
   const socket = useContext(SocketContext);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -48,6 +50,7 @@ function MemberList() {
 
   const onUserContextMenu = (e, user) => {
     e.preventDefault();
+    if(currentUser._id !== communityAdmin._id ) return;
     dispatch(toggleContextMenu(true));
     dispatch(setContextMenuLocation({ x: e.clientX, y: e.clientY }));
     dispatch(setSelectedUser(user));
