@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const { ExpressPeerServer } = require('peer');
 
 //Env file & DB connect
 dotenv.config();
@@ -57,5 +58,12 @@ app.use("/api/message", message);
 const PORT = process.env.PORT || 3333;
 
 const server = app.listen(PORT, console.log("Server is listen to port:", PORT));
+const peer = app.listen(9000);
+
+const peerServer = ExpressPeerServer(peer, {
+  path: '/'
+});
+
+app.use("/stream", peerServer);
 
 socketConnection(server);

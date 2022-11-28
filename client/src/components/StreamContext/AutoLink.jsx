@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AutoLink = () => {
-  const id = uuid();
   const navigate = useNavigate();
-
+  
   useEffect(() => {
+    const id = uuid();
     navigate(`/stream/${id}`);
-  }, [id, navigate]);
+  }, [navigate]);
 
 };
 
