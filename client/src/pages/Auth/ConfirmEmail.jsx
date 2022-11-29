@@ -1,16 +1,28 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { forgotPassword } from "../../api/authService";
 import "./Auth.css";
 
 function ForgotPassword() {
-
   const [email, setEmail] = useState("");
-const inputEmail = (e)=>{
-  e.preventDefault();
-  forgotPassword({email:email}).then(()=>{
-    console.log("Email sent , pls check")
-  })
-}
+  const notify = () => {
+    toast.success("🦄 Please Check you mail!", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+  const inputEmail = (e) => {
+    e.preventDefault();
+    if(!email) return;
+    forgotPassword({ email: email });
+  };
   return (
     <div id="Auth" className="Auth">
       <form className="authConfirmEmailForm" onSubmit={inputEmail}>
@@ -24,14 +36,14 @@ const inputEmail = (e)=>{
           onChange={(e) => setEmail(e.target.value)}
           value={email}
         />
-        
-        <button className="auth-btn" type="submit">        
-            Confirm
-        </button>
 
+        <button className="auth-btn" onClick={notify} type="submit">
+          Confirm
+        </button>
       </form>
+      <ToastContainer />
     </div>
-  )
+  );
 }
 
 export default ForgotPassword;
