@@ -43,7 +43,7 @@ class Container extends React.Component {
     this.pencil = {
       color: this.state.color,
       size: this.state.size,
-    }
+    };
     this.setState({
       color: "white",
       size: 20,
@@ -87,9 +87,15 @@ class Container extends React.Component {
             </select>
           </div>
 
-          <button onClick={() => this.clearCanvas()}>Clear</button>
-          <button onClick={() => this.useEraser()}>eraser</button>
-          <button onClick={() => this.usePencil()}>Pencil</button>
+          <div className="canvas-button">
+            <button onClick={() => this.clearCanvas()}> Clear </button>
+          </div>
+          <div className="canvas-button">
+            <button onClick={() => this.useEraser()}> Eraser </button>
+          </div>
+          <div className="canvas-button">
+            <button onClick={() => this.usePencil()}> Pencil </button>
+          </div>
         </div>
 
         <div className="board-container">
