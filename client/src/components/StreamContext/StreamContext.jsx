@@ -147,7 +147,7 @@ const StreamContext = () => {
       console.log(call);
       call.on("stream", (userVideoStream) => {
         if (!callList[userId]) {
-          //createVideo({ id: userId, stream: userVideoStream });
+          createVideo({ id: userId, stream: userVideoStream });
           callList[userId] = call;
         }
       });
