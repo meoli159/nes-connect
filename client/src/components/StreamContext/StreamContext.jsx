@@ -61,12 +61,10 @@ const StreamContext = () => {
       video: true,
       audio: true,
     }).then((stream) => {
-      console.log(stream);
       peers[myId] = createPeerConnection();
       createVideo({ id: myId, stream: stream });
 
       peers[myId].on("open", (peerId) => {
-        console.log("New user i connected: ", peerId);
         setId(myId);
         socket.emit("join-stream", {
           streamId: streamId,
@@ -78,16 +76,12 @@ const StreamContext = () => {
 
         socket.on("new-user-connect", (data) => {
           peers[data.userId] = createPeerConnection();
-          console.log("New user connected: ", data.peerId);
           connectToNewUser(data.userId, data.peerId, stream);
         });
 
-        console.log("bf call");
         peers[myId].on("call", (call) => {
           call.answer(stream);
-          console.log("call");
           call.on("stream", (userVideoStream) => {
-            console.log("userId: " + call.metadata.id);
             if (!callList[call.peer]) {
               createVideo({ id: call.metadata.id, stream: userVideoStream });
               callList[call.peer] = call;
@@ -97,13 +91,10 @@ const StreamContext = () => {
         });
 
         socket.on("user-disconnected", (userId) => {
-          console.log("user-disconnected ", userId);
           removeVideo(userId);
-          console.log(callList.length);
         });
       });
       socket.on("sendDataServer", (dataGot) => {
-        console.log(dataGot);
         setMess((oldMsgs) => [...oldMsgs, dataGot.data]);
         scrollToBottom();
       });
@@ -122,7 +113,6 @@ const StreamContext = () => {
 
     function createVideo(createVideo) {
       if (!videoList[createVideo.id]) {
-        console.log("craetea; " + videoList[createVideo.id]);
         const videoContainer = document.getElementById("video-grid");
         const video = document.createElement("video");
         video.srcObject = createVideo.stream;
@@ -130,7 +120,6 @@ const StreamContext = () => {
         video.autoplay = true;
         videoContainer.appendChild(video);
         let totalUsers = document.getElementsByTagName("video").length;
-        console.log(totalUsers);
         if (totalUsers > 1) {
           for (let index = 0; index < totalUsers; index++) {
             document.getElementsByTagName("video")[index].style.width =
@@ -142,9 +131,7 @@ const StreamContext = () => {
     }
 
     const connectToNewUser = (userId, peerId, stream) => {
-      console.log("stream");
       var call = peers[myId].call(peerId, stream, { metadata: { id: myId } });
-      console.log(call);
       call.on("stream", (userVideoStream) => {
         if (!callList[userId]) {
           createVideo({ id: userId, stream: userVideoStream });
@@ -152,7 +139,6 @@ const StreamContext = () => {
         }
       });
       call.on("close", () => {
-        console.log("closing new user", userId);
         removeVideo(userId);
       });
       call.on("error", () => {
@@ -177,7 +163,6 @@ const StreamContext = () => {
         id: id,
       };
       socket.emit("sendDataClient", { msg: msg, streamId: streamId });
-      console.log(id);
       setMessage("");
     }
   };
@@ -259,7 +244,6 @@ const StreamContext = () => {
       })
       .then(function (stream) {
         const screenTrack = stream.getVideoTracks()[0];
-        console.log(currentPeer);
         let sender = currentPeer.peerConnection.getSenders().find(function (s) {
           return s.track.kind === screenTrack.kind;
         });
@@ -331,7 +315,7 @@ const StreamContext = () => {
           </div>
           <div
             className="stream_controls_button"
-            onClick={() => openInNewTab("/whiteboard/" + streamId + "-canvas")}
+            onClick={() => openInNewTab("/app/whiteboard/" + streamId + "-canvas")}
           >
             <span>White Board</span>
           </div>

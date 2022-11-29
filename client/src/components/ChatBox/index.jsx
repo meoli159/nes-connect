@@ -7,10 +7,9 @@ import { FaVideo } from "react-icons/fa";
 import { useContext } from "react";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { fetchMessagesThunk } from "../../redux/message/messageThunk";
-import { useNavigate } from "react-router-dom";
+import { v1 as uuid } from "uuid";
 
 export default function ChatBox() {
-  const navigate = useNavigate();
   let lastSenderId = null;
   const socket = useContext(SocketContext);
   const currentCommunity = useSelector(
@@ -79,6 +78,17 @@ export default function ChatBox() {
     );
   };
 
+  const openInStreamTab = () => {
+    const id = uuid();
+    const sendUrl = window.location.href + "/stream/" + id;
+    window.open(sendUrl, "_blank", "noopener,noreferrer");
+    sendMessages(
+      { content: sendUrl, communityId: currentCommunity._id },
+      socket,
+      dispatch
+    );
+  };
+
   return (
     <div className="chat-box-wrapper">
       <div className="chat-box-top ">
@@ -90,7 +100,7 @@ export default function ChatBox() {
 
         {currentCommunityName ? (
           <>
-            <button className="video-call-button" onClick={() => { navigate(`/stream`) }}>
+            <button className="video-call-button" onClick={() => { openInStreamTab() }}>
               <FaVideo />
             </button>
           </>
