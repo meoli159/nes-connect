@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import Peer from "peerjs";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../utils/context/SocketContext";
-//import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FaPaperPlane } from "react-icons/fa";
 
 const StreamContext = () => {
-  //const user = useSelector((state) => state.auth?.currentUser);
+  const user = useSelector((state) => state.auth?.currentUser);
   const [mess, setMess] = useState([]);
   const [message, setMessage] = useState("");
   const params = useParams();
@@ -22,10 +22,11 @@ const StreamContext = () => {
   const socket = useContext(SocketContext);
 
   useEffect(() => {
-    var peer;
+    var peers = {};
     const callList = [];
     var myId = "";
-    var videoContainer = {};
+    var videoList = {};
+    myId = user._id;
 
     const iceServers = {
       iceServers: [
@@ -46,48 +47,43 @@ const StreamContext = () => {
           urls: "turn:openrelay.metered.ca:443?transport=tcp",
           username: "openrelayproject",
           credential: "openrelayproject",
-        }
+        },
       ],
     };
 
-    peer = new Peer({
-      host: "peer2nesconnect.herokuapp.com",
-      debug: true,
-      path: "/stream",
-      secure: true,
-      config: iceServers,
-    });
+    const myNavigator =
+      navigator.mediaDevices.getUserMedia ||
+      navigator.mediaDevices.webkitGetUserMedia ||
+      navigator.mediaDevices.mozGetUserMedia ||
+      navigator.mediaDevices.msGetUserMedia;
 
-    //////////
-    peer.on("open", (peerId) => {
-      console.log("peerId: " + peerId);
-      myId = peerId;
-      setId(myId);
-      socket.emit("join-stream", {
-        streamId: streamId,
-        userId: myId,
-      });
+    myNavigator({
+      video: true,
+      audio: true,
+    }).then((stream) => {
+      console.log(stream);
+      peers[myId] = createPeerConnection();
+      createVideo({ id: myId, stream: stream });
 
-      const myNavigator =
-        navigator.mediaDevices.getUserMedia ||
-        navigator.mediaDevices.webkitGetUserMedia ||
-        navigator.mediaDevices.mozGetUserMedia ||
-        navigator.mediaDevices.msGetUserMedia;
-
-      myNavigator({
-        video: true,
-        audio: true,
-      }).then((stream) => {
-        createVideo({ id: myId, stream: stream });
-        console.log(peerId);
-        setmystream(stream);
-
-        socket.on("new-user-connect", (userId) => {
-          console.log("New user connected: ", userId);
-          connectToNewUser(userId, stream);
+      peers[myId].on("open", (peerId) => {
+        console.log("New user i connected: ", peerId);
+        setId(myId);
+        socket.emit("join-stream", {
+          streamId: streamId,
+          userId: myId,
+          peerId: peerId,
         });
 
-        peer.on("call", (call) => {
+        setmystream(stream);
+
+        socket.on("new-user-connect", (data) => {
+          peers[data.userId] = createPeerConnection();
+          console.log("New user connected: ", data.peerId);
+          connectToNewUser(data.userId, data.peerId, stream);
+        });
+
+        console.log("bf call");
+        peers[myId].on("call", (call) => {
           call.answer(stream);
           console.log("call");
           call.on("stream", (userVideoStream) => {
@@ -113,8 +109,20 @@ const StreamContext = () => {
       });
     });
 
+    let createPeerConnection = () => {
+      const pc = new Peer({
+        host: "peer2nesconnect.herokuapp.com",
+        debug: true,
+        path: "/stream",
+        secure: true,
+        config: iceServers,
+      });
+      return pc;
+    };
+
     function createVideo(createVideo) {
-      if (!videoContainer[createVideo.id]) {
+      if (!videoList[createVideo.id]) {
+        console.log("craetea; " + videoList[createVideo.id]);
         const videoContainer = document.getElementById("video-grid");
         const video = document.createElement("video");
         video.srcObject = createVideo.stream;
@@ -129,16 +137,17 @@ const StreamContext = () => {
               100 / totalUsers + "%";
           }
         }
+        videoList[createVideo.id] = videoContainer;
       }
     }
 
-    const connectToNewUser = (userId, stream) => {
-      console.log(stream);
-      var call = peer.call(userId, stream, { metadata: { id: myId } });
+    const connectToNewUser = (userId, peerId, stream) => {
+      console.log("stream");
+      var call = peers[myId].call(peerId, stream, { metadata: { id: myId } });
+      console.log(call);
       call.on("stream", (userVideoStream) => {
-        console.log("stream");
         if (!callList[userId]) {
-          createVideo({ id: userId, stream: userVideoStream });
+          //createVideo({ id: userId, stream: userVideoStream });
           callList[userId] = call;
         }
       });
@@ -153,13 +162,13 @@ const StreamContext = () => {
     };
 
     const removeVideo = (id) => {
-      delete videoContainer[id];
+      delete videoList[id];
       delete callList[id];
       const video = document.getElementById(id);
       if (video) video.remove();
     };
-  }, [streamId, socket]);
-
+  }, [streamId, socket, user._id]);
+  ///////////////////////////////////////////////////////////////////////
   const sendMessage = () => {
     if (message !== null) {
       const msg = {
