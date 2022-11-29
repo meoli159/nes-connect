@@ -171,9 +171,9 @@ const StreamContext = () => {
   ///////////////////////////////////////////////////////////////////////
   const sendMessage = () => {
     if (message !== null) {
-      message = user.name + ": " + message;
+      const msgWithUser = user.username + ": " + message;
       const msg = {
-        content: message,
+        content: msgWithUser,
         id: id,
       };
       socket.emit("sendDataClient", { msg: msg, streamId: streamId });
