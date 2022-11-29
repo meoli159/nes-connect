@@ -32,7 +32,7 @@ function OtherContent() {
         
             <div className="edit-chat-room-name-display-wrapper">
                 <span>
-                  Welcome back, Loser!
+                  Welcome back!
                 </span>        
             </div>
 

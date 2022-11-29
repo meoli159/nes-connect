@@ -171,6 +171,7 @@ const StreamContext = () => {
   ///////////////////////////////////////////////////////////////////////
   const sendMessage = () => {
     if (message !== null) {
+      message = user.name + ": " + message;
       const msg = {
         content: message,
         id: id,
