@@ -124,14 +124,18 @@ exports.socketConnection = (server) => {
     //-------- Video Call --------//
     socket.on("join-stream", (stream) => {
       socket.join(stream.streamId);
-      socket.to(stream.streamId).emit("new-user-connect", stream.userId);
+      socket.to(stream.streamId).emit("new-user-connect", {userId: stream.userId , peerId : stream.peerId});
       socket.on("disconnect", () => {
         socket.to(stream.streamId).emit("user-disconnected", stream.userId);
       });
+
+      socket.on('initSend', data => {
+        socket.to(stream.streamId).emit('initSend', {userId: data.userId , peerId : data.peerId})
+    })
     });
 
     socket.on("sendDataClient", function (data) {
-      console.log(data);
+      console.log("Singal to " + data);
       io.to(data.streamId).emit("sendDataServer", { data });
     });
 
